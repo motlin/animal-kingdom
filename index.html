@@ -1106,7 +1106,7 @@
             }
 
             function logMessage(message, indent = 0) {
-                state.log.push({ message: `> ${message}`, indent });
+                state.log.push({ message, indent });
             }
 
             // --- ACTION HANDLING ---
