@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Kingdom</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+        :root {
+            --color-primary: #A0522D; /* Sienna */
+            --color-secondary: #6B4423; /* Dark Brown */
+            --color-background: #F5F5DC; /* Beige */
+            --color-accent: #DEB887; /* BurlyWood */
+            --color-light: #FFF8E7;
+            --font-main: 'Merriweather', serif;
+            --hp-full: #2ECC71;
+            --hp-medium: #F1C40F;
+            --hp-low: #E74C3C;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-background);
+            color: var(--color-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        header img.logo {
+            max-width: 400px;
+            width: 90%;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        body.game-active header {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: auto;
+            margin: 0;
+            z-index: 50;
+        }
+
+        body.game-active header img.logo {
+            max-width: 120px;
+            width: 120px;
+        }
+
+        body.game-active main {
+            margin-top: 0;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--color-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* --- Setup Screen --- */
+        #setup-screen {
+            text-align: center;
+        }
+        
+        #setup-screen h2 {
+            margin-bottom: 20px;
+        }
+
+        .setup-section {
+            margin-bottom: 20px;
+        }
+
+        .setup-section label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        select, button {
+            font-family: var(--font-main);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--color-accent);
+            background-color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--color-secondary);
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #player-selections .player-setup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        #player-selections label {
+            width: 100px;
+        }
+
+        /* --- Game Screen --- */
+        #game-screen {
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #players-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .player-card {
+            background-color: #fff;
+            border: 2px solid var(--color-accent);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .player-card.active {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px var(--color-primary);
+            transform: scale(1.03);
+        }
+        
+        .player-card.selectable {
+            cursor: pointer;
+            border-color: #3498DB;
+        }
+        
+        .player-card.selectable:hover {
+            box-shadow: 0 0 15px #3498DB;
+        }
+        
+        .player-card.dead {
+            opacity: 0.5;
+            background-color: #f0f0f0;
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .player-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .animal-name {
+            font-style: italic;
+            color: #555;
+        }
+        
+        .hp-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .hp-bar {
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .status-icons {
+            display: flex;
+            gap: 10px;
+            min-height: 24px;
+            align-items: center;
+        }
+        
+        .status-icon {
+            font-size: 22px;
+            position: relative;
+        }
+
+        .status-icon .tooltip {
+            visibility: hidden;
+            width: 140px;
+            background-color: var(--color-secondary);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -70px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .status-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* --- Controls and Log --- */
+        #game-interface {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        #controls-container {
+            padding: 15px;
+            border: 2px solid var(--color-accent);
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        
+        #controls-container h3, #log-container h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        #log-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #game-log {
+            flex-grow: 1;
+            background-color: #fff;
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            height: 200px;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        
+        #turn-indicator {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+
+        /* --- Game Over Screen --- */
+        #game-over-screen {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .game-over-modal {
+            background-color: var(--color-light);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .game-over-modal h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+        
+        .game-over-modal button {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #game-interface {
+                grid-template-columns: 1fr;
+            }
+            .player-name {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="animal-kingdom.png" alt="Animal Kingdom Logo" class="logo">
+    </header>
+
+    <main>
+        <div id="setup-screen">
+            <h2>Game Setup</h2>
+            <div class="setup-section">
+                <label for="player-count">Number of Players:</label>
+                <select id="player-count">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+            <div id="player-selections" class="setup-section">
+                </div>
+            <button id="start-game-btn">Start Game</button>
+        </div>
+
+        <div id="game-screen">
+            <div id="players-container">
+                </div>
+            <div id="game-interface">
+                <div id="controls-container">
+                    <div id="turn-indicator">Player 1's Turn</div>
+                    <div class="action-buttons">
+                        <button class="action-btn" data-action="attack">Attack</button>
+                        <button class="action-btn" data-action="ability">Use Ability</button>
+                        <button class="action-btn" data-action="heal">Heal (1 left)</button>
+                        <button class="action-btn" data-action="shield">Shield (1 left)</button>
+                        <button class="action-btn" data-action="nothing">Do Nothing</button>
+                    </div>
+                </div>
+                <div id="log-container">
+                    <h3>Game Log</h3>
+                    <div id="game-log"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="game-over-screen">
+            <div class="game-over-modal">
+                <h2 id="winner-announcement"></h2>
+                <button id="play-again-btn">Play Again</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- DOM ELEMENTS ---
+            const setupScreen = document.getElementById('setup-screen');
+            const gameScreen = document.getElementById('game-screen');
+            const playerCountSelect = document.getElementById('player-count');
+            const playerSelectionsContainer = document.getElementById('player-selections');
+            const startGameBtn = document.getElementById('start-game-btn');
+            const playersContainer = document.getElementById('players-container');
+            const turnIndicator = document.getElementById('turn-indicator');
+            const actionButtonsContainer = document.querySelector('.action-buttons');
+            const gameLog = document.getElementById('game-log');
+            const gameOverScreen = document.getElementById('game-over-screen');
+            const winnerAnnouncement = document.getElementById('winner-announcement');
+            const playAgainBtn = document.getElementById('play-again-btn');
+
+            // --- GAME STATE ---
+            let state = {};
+
+            const ANIMAL_ROSTER = {
+                Coyote: { name: "Coyote", abilityDesc: "Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns." },
+                Llama: { name: "Llama", abilityDesc: "Spitball: An attack with random damage (0-2)." },
+                Tiger: { name: "Tiger", abilityDesc: "Strike: Hits two different opponents for 1 damage each." }
+            };
+            const INITIAL_HP = 3;
+
+            // --- SETUP LOGIC ---
+            function initializeSetup() {
+                updatePlayerSelections();
+                playerCountSelect.addEventListener('change', updatePlayerSelections);
+                startGameBtn.addEventListener('click', startGame);
+                playAgainBtn.addEventListener('click', () => location.reload());
+            }
+
+            function updatePlayerSelections() {
+                const count = parseInt(playerCountSelect.value, 10);
+                playerSelectionsContainer.innerHTML = '';
+                for (let i = 1; i <= count; i++) {
+                    const playerSetupDiv = document.createElement('div');
+                    playerSetupDiv.classList.add('player-setup');
+                    
+                    const label = document.createElement('label');
+                    label.textContent = `Player ${i}:`;
+                    label.htmlFor = `player${i}-animal`;
+
+                    const select = document.createElement('select');
+                    select.id = `player${i}-animal`;
+                    select.dataset.playerId = i;
+
+                    Object.keys(ANIMAL_ROSTER).forEach(animal => {
+                        const option = document.createElement('option');
+                        option.value = animal;
+                        option.textContent = animal;
+                        select.appendChild(option);
+                    });
+
+                    playerSetupDiv.appendChild(label);
+                    playerSetupDiv.appendChild(select);
+                    playerSelectionsContainer.appendChild(playerSetupDiv);
+                }
+            }
+
+            function startGame() {
+                const selections = playerSelectionsContainer.querySelectorAll('select');
+                const players = [];
+                selections.forEach((select, index) => {
+                    players.push({
+                        id: index,
+                        name: `Player ${index + 1}`,
+                        animal: select.value,
+                        hp: INITIAL_HP,
+                        maxHp: INITIAL_HP,
+                        isAlive: true,
+                        status: {
+                            isShielded: false,
+                            isSleeping: false,
+                        },
+                        oneTimeActions: {
+                            hasHealed: false,
+                            hasShielded: false,
+                        },
+                        abilityCooldown: 0,
+                    });
+                });
+
+                state = {
+                    players,
+                    currentPlayerIndex: 0,
+                    gameState: 'playing',
+                    turn: 1,
+                    actionInProgress: null,
+                    log: []
+                };
+
+                logMessage("The battle for the Animal Kingdom begins!");
+                setupScreen.style.display = 'none';
+                gameScreen.style.display = 'flex';
+                document.body.classList.add('game-active');
+
+                startTurn();
+            }
+
+            // --- GAME FLOW & TURN MANAGEMENT ---
+            function startTurn() {
+                const currentPlayer = state.players[state.currentPlayerIndex];
+
+                // Status effect checks at the start of a turn
+                if (currentPlayer.status.isShielded) {
+                    currentPlayer.status.isShielded = false;
+                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`);
+                }
+
+                if (currentPlayer.status.isSleeping) {
+                    currentPlayer.status.isSleeping = false;
+                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) is asleep and skips their turn!`);
+                    render();
+                    setTimeout(endTurn, 1500); // Pause to show they are asleep
+                    return;
+                }
+
+                render();
+            }
+
+            function endTurn() {
+                // Decrement cooldown for the player who just moved
+                const lastPlayer = state.players[state.currentPlayerIndex];
+                if (lastPlayer.abilityCooldown > 0) {
+                    lastPlayer.abilityCooldown--;
+                }
+
+                // Check for game over
+                const alivePlayers = state.players.filter(p => p.isAlive);
+                if (alivePlayers.length <= 1) {
+                    endGame(alivePlayers[0]);
+                    return;
+                }
+
+                // Find the next living player
+                let nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
+                while (!state.players[nextIndex].isAlive) {
+                    nextIndex = (nextIndex + 1) % state.players.length;
+                }
+                state.currentPlayerIndex = nextIndex;
+                state.turn++;
+
+                startTurn();
+            }
+
+
+            function endGame(winner) {
+                state.gameState = 'gameOver';
+                winnerAnnouncement.textContent = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
+                gameOverScreen.style.display = 'flex';
+            }
+
+            // --- RENDERING ---
+            function render() {
+                renderPlayers();
+                renderControls();
+                renderLog();
+            }
+
+            function renderPlayers() {
+                playersContainer.innerHTML = '';
+                state.players.forEach(player => {
+                    const card = document.createElement('div');
+                    card.classList.add('player-card');
+                    card.dataset.playerId = player.id;
+                    if (!player.isAlive) card.classList.add('dead');
+                    if (player.id === state.currentPlayerIndex && player.isAlive) card.classList.add('active');
+
+                    // Check if card should be selectable
+                    if (state.actionInProgress) {
+                        const { type, sourceId, targets, requiredTargets } = state.actionInProgress;
+                        const isSelf = player.id === sourceId;
+                        const isAlreadyTargeted = targets.includes(player.id);
+
+                        let isSelectable = false;
+                        if (type === 'attack' || type === 'spitball') {
+                            isSelectable = !isSelf && player.isAlive;
+                        } else if (type === 'strike') {
+                            isSelectable = !isSelf && player.isAlive && !isAlreadyTargeted;
+                        }
+
+                        if (isSelectable) {
+                            card.classList.add('selectable');
+                        }
+                    }
+
+                    const hpPercentage = (player.hp / player.maxHp) * 100;
+                    let hpColor;
+                    if (hpPercentage > 60) hpColor = 'var(--hp-full)';
+                    else if (hpPercentage > 30) hpColor = 'var(--hp-medium)';
+                    else hpColor = 'var(--hp-low)';
+
+                    let statusIconsHTML = '';
+                    if (player.status.isShielded) statusIconsHTML += `<div class="status-icon" title="Shielded">🛡️<span class="tooltip">Blocking next damage</span></div>`;
+                    if (player.status.isSleeping) statusIconsHTML += `<div class="status-icon" title="Sleeping">💤<span class="tooltip">Skipping next turn</span></div>`;
+                    if (player.oneTimeActions.hasHealed) statusIconsHTML += `<div class="status-icon" title="Heal Used">💚<span class="tooltip">Heal has been used</span></div>`;
+                    if (player.oneTimeActions.hasShielded) statusIconsHTML += `<div class="status-icon" title="Shield Used">🛡️<span class="tooltip">Shield has been used</span></div>`;
+                    if (player.abilityCooldown > 0) statusIconsHTML += `<div class="status-icon" title="Ability on Cooldown">⏳<span class="tooltip">Ability on cooldown (${player.abilityCooldown} turn/s)</span></div>`;
+
+                    card.innerHTML = `
+                        <div class="player-info">
+                            <span class="player-name">${player.animal}</span>
+                            <span class="animal-name">${player.name}</span>
+                        </div>
+                        <div class="hp-bar-container">
+                            <div class="hp-bar" style="width: ${hpPercentage}%; background-color: ${hpColor};"></div>
+                        </div>
+                        <div>HP: ${player.hp} / ${player.maxHp}</div>
+                        <div class="status-icons">${statusIconsHTML}</div>
+                    `;
+                    playersContainer.appendChild(card);
+                });
+            }
+
+            function renderControls() {
+                const currentPlayer = state.players[state.currentPlayerIndex];
+                turnIndicator.textContent = state.actionInProgress ? state.actionInProgress.prompt : `It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`;
+
+                const abilityButton = document.querySelector('[data-action="ability"]');
+                const abilityNames = {
+                    'Coyote': 'Howl',
+                    'Llama': 'Spitball',
+                    'Tiger': 'Strike'
+                };
+                abilityButton.textContent = `Use Ability: ${abilityNames[currentPlayer.animal]}`;
+                abilityButton.disabled = currentPlayer.abilityCooldown > 0;
+
+                document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
+                document.querySelector('[data-action="shield"]').disabled = currentPlayer.oneTimeActions.hasShielded;
+
+                // Special case for Tiger's Strike
+                if (currentPlayer.animal === 'Tiger') {
+                    const livingOpponents = state.players.filter(p => p.isAlive && p.id !== currentPlayer.id).length;
+                    if (livingOpponents < 2) {
+                        abilityButton.disabled = true;
+                    }
+                }
+                
+                // Disable all buttons if an action is in progress
+                 actionButtonsContainer.querySelectorAll('button').forEach(btn => {
+                    if(state.actionInProgress) {
+                        btn.style.display = 'none'; // Hide buttons during target selection
+                    } else {
+                        btn.style.display = 'inline-block';
+                    }
+                });
+            }
+
+            function renderLog() {
+                gameLog.innerHTML = state.log.join('\n');
+                gameLog.scrollTop = gameLog.scrollHeight;
+            }
+            
+            function logMessage(message) {
+                state.log.push(`> ${message}`);
+            }
+
+            // --- ACTION HANDLING ---
+            actionButtonsContainer.addEventListener('click', (e) => {
+                if (!e.target.matches('.action-btn') || e.target.disabled) return;
+                
+                const action = e.target.dataset.action;
+                const source = state.players[state.currentPlayerIndex];
+
+                switch(action) {
+                    case 'attack':
+                        initiateTargetSelection('attack', source.id, 1, `Select a target to attack.`);
+                        break;
+                    case 'ability':
+                        handleAbility(source);
+                        break;
+                    case 'heal':
+                        handleHeal(source);
+                        break;
+                    case 'shield':
+                        handleShield(source);
+                        break;
+                    case 'nothing':
+                        logMessage(`${source.name} (${source.animal}) did nothing.`);
+                        endTurn();
+                        break;
+                }
+            });
+
+            playersContainer.addEventListener('click', (e) => {
+                if (!state.actionInProgress) return;
+                const card = e.target.closest('.player-card.selectable');
+                if (!card) return;
+
+                const targetId = parseInt(card.dataset.playerId, 10);
+                const { targets } = state.actionInProgress;
+
+                if (!targets.includes(targetId)) {
+                    targets.push(targetId);
+                }
+
+                const { type, sourceId, requiredTargets } = state.actionInProgress;
+                if (targets.length === requiredTargets) {
+                    // Action is ready to be executed
+                    const source = state.players[sourceId];
+                    const targetPlayers = targets.map(id => state.players[id]);
+
+                    if(type === 'attack') handleAttack(source, targetPlayers[0]);
+                    if(type === 'spitball') handleSpitball(source, targetPlayers[0]);
+                    if(type === 'strike') handleStrike(source, targetPlayers[0], targetPlayers[1]);
+                    
+                    state.actionInProgress = null;
+                    endTurn();
+                } else {
+                    // Still need more targets
+                    state.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`
+                    render();
+                }
+            });
+
+            function initiateTargetSelection(type, sourceId, requiredTargets, prompt) {
+                state.actionInProgress = {
+                    type,
+                    sourceId,
+                    requiredTargets,
+                    targets: [],
+                    prompt
+                };
+                render();
+            }
+
+            function applyDamage(target, damage, source) {
+                if (target.status.isShielded) {
+                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`);
+                    return 0;
+                }
+                
+                const actualDamage = Math.min(target.hp, damage);
+                target.hp -= actualDamage;
+                if (target.hp <= 0) {
+                    target.isAlive = false;
+                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`);
+                }
+                return actualDamage;
+            }
+
+            function handleAttack(source, target) {
+                logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`);
+                applyDamage(target, 1, source);
+            }
+
+            function handleHeal(source) {
+                source.oneTimeActions.hasHealed = true;
+                const amountToHeal = Math.min(1, source.maxHp - source.hp);
+                source.hp += amountToHeal;
+                logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`);
+                endTurn();
+            }
+
+            function handleShield(source) {
+                source.oneTimeActions.hasShielded = true;
+                source.status.isShielded = true;
+                logMessage(`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`);
+                endTurn();
+            }
+
+            // --- ABILITY LOGIC ---
+            function handleAbility(source) {
+                switch(source.animal) {
+                    case 'Coyote':
+                        handleHowl(source);
+                        endTurn();
+                        break;
+                    case 'Llama':
+                        initiateTargetSelection('spitball', source.id, 1, `Select a target for Spitball.`);
+                        break;
+                    case 'Tiger':
+                        initiateTargetSelection('strike', source.id, 2, `Select target 1 of 2 for Strike.`);
+                        break;
+                }
+            }
+
+            function handleHowl(source) {
+                source.abilityCooldown = 2;
+                logMessage(`${source.name} the Coyote lets out a piercing Howl!`);
+                state.players.forEach(p => {
+                    if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
+                        p.status.isSleeping = true;
+                    }
+                });
+            }
+
+            function handleSpitball(source, target) {
+                const rand = Math.random();
+                let damage = 0;
+                if (rand < 0.15) { // 15% for 2 damage
+                    damage = 2;
+                } else if (rand < 0.55) { // 40% for 1 damage (0.15 + 0.40)
+                    damage = 1;
+                } // 45% for 0 damage
+                
+                logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`);
+                if (damage > 0) {
+                    const actualDamage = applyDamage(target, damage, source);
+                    logMessage(`It's a direct hit for ${actualDamage} damage!`);
+                } else {
+                    logMessage(`It missed! 0 damage.`);
+                }
+            }
+
+            function handleStrike(source, target1, target2) {
+                logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`);
+                applyDamage(target1, 1, source);
+                applyDamage(target2, 1, source);
+            }
+
+            // --- INITIALIZE ---
+            initializeSetup();
+        });
+    </script>
+
+</body>
+</html>
