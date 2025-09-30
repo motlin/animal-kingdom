@@ -48,7 +48,7 @@ The entire visual theme, including colors and fonts, should be based on the prov
 
 _(The user would paste the logo here)_
 
--   **Logo Integration:** The logo should be prominently displayed during the setup screen. Once the game starts, the logo should shrink to a small fixed position in the upper left corner that doesn't affect page flow. Reference the logo file as `animal-kingdom.png`.
+-   **Logo Integration:** The logo should be prominently displayed during the setup screen. Once the game starts, the logo should shrink to a small fixed position in the upper left corner that doesn't affect page flow. Reference the logo file as `logo.png`.
 
 -   **Color Palette:** Use a warm, earthy color scheme derived from the logo (e.g., golden browns, soft beiges, rich earth tones).
 
