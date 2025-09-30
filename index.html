@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animal Kingdom</title>
-    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
 
@@ -107,6 +108,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 0;
+            padding: 0;
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
         }
 
         .theme-toggle:hover {
@@ -152,6 +160,14 @@
             color: white;
             border: none;
             transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        button svg {
+            width: 18px;
+            height: 18px;
         }
 
         button:hover:not(:disabled) {
@@ -499,7 +515,7 @@
 </head>
 <body>
 
-    <button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+    <button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme"><i data-lucide="moon"></i></button>
 
     <header>
         <img src="logo.png" alt="Animal Kingdom Logo" class="logo">
@@ -520,7 +536,7 @@
             </div>
             <div id="player-selections" class="setup-section">
                 </div>
-            <button id="start-game-btn">Start Game</button>
+            <button id="start-game-btn"><i data-lucide="play"></i>Start Game</button>
         </div>
 
         <div id="game-screen">
@@ -530,19 +546,19 @@
                 <div id="controls-container">
                     <div id="turn-indicator">Player 1's Turn</div>
                     <div class="action-buttons">
-                        <button class="action-btn" data-action="attack"><u>A</u>ttack</button>
-                        <button class="action-btn" data-action="ability">Use A<u>b</u>ility</button>
-                        <button class="action-btn" data-action="heal"><u>H</u>eal (1 left)</button>
-                        <button class="action-btn" data-action="shield"><u>S</u>hield (1 left)</button>
-                        <button class="action-btn" data-action="nothing">Do <u>N</u>othing</button>
+                        <button class="action-btn" data-action="attack"><i data-lucide="sword"></i><u>A</u>ttack</button>
+                        <button class="action-btn" data-action="ability"><i data-lucide="zap"></i>Use A<u>b</u>ility</button>
+                        <button class="action-btn" data-action="heal"><i data-lucide="heart-pulse"></i><u>H</u>eal (1 left)</button>
+                        <button class="action-btn" data-action="shield"><i data-lucide="shield"></i><u>S</u>hield (1 left)</button>
+                        <button class="action-btn" data-action="nothing"><i data-lucide="clock"></i>Do <u>N</u>othing</button>
                     </div>
                 </div>
                 <div id="log-container">
                     <h3>Game Log</h3>
                     <div id="game-log"></div>
                     <div class="log-buttons">
-                        <button id="copy-log-btn">Copy to Clipboard</button>
-                        <button id="save-log-btn">Save Log</button>
+                        <button id="copy-log-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
+                        <button id="save-log-btn"><i data-lucide="download"></i>Save Log</button>
                     </div>
                 </div>
             </div>
@@ -552,9 +568,9 @@
             <div class="game-over-modal">
                 <h2 id="winner-announcement"></h2>
                 <div class="button-group">
-                    <button id="copy-log-game-over-btn">Copy to Clipboard</button>
-                    <button id="save-log-game-over-btn">Save Log</button>
-                    <button id="play-again-btn">Play Again</button>
+                    <button id="copy-log-game-over-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
+                    <button id="save-log-game-over-btn"><i data-lucide="download"></i>Save Log</button>
+                    <button id="play-again-btn"><i data-lucide="refresh-cw"></i>Play Again</button>
                 </div>
             </div>
         </div>
@@ -571,7 +587,7 @@
                     <tr><td>?</td><td>Show this help</td></tr>
                     <tr><td>Esc</td><td>Close this help</td></tr>
                 </table>
-                <button id="close-shortcuts-btn">Close</button>
+                <button id="close-shortcuts-btn"><i data-lucide="x"></i>Close</button>
             </div>
         </div>
 
@@ -631,17 +647,19 @@
                 const savedTheme = localStorage.getItem('animalKingdomTheme');
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark-mode');
-                    themeToggleBtn.textContent = '☀️';
+                    themeToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
                 } else {
-                    themeToggleBtn.textContent = '🌙';
+                    themeToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
                 }
+                lucide.createIcons();
             }
 
             function toggleTheme() {
                 document.body.classList.toggle('dark-mode');
                 const isDark = document.body.classList.contains('dark-mode');
                 localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
-                themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+                themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+                lucide.createIcons();
             }
 
             function showKeyboardShortcuts() {
@@ -971,8 +989,9 @@
                     'Llama': 'Spitball',
                     'Tiger': 'Strike'
                 };
-                abilityButton.innerHTML = `Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}`;
+                abilityButton.innerHTML = `<i data-lucide="zap"></i>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}`;
                 abilityButton.disabled = currentPlayer.abilityCooldown > 0;
+                lucide.createIcons();
 
                 document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
                 document.querySelector('[data-action="shield"]').disabled = currentPlayer.oneTimeActions.hasShielded;
@@ -1164,6 +1183,7 @@
 
             // --- INITIALIZE ---
             initializeSetup();
+            lucide.createIcons();
         });
     </script>
 
