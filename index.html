@@ -469,6 +469,25 @@
             min-width: 150px;
         }
 
+        .game-over-modal .button-group button.primary {
+            background-color: #2ECC71;
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 12px 20px;
+        }
+
+        .game-over-modal .button-group button.primary:hover:not(:disabled) {
+            background-color: #27AE60;
+        }
+
+        body.dark-mode .game-over-modal .button-group button.primary {
+            background-color: #27AE60;
+        }
+
+        body.dark-mode .game-over-modal .button-group button.primary:hover:not(:disabled) {
+            background-color: #229954;
+        }
+
         #keyboard-shortcuts-modal {
             display: none;
             position: fixed;
@@ -584,9 +603,9 @@
             <div class="game-over-modal">
                 <h2 id="winner-announcement"></h2>
                 <div class="button-group">
+                    <button id="play-again-btn" class="primary"><i data-lucide="refresh-cw"></i>Play Again</button>
                     <button id="copy-log-game-over-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
                     <button id="save-log-game-over-btn"><i data-lucide="download"></i>Save Log</button>
-                    <button id="play-again-btn"><i data-lucide="refresh-cw"></i>Play Again</button>
                 </div>
             </div>
         </div>
