@@ -162,12 +162,14 @@
             transition: background-color 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         button svg {
             width: 18px;
             height: 18px;
+            flex-shrink: 0;
+            vertical-align: middle;
         }
 
         button:hover:not(:disabled) {
