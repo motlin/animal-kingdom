@@ -399,14 +399,6 @@
             margin: 2px 0;
         }
 
-        .log-entry.indent-1 {
-            padding-left: 20px;
-        }
-
-        .log-entry.indent-2 {
-            padding-left: 40px;
-        }
-
         .log-buttons {
             display: flex;
             gap: 10px;
@@ -754,10 +746,51 @@
             }
 
             function getLogText() {
-                return state.log.map(entry => {
-                    const indent = '    '.repeat(entry.indent);
-                    return indent + entry.message;
+                return state.log.map((entry, index) => {
+                    if (entry.indent === 0) {
+                        return entry.message;
+                    }
+
+                    const nextEntry = state.log[index + 1];
+                    const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+
+                    let prefix = '';
+                    if (entry.indent === 1) {
+                        prefix = hasNextSibling ? '  ├─ ' : '  └─ ';
+                    } else if (entry.indent === 2) {
+                        const parentIndex = findParentIndex(index);
+                        const parentHasNextSibling = hasParentNextSibling(parentIndex);
+                        const verticalBar = parentHasNextSibling ? '  │' : '   ';
+                        const connector = hasNextSibling ? '  ├─ ' : '  └─ ';
+                        prefix = verticalBar + connector;
+                    }
+
+                    return prefix + entry.message;
                 }).join('\n');
+            }
+
+            function findParentIndex(currentIndex) {
+                const currentIndent = state.log[currentIndex].indent;
+                for (let i = currentIndex - 1; i >= 0; i--) {
+                    if (state.log[i].indent < currentIndent) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            function hasParentNextSibling(parentIndex) {
+                if (parentIndex === -1) return false;
+                const parentIndent = state.log[parentIndex].indent;
+                for (let i = parentIndex + 1; i < state.log.length; i++) {
+                    if (state.log[i].indent < parentIndent) {
+                        return false;
+                    }
+                    if (state.log[i].indent === parentIndent) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             function saveGameLog() {
@@ -1051,9 +1084,23 @@
             }
 
             function renderLog() {
-                gameLog.innerHTML = state.log.map(entry => {
-                    const indentClass = entry.indent > 0 ? `indent-${entry.indent}` : '';
-                    return `<div class="log-entry ${indentClass}">${entry.message}</div>`;
+                gameLog.innerHTML = state.log.map((entry, index) => {
+                    let prefix = '';
+                    if (entry.indent > 0) {
+                        const nextEntry = state.log[index + 1];
+                        const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+
+                        if (entry.indent === 1) {
+                            prefix = hasNextSibling ? '  ├─ ' : '  └─ ';
+                        } else if (entry.indent === 2) {
+                            const parentIndex = findParentIndex(index);
+                            const parentHasNextSibling = hasParentNextSibling(parentIndex);
+                            const verticalBar = parentHasNextSibling ? '  │' : '   ';
+                            const connector = hasNextSibling ? '  ├─ ' : '  └─ ';
+                            prefix = verticalBar + connector;
+                        }
+                    }
+                    return `<div class="log-entry">${prefix}${entry.message}</div>`;
                 }).join('');
                 gameLog.scrollTop = gameLog.scrollHeight;
             }
