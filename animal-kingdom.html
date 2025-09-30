@@ -116,10 +116,15 @@
         button:hover:not(:disabled) {
             background-color: var(--color-secondary);
         }
-        
+
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
+        }
+
+        button u {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
         }
 
         #player-selections .player-setup {
@@ -127,10 +132,21 @@
             justify-content: center;
             align-items: center;
             margin: 10px 0;
+            gap: 10px;
         }
 
         #player-selections label {
             width: 100px;
+        }
+
+        #player-selections input[type="text"] {
+            font-family: var(--font-main);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--color-accent);
+            background-color: #fff;
+            font-size: 16px;
+            min-width: 150px;
         }
 
         /* --- Game Screen --- */
@@ -269,8 +285,9 @@
         #log-container {
             display: flex;
             flex-direction: column;
+            gap: 10px;
         }
-        
+
         #game-log {
             flex-grow: 1;
             background-color: #fff;
@@ -281,6 +298,23 @@
             height: 200px;
             font-size: 14px;
             white-space: pre-wrap;
+            font-family: monospace;
+        }
+
+        .log-entry {
+            margin: 2px 0;
+        }
+
+        .log-entry.indent-1 {
+            padding-left: 20px;
+        }
+
+        .log-entry.indent-2 {
+            padding-left: 40px;
+        }
+
+        #save-log-btn {
+            width: 100%;
         }
         
         #turn-indicator {
@@ -312,16 +346,71 @@
             text-align: center;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
-        
+
         .game-over-modal h2 {
             font-size: 2.5em;
             margin-bottom: 20px;
             color: var(--color-primary);
         }
-        
+
         .game-over-modal button {
             margin-top: 20px;
             font-size: 1.2em;
+        }
+
+        .game-over-modal .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        #keyboard-shortcuts-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        .shortcuts-modal {
+            background-color: var(--color-light);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            max-width: 500px;
+        }
+
+        .shortcuts-modal h2 {
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+
+        .shortcuts-modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .shortcuts-modal td {
+            padding: 8px;
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .shortcuts-modal td:first-child {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 20px;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .shortcuts-modal button {
+            width: 100%;
         }
 
         /* Responsive adjustments */
@@ -366,16 +455,17 @@
                 <div id="controls-container">
                     <div id="turn-indicator">Player 1's Turn</div>
                     <div class="action-buttons">
-                        <button class="action-btn" data-action="attack">Attack</button>
-                        <button class="action-btn" data-action="ability">Use Ability</button>
-                        <button class="action-btn" data-action="heal">Heal (1 left)</button>
-                        <button class="action-btn" data-action="shield">Shield (1 left)</button>
-                        <button class="action-btn" data-action="nothing">Do Nothing</button>
+                        <button class="action-btn" data-action="attack"><u>A</u>ttack</button>
+                        <button class="action-btn" data-action="ability">Use A<u>b</u>ility</button>
+                        <button class="action-btn" data-action="heal"><u>H</u>eal (1 left)</button>
+                        <button class="action-btn" data-action="shield"><u>S</u>hield (1 left)</button>
+                        <button class="action-btn" data-action="nothing">Do <u>N</u>othing</button>
                     </div>
                 </div>
                 <div id="log-container">
                     <h3>Game Log</h3>
                     <div id="game-log"></div>
+                    <button id="save-log-btn">Save Log</button>
                 </div>
             </div>
         </div>
@@ -383,7 +473,26 @@
         <div id="game-over-screen">
             <div class="game-over-modal">
                 <h2 id="winner-announcement"></h2>
-                <button id="play-again-btn">Play Again</button>
+                <div class="button-group">
+                    <button id="save-log-game-over-btn">Save Log</button>
+                    <button id="play-again-btn">Play Again</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="keyboard-shortcuts-modal">
+            <div class="shortcuts-modal">
+                <h2>Keyboard Shortcuts</h2>
+                <table>
+                    <tr><td>A</td><td>Attack</td></tr>
+                    <tr><td>B</td><td>Use Ability</td></tr>
+                    <tr><td>H</td><td>Heal</td></tr>
+                    <tr><td>S</td><td>Shield</td></tr>
+                    <tr><td>N</td><td>Do Nothing</td></tr>
+                    <tr><td>?</td><td>Show this help</td></tr>
+                    <tr><td>Esc</td><td>Close this help</td></tr>
+                </table>
+                <button id="close-shortcuts-btn">Close</button>
             </div>
         </div>
 
@@ -405,6 +514,10 @@
             const gameOverScreen = document.getElementById('game-over-screen');
             const winnerAnnouncement = document.getElementById('winner-announcement');
             const playAgainBtn = document.getElementById('play-again-btn');
+            const saveLogBtn = document.getElementById('save-log-btn');
+            const saveLogGameOverBtn = document.getElementById('save-log-game-over-btn');
+            const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
+            const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
 
             // --- GAME STATE ---
             let state = {};
@@ -422,44 +535,149 @@
                 playerCountSelect.addEventListener('change', updatePlayerSelections);
                 startGameBtn.addEventListener('click', startGame);
                 playAgainBtn.addEventListener('click', () => location.reload());
+                saveLogBtn.addEventListener('click', saveGameLog);
+                saveLogGameOverBtn.addEventListener('click', saveGameLog);
+                closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
+                document.addEventListener('keydown', handleKeyPress);
+            }
+
+            function showKeyboardShortcuts() {
+                keyboardShortcutsModal.style.display = 'flex';
+            }
+
+            function hideKeyboardShortcuts() {
+                keyboardShortcutsModal.style.display = 'none';
+            }
+
+            function handleKeyPress(event) {
+                if (state.gameState !== 'playing' || state.actionInProgress) {
+                    if (event.key === '?' || event.key === '/') {
+                        showKeyboardShortcuts();
+                        event.preventDefault();
+                    } else if (event.key === 'Escape') {
+                        hideKeyboardShortcuts();
+                        event.preventDefault();
+                    }
+                    return;
+                }
+
+                const key = event.key.toLowerCase();
+                const currentPlayer = state.players[state.currentPlayerIndex];
+
+                if (key === '?') {
+                    showKeyboardShortcuts();
+                    event.preventDefault();
+                } else if (key === 'escape') {
+                    hideKeyboardShortcuts();
+                    event.preventDefault();
+                } else if (key === 'a') {
+                    document.querySelector('[data-action="attack"]').click();
+                    event.preventDefault();
+                } else if (key === 'b') {
+                    const abilityBtn = document.querySelector('[data-action="ability"]');
+                    if (!abilityBtn.disabled) {
+                        abilityBtn.click();
+                    }
+                    event.preventDefault();
+                } else if (key === 'h') {
+                    const healBtn = document.querySelector('[data-action="heal"]');
+                    if (!healBtn.disabled) {
+                        healBtn.click();
+                    }
+                    event.preventDefault();
+                } else if (key === 's') {
+                    const shieldBtn = document.querySelector('[data-action="shield"]');
+                    if (!shieldBtn.disabled) {
+                        shieldBtn.click();
+                    }
+                    event.preventDefault();
+                } else if (key === 'n') {
+                    document.querySelector('[data-action="nothing"]').click();
+                    event.preventDefault();
+                }
+            }
+
+            function saveGameLog() {
+                const logText = state.log.map(entry => {
+                    const indent = '  '.repeat(entry.indent);
+                    return indent + entry.message;
+                }).join('\n');
+                const blob = new Blob([logText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `animal-kingdom-log-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             }
 
             function updatePlayerSelections() {
                 const count = parseInt(playerCountSelect.value, 10);
+                const existingData = [];
+                playerSelectionsContainer.querySelectorAll('.player-setup').forEach(setupDiv => {
+                    const nameInput = setupDiv.querySelector('input[type="text"]');
+                    const animalSelect = setupDiv.querySelector('select');
+                    existingData.push({
+                        name: nameInput ? nameInput.value : '',
+                        animal: animalSelect ? animalSelect.value : ''
+                    });
+                });
+
                 playerSelectionsContainer.innerHTML = '';
                 for (let i = 1; i <= count; i++) {
                     const playerSetupDiv = document.createElement('div');
                     playerSetupDiv.classList.add('player-setup');
-                    
+
                     const label = document.createElement('label');
                     label.textContent = `Player ${i}:`;
-                    label.htmlFor = `player${i}-animal`;
+                    label.htmlFor = `player${i}-name`;
+
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.id = `player${i}-name`;
+                    nameInput.placeholder = `Player ${i}`;
+                    nameInput.dataset.playerId = i;
+                    if (existingData[i - 1] && existingData[i - 1].name) {
+                        nameInput.value = existingData[i - 1].name;
+                    }
 
                     const select = document.createElement('select');
                     select.id = `player${i}-animal`;
                     select.dataset.playerId = i;
 
+                    const previousAnimal = existingData[i - 1] ? existingData[i - 1].animal : '';
+
                     Object.keys(ANIMAL_ROSTER).forEach(animal => {
                         const option = document.createElement('option');
                         option.value = animal;
                         option.textContent = animal;
+                        if (previousAnimal && animal === previousAnimal) {
+                            option.selected = true;
+                        }
                         select.appendChild(option);
                     });
 
                     playerSetupDiv.appendChild(label);
+                    playerSetupDiv.appendChild(nameInput);
                     playerSetupDiv.appendChild(select);
                     playerSelectionsContainer.appendChild(playerSetupDiv);
                 }
             }
 
             function startGame() {
-                const selections = playerSelectionsContainer.querySelectorAll('select');
+                const setupDivs = playerSelectionsContainer.querySelectorAll('.player-setup');
                 const players = [];
-                selections.forEach((select, index) => {
+                setupDivs.forEach((setupDiv, index) => {
+                    const nameInput = setupDiv.querySelector('input[type="text"]');
+                    const animalSelect = setupDiv.querySelector('select');
+                    const playerName = nameInput.value.trim() || `Player ${index + 1}`;
+
                     players.push({
                         id: index,
-                        name: `Player ${index + 1}`,
-                        animal: select.value,
+                        name: playerName,
+                        animal: animalSelect.value,
                         hp: INITIAL_HP,
                         maxHp: INITIAL_HP,
                         isAlive: true,
@@ -485,6 +703,12 @@
                 };
 
                 logMessage("The battle for the Animal Kingdom begins!");
+                logMessage("");
+                players.forEach(player => {
+                    logMessage(`${player.name} is the ${player.animal}`, 1);
+                });
+                logMessage("");
+
                 setupScreen.style.display = 'none';
                 gameScreen.style.display = 'flex';
                 document.body.classList.add('game-active');
@@ -523,7 +747,8 @@
                 // Check for game over
                 const alivePlayers = state.players.filter(p => p.isAlive);
                 if (alivePlayers.length <= 1) {
-                    endGame(alivePlayers[0]);
+                    render();
+                    setTimeout(() => endGame(alivePlayers[0]), 2000);
                     return;
                 }
 
@@ -617,7 +842,7 @@
                     'Llama': 'Spitball',
                     'Tiger': 'Strike'
                 };
-                abilityButton.textContent = `Use Ability: ${abilityNames[currentPlayer.animal]}`;
+                abilityButton.innerHTML = `Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}`;
                 abilityButton.disabled = currentPlayer.abilityCooldown > 0;
 
                 document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
@@ -642,12 +867,15 @@
             }
 
             function renderLog() {
-                gameLog.innerHTML = state.log.join('\n');
+                gameLog.innerHTML = state.log.map(entry => {
+                    const indentClass = entry.indent > 0 ? `indent-${entry.indent}` : '';
+                    return `<div class="log-entry ${indentClass}">${entry.message}</div>`;
+                }).join('');
                 gameLog.scrollTop = gameLog.scrollHeight;
             }
-            
-            function logMessage(message) {
-                state.log.push(`> ${message}`);
+
+            function logMessage(message, indent = 0) {
+                state.log.push({ message: `> ${message}`, indent });
             }
 
             // --- ACTION HANDLING ---
@@ -721,15 +949,16 @@
 
             function applyDamage(target, damage, source) {
                 if (target.status.isShielded) {
-                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`);
+                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 1);
                     return 0;
                 }
-                
+
                 const actualDamage = Math.min(target.hp, damage);
                 target.hp -= actualDamage;
+                logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 1);
                 if (target.hp <= 0) {
                     target.isAlive = false;
-                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`);
+                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 1);
                 }
                 return actualDamage;
             }
@@ -783,18 +1012,18 @@
             function handleSpitball(source, target) {
                 const rand = Math.random();
                 let damage = 0;
-                if (rand < 0.15) { // 15% for 2 damage
+                if (rand < 0.15) {
                     damage = 2;
-                } else if (rand < 0.55) { // 40% for 1 damage (0.15 + 0.40)
+                } else if (rand < 0.55) {
                     damage = 1;
-                } // 45% for 0 damage
-                
+                }
+
                 logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`);
                 if (damage > 0) {
-                    const actualDamage = applyDamage(target, damage, source);
-                    logMessage(`It's a direct hit for ${actualDamage} damage!`);
+                    logMessage(`It's a direct hit for ${damage} damage!`, 1);
+                    applyDamage(target, damage, source);
                 } else {
-                    logMessage(`It missed! 0 damage.`);
+                    logMessage(`It missed! 0 damage.`, 1);
                 }
             }
 
