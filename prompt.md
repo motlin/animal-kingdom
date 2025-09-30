@@ -54,6 +54,12 @@ _(The user would paste the logo here)_
 
 -   **Typography:** Use a clean, elegant font with very subtle serifs that matches the text style in the logo (e.g., "Merriweather").
 
+-   **Setup Screen:**
+
+    -   Allow players to optionally enter custom names. If no name is entered, default to "Player 1", "Player 2", etc.
+
+    -   Preserve player name and animal selections when changing the number of players.
+
 -   **UI Elements:**
 
     -   Display all animals on screen with their animal name prominently (large, bold) and player name smaller below it.
@@ -64,10 +70,26 @@ _(The user would paste the logo here)_
 
     -   The ability button text should dynamically change based on the current player's animal (e.g., "Use Ability: Strike" for Tiger, "Use Ability: Howl" for Coyote).
 
+    -   Action buttons should display underlined keyboard shortcuts (e.g., "<u>A</u>ttack", "Use A<u>b</u>ility").
+
     -   Provide visual status indicators for active shields, sleep, ability cooldowns, and when one-time actions like Heal and Shield have been used.
 
-    -   Include a game log that clearly reports all actions taken (e.g., "Player 1's Tiger used Strike on Player 2's Llama and Player 3's Coyote.").
+    -   Include a game log with nested indentation for related actions. The log should:
+        -   Show a player roster at the start
+        -   Display HP after damage with format "X/Y HP"
+        -   Use visual indentation for consequences of actions
+        -   Allow saving as a text file at any time
 
     -   Provide a "Save Log" button that allows players to download the game log as a text file at any time during the game and after the game ends.
 
-    -   Show a clear victory screen when only one player remains.
+    -   Show a clear victory screen when only one player remains, with a 2-second delay to show the final defeat.
+
+### Keyboard Shortcuts:
+
+-   **A** - Attack
+-   **B** - Use Ability
+-   **H** - Heal
+-   **S** - Shield
+-   **N** - Do Nothing
+-   **?** - Show keyboard shortcuts help
+-   **Esc** - Close keyboard shortcuts help
