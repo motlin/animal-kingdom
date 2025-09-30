@@ -1042,9 +1042,9 @@
                 // Disable all buttons if an action is in progress
                  actionButtonsContainer.querySelectorAll('button').forEach(btn => {
                     if(state.actionInProgress) {
-                        btn.style.display = 'none'; // Hide buttons during target selection
+                        btn.style.display = 'none';
                     } else {
-                        btn.style.display = 'inline-block';
+                        btn.style.display = 'inline-flex';
                     }
                 });
             }
