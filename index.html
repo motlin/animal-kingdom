@@ -763,8 +763,15 @@
                             prefix = hasNextSibling ? '├── ' : '└── ';
                         }
                     } else if (entry.indent === 2) {
+                        const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
+                        if (hasChildren) {
+                            prefix = '  ' + connector;
+                        } else {
+                            prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
+                        }
+                    } else if (entry.indent === 3) {
                         const connector = hasNextSibling ? '├── ' : '└── ';
-                        prefix = '  ' + connector;
+                        prefix = '    ' + connector;
                     }
 
                     return prefix + entry.message;
@@ -1082,8 +1089,15 @@
                                 prefix = hasNextSibling ? '├── ' : '└── ';
                             }
                         } else if (entry.indent === 2) {
+                            const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
+                            if (hasChildren) {
+                                prefix = '  ' + connector;
+                            } else {
+                                prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
+                            }
+                        } else if (entry.indent === 3) {
                             const connector = hasNextSibling ? '├── ' : '└── ';
-                            prefix = '  ' + connector;
+                            prefix = '    ' + connector;
                         }
                     }
                     return `<div class="log-entry">${prefix}${entry.message}</div>`;
@@ -1176,7 +1190,7 @@
                 logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 2);
                 if (target.hp <= 0) {
                     target.isAlive = false;
-                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 2);
+                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 3);
                 }
                 return actualDamage;
             }
