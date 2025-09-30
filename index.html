@@ -753,44 +753,22 @@
 
                     const nextEntry = state.log[index + 1];
                     const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+                    const hasChildren = nextEntry && nextEntry.indent > entry.indent;
 
                     let prefix = '';
                     if (entry.indent === 1) {
-                        prefix = hasNextSibling ? '  ├─ ' : '  └─ ';
+                        if (hasChildren) {
+                            prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
+                        } else {
+                            prefix = hasNextSibling ? '├── ' : '└── ';
+                        }
                     } else if (entry.indent === 2) {
-                        const parentIndex = findParentIndex(index);
-                        const parentHasNextSibling = hasParentNextSibling(parentIndex);
-                        const verticalBar = parentHasNextSibling ? '  │' : '   ';
-                        const connector = hasNextSibling ? '  ├─ ' : '  └─ ';
-                        prefix = verticalBar + connector;
+                        const connector = hasNextSibling ? '├── ' : '└── ';
+                        prefix = '  ' + connector;
                     }
 
                     return prefix + entry.message;
                 }).join('\n');
-            }
-
-            function findParentIndex(currentIndex) {
-                const currentIndent = state.log[currentIndex].indent;
-                for (let i = currentIndex - 1; i >= 0; i--) {
-                    if (state.log[i].indent < currentIndent) {
-                        return i;
-                    }
-                }
-                return -1;
-            }
-
-            function hasParentNextSibling(parentIndex) {
-                if (parentIndex === -1) return false;
-                const parentIndent = state.log[parentIndex].indent;
-                for (let i = parentIndex + 1; i < state.log.length; i++) {
-                    if (state.log[i].indent < parentIndent) {
-                        return false;
-                    }
-                    if (state.log[i].indent === parentIndent) {
-                        return true;
-                    }
-                }
-                return false;
             }
 
             function saveGameLog() {
@@ -1091,15 +1069,17 @@
                     if (entry.indent > 0) {
                         const nextEntry = state.log[index + 1];
                         const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+                        const hasChildren = nextEntry && nextEntry.indent > entry.indent;
 
                         if (entry.indent === 1) {
-                            prefix = hasNextSibling ? '  ├─ ' : '  └─ ';
+                            if (hasChildren) {
+                                prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
+                            } else {
+                                prefix = hasNextSibling ? '├── ' : '└── ';
+                            }
                         } else if (entry.indent === 2) {
-                            const parentIndex = findParentIndex(index);
-                            const parentHasNextSibling = hasParentNextSibling(parentIndex);
-                            const verticalBar = parentHasNextSibling ? '  │' : '   ';
-                            const connector = hasNextSibling ? '  ├─ ' : '  └─ ';
-                            prefix = verticalBar + connector;
+                            const connector = hasNextSibling ? '├── ' : '└── ';
+                            prefix = '  ' + connector;
                         }
                     }
                     return `<div class="log-entry">${prefix}${entry.message}</div>`;
