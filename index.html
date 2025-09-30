@@ -698,7 +698,7 @@
             }
 
             function handleKeyPress(event) {
-                if (state.gameState !== 'playing' || state.actionInProgress) {
+                if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) {
                     if (event.key === '?' || event.key === '/') {
                         showKeyboardShortcuts();
                         event.preventDefault();
@@ -894,6 +894,7 @@
                     gameState: 'playing',
                     turn: 1,
                     actionInProgress: null,
+                    turnSkipped: false,
                     log: []
                 };
 
@@ -912,6 +913,7 @@
             // --- GAME FLOW & TURN MANAGEMENT ---
             function startTurn() {
                 const currentPlayer = state.players[state.currentPlayerIndex];
+                state.turnSkipped = false;
 
                 logMessage(`It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`);
 
@@ -923,6 +925,8 @@
                 if (currentPlayer.status.isSleeping) {
                     currentPlayer.status.isSleeping = false;
                     logMessage(`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`, 1);
+                    state.actionInProgress = null;
+                    state.turnSkipped = true;
                     render();
                     setTimeout(endTurn, 1500);
                     return;
@@ -1094,7 +1098,8 @@
             // --- ACTION HANDLING ---
             actionButtonsContainer.addEventListener('click', (e) => {
                 if (!e.target.matches('.action-btn') || e.target.disabled) return;
-                
+                if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) return;
+
                 const action = e.target.dataset.action;
                 const source = state.players[state.currentPlayerIndex];
 
@@ -1119,7 +1124,7 @@
             });
 
             playersContainer.addEventListener('click', (e) => {
-                if (!state.actionInProgress) return;
+                if (!state.actionInProgress || state.turnSkipped) return;
                 const card = e.target.closest('.player-card.selectable');
                 if (!card) return;
 
