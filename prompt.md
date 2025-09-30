@@ -54,6 +54,8 @@ _(The user would paste the logo here)_
 
 -   **Typography:** Use a clean, elegant font with very subtle serifs that matches the text style in the logo (e.g., "Merriweather").
 
+-   **Theme Toggle:** A button in the upper-right corner allows switching between light and dark modes. The theme preference persists via localStorage. The light mode uses warm, earthy tones (beiges, browns), while dark mode uses darker backgrounds with adjusted colors for readability.
+
 -   **Setup Screen:**
 
     -   Allow players to optionally enter custom names. If no name is entered, default to "Player 1", "Player 2", etc.

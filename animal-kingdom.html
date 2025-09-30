@@ -9,15 +9,25 @@
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
 
         :root {
-            --color-primary: #A0522D; /* Sienna */
-            --color-secondary: #6B4423; /* Dark Brown */
-            --color-background: #F5F5DC; /* Beige */
-            --color-accent: #DEB887; /* BurlyWood */
+            --color-primary: #A0522D;
+            --color-secondary: #6B4423;
+            --color-background: #F5F5DC;
+            --color-accent: #DEB887;
             --color-light: #FFF8E7;
+            --color-text: #6B4423;
             --font-main: 'Merriweather', serif;
             --hp-full: #2ECC71;
             --hp-medium: #F1C40F;
             --hp-low: #E74C3C;
+        }
+
+        body.dark-mode {
+            --color-primary: #D2691E;
+            --color-secondary: #8B6F47;
+            --color-background: #1a1a1a;
+            --color-accent: #5D4E37;
+            --color-light: #2a2a2a;
+            --color-text: #D2B48C;
         }
 
         * {
@@ -29,12 +39,13 @@
         body {
             font-family: var(--font-main);
             background-color: var(--color-background);
-            color: var(--color-secondary);
+            color: var(--color-text);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         header {
@@ -76,6 +87,30 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--color-accent);
+            border: 2px solid var(--color-primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--color-primary);
+            transform: scale(1.1);
         }
 
         /* --- Setup Screen --- */
@@ -426,6 +461,8 @@
 </head>
 <body>
 
+    <button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+
     <header>
         <img src="animal-kingdom.png" alt="Animal Kingdom Logo" class="logo">
     </header>
@@ -518,6 +555,7 @@
             const saveLogGameOverBtn = document.getElementById('save-log-game-over-btn');
             const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
             const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
             // --- GAME STATE ---
             let state = {};
@@ -531,6 +569,7 @@
 
             // --- SETUP LOGIC ---
             function initializeSetup() {
+                loadTheme();
                 updatePlayerSelections();
                 playerCountSelect.addEventListener('change', updatePlayerSelections);
                 startGameBtn.addEventListener('click', startGame);
@@ -538,7 +577,25 @@
                 saveLogBtn.addEventListener('click', saveGameLog);
                 saveLogGameOverBtn.addEventListener('click', saveGameLog);
                 closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
+                themeToggleBtn.addEventListener('click', toggleTheme);
                 document.addEventListener('keydown', handleKeyPress);
+            }
+
+            function loadTheme() {
+                const savedTheme = localStorage.getItem('animalKingdomTheme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeToggleBtn.textContent = '☀️';
+                } else {
+                    themeToggleBtn.textContent = '🌙';
+                }
+            }
+
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
+                themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
             }
 
             function showKeyboardShortcuts() {
