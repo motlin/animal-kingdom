@@ -141,6 +141,11 @@
             cursor: pointer;
         }
 
+        body.dark-mode select {
+            background-color: var(--color-light);
+            color: var(--color-text);
+        }
+
         button {
             background-color: var(--color-primary);
             color: white;
@@ -184,6 +189,11 @@
             min-width: 150px;
         }
 
+        body.dark-mode #player-selections input[type="text"] {
+            background-color: var(--color-light);
+            color: var(--color-text);
+        }
+
         /* --- Game Screen --- */
         #game-screen {
             display: none; /* Initially hidden */
@@ -205,6 +215,10 @@
             transition: all 0.2s ease-in-out;
         }
 
+        body.dark-mode .player-card {
+            background-color: var(--color-light);
+        }
+
         .player-card.active {
             border-color: var(--color-primary);
             box-shadow: 0 0 15px var(--color-primary);
@@ -223,6 +237,10 @@
         .player-card.dead {
             opacity: 0.5;
             background-color: #f0f0f0;
+        }
+
+        body.dark-mode .player-card.dead {
+            background-color: #3a3a3a;
         }
 
         .player-info {
@@ -305,6 +323,10 @@
             border-radius: 10px;
             background-color: #fff;
         }
+
+        body.dark-mode #controls-container {
+            background-color: var(--color-light);
+        }
         
         #controls-container h3, #log-container h3 {
             text-align: center;
@@ -334,6 +356,10 @@
             font-size: 14px;
             white-space: pre-wrap;
             font-family: monospace;
+        }
+
+        body.dark-mode #game-log {
+            background-color: var(--color-light);
         }
 
         .log-entry {
