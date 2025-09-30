@@ -902,17 +902,18 @@
             function startTurn() {
                 const currentPlayer = state.players[state.currentPlayerIndex];
 
-                // Status effect checks at the start of a turn
+                logMessage(`It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`);
+
                 if (currentPlayer.status.isShielded) {
                     currentPlayer.status.isShielded = false;
-                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`);
+                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`, 1);
                 }
 
                 if (currentPlayer.status.isSleeping) {
                     currentPlayer.status.isSleeping = false;
-                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) is asleep and skips their turn!`);
+                    logMessage(`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`, 1);
                     render();
-                    setTimeout(endTurn, 1500); // Pause to show they are asleep
+                    setTimeout(endTurn, 1500);
                     return;
                 }
 
@@ -1082,7 +1083,7 @@
                         handleShield(source);
                         break;
                     case 'nothing':
-                        logMessage(`${source.name} (${source.animal}) did nothing.`);
+                        logMessage(`${source.name} (${source.animal}) did nothing.`, 1);
                         endTurn();
                         break;
                 }
@@ -1132,22 +1133,22 @@
 
             function applyDamage(target, damage, source) {
                 if (target.status.isShielded) {
-                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 1);
+                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 2);
                     return 0;
                 }
 
                 const actualDamage = Math.min(target.hp, damage);
                 target.hp -= actualDamage;
-                logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 1);
+                logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 2);
                 if (target.hp <= 0) {
                     target.isAlive = false;
-                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 1);
+                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 2);
                 }
                 return actualDamage;
             }
 
             function handleAttack(source, target) {
-                logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`);
+                logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
                 applyDamage(target, 1, source);
             }
 
@@ -1155,14 +1156,14 @@
                 source.oneTimeActions.hasHealed = true;
                 const amountToHeal = Math.min(1, source.maxHp - source.hp);
                 source.hp += amountToHeal;
-                logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`);
+                logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
                 endTurn();
             }
 
             function handleShield(source) {
                 source.oneTimeActions.hasShielded = true;
                 source.status.isShielded = true;
-                logMessage(`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`);
+                logMessage(`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`, 1);
                 endTurn();
             }
 
@@ -1184,7 +1185,7 @@
 
             function handleHowl(source) {
                 source.abilityCooldown = 2;
-                logMessage(`${source.name} the Coyote lets out a piercing Howl!`);
+                logMessage(`${source.name} the Coyote lets out a piercing Howl!`, 1);
                 state.players.forEach(p => {
                     if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
                         p.status.isSleeping = true;
@@ -1201,17 +1202,17 @@
                     damage = 1;
                 }
 
-                logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`);
+                logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`, 1);
                 if (damage > 0) {
-                    logMessage(`It's a direct hit for ${damage} damage!`, 1);
+                    logMessage(`It's a direct hit for ${damage} damage!`, 2);
                     applyDamage(target, damage, source);
                 } else {
-                    logMessage(`It missed! 0 damage.`, 1);
+                    logMessage(`It missed! 0 damage.`, 2);
                 }
             }
 
             function handleStrike(source, target1, target2) {
-                logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`);
+                logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
                 applyDamage(target1, 1, source);
                 applyDamage(target2, 1, source);
             }
