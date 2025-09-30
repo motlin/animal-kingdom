@@ -375,8 +375,13 @@
             padding-left: 40px;
         }
 
-        #save-log-btn {
-            width: 100%;
+        .log-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .log-buttons button {
+            flex: 1;
         }
         
         #turn-indicator {
@@ -424,6 +429,12 @@
             display: flex;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-over-modal .button-group button {
+            flex: 1;
+            min-width: 150px;
         }
 
         #keyboard-shortcuts-modal {
@@ -529,7 +540,10 @@
                 <div id="log-container">
                     <h3>Game Log</h3>
                     <div id="game-log"></div>
-                    <button id="save-log-btn">Save Log</button>
+                    <div class="log-buttons">
+                        <button id="copy-log-btn">Copy to Clipboard</button>
+                        <button id="save-log-btn">Save Log</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -538,6 +552,7 @@
             <div class="game-over-modal">
                 <h2 id="winner-announcement"></h2>
                 <div class="button-group">
+                    <button id="copy-log-game-over-btn">Copy to Clipboard</button>
                     <button id="save-log-game-over-btn">Save Log</button>
                     <button id="play-again-btn">Play Again</button>
                 </div>
@@ -580,6 +595,8 @@
             const playAgainBtn = document.getElementById('play-again-btn');
             const saveLogBtn = document.getElementById('save-log-btn');
             const saveLogGameOverBtn = document.getElementById('save-log-game-over-btn');
+            const copyLogBtn = document.getElementById('copy-log-btn');
+            const copyLogGameOverBtn = document.getElementById('copy-log-game-over-btn');
             const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
             const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
             const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -603,6 +620,8 @@
                 playAgainBtn.addEventListener('click', () => location.reload());
                 saveLogBtn.addEventListener('click', saveGameLog);
                 saveLogGameOverBtn.addEventListener('click', saveGameLog);
+                copyLogBtn.addEventListener('click', copyGameLog);
+                copyLogGameOverBtn.addEventListener('click', copyGameLog);
                 closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
                 themeToggleBtn.addEventListener('click', toggleTheme);
                 document.addEventListener('keydown', handleKeyPress);
@@ -681,11 +700,15 @@
                 }
             }
 
-            function saveGameLog() {
-                const logText = state.log.map(entry => {
+            function getLogText() {
+                return state.log.map(entry => {
                     const indent = '    '.repeat(entry.indent);
                     return indent + entry.message;
                 }).join('\n');
+            }
+
+            function saveGameLog() {
+                const logText = getLogText();
                 const blob = new Blob([logText], { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -695,6 +718,30 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
+            }
+
+            function copyGameLog() {
+                const logText = getLogText();
+                navigator.clipboard.writeText(logText).then(() => {
+                    const buttonClicked = event.target;
+                    const originalText = buttonClicked.textContent;
+                    buttonClicked.textContent = 'Copied!';
+                    buttonClicked.style.backgroundColor = 'var(--hp-full)';
+                    setTimeout(() => {
+                        buttonClicked.textContent = originalText;
+                        buttonClicked.style.backgroundColor = '';
+                    }, 2000);
+                }).catch(error => {
+                    console.error('Failed to copy log:', error);
+                    const buttonClicked = event.target;
+                    const originalText = buttonClicked.textContent;
+                    buttonClicked.textContent = 'Copy failed';
+                    buttonClicked.style.backgroundColor = 'var(--hp-low)';
+                    setTimeout(() => {
+                        buttonClicked.textContent = originalText;
+                        buttonClicked.style.backgroundColor = '';
+                    }, 2000);
+                });
             }
 
             function updatePlayerSelections() {
