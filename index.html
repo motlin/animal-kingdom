@@ -560,11 +560,11 @@
                 <div id="controls-container">
                     <div id="turn-indicator">Player 1's Turn</div>
                     <div class="action-buttons">
-                        <button class="action-btn" data-action="attack"><i data-lucide="sword"></i><u>A</u>ttack</button>
-                        <button class="action-btn" data-action="ability"><i data-lucide="zap"></i>Use A<u>b</u>ility</button>
-                        <button class="action-btn" data-action="heal"><i data-lucide="heart-pulse"></i><u>H</u>eal (1 left)</button>
-                        <button class="action-btn" data-action="shield"><i data-lucide="shield"></i><u>S</u>hield (1 left)</button>
-                        <button class="action-btn" data-action="nothing"><i data-lucide="clock"></i>Do <u>N</u>othing</button>
+                        <button class="action-btn" data-action="attack"><i data-lucide="crosshair"></i><u>A</u>ttack</button>
+                        <button class="action-btn" data-action="ability"><i data-lucide="sparkles"></i>Use A<u>b</u>ility</button>
+                        <button class="action-btn" data-action="heal"><i data-lucide="heart"></i><u>H</u>eal (1 left)</button>
+                        <button class="action-btn" data-action="shield"><i data-lucide="shield-check"></i><u>S</u>hield (1 left)</button>
+                        <button class="action-btn" data-action="nothing"><i data-lucide="pause"></i>Do <u>N</u>othing</button>
                     </div>
                 </div>
                 <div id="log-container">
@@ -1003,7 +1003,7 @@
                     'Llama': 'Spitball',
                     'Tiger': 'Strike'
                 };
-                abilityButton.innerHTML = `<i data-lucide="zap"></i>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}`;
+                abilityButton.innerHTML = `<i data-lucide="sparkles"></i>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}`;
                 abilityButton.disabled = currentPlayer.abilityCooldown > 0;
                 lucide.createIcons();
 
