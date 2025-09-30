@@ -982,7 +982,9 @@
 
             function endGame(winner) {
                 state.gameState = 'gameOver';
-                winnerAnnouncement.textContent = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
+                const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
+                logMessage(announcement);
+                winnerAnnouncement.textContent = announcement;
                 gameOverScreen.style.display = 'flex';
             }
 
