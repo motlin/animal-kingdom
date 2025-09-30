@@ -345,9 +345,22 @@
             background-color: var(--color-light);
         }
         
-        #controls-container h3, #log-container h3 {
+        #controls-container h3 {
             text-align: center;
             margin-bottom: 15px;
+        }
+
+        #log-container h3 {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--color-secondary);
+            opacity: 0.8;
+            z-index: 10;
+            background-color: transparent;
+            pointer-events: none;
         }
         
         .action-buttons {
@@ -357,6 +370,7 @@
         }
         
         #log-container {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 10px;
