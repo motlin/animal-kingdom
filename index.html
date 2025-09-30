@@ -683,7 +683,7 @@
 
             function saveGameLog() {
                 const logText = state.log.map(entry => {
-                    const indent = '  '.repeat(entry.indent);
+                    const indent = '    '.repeat(entry.indent);
                     return indent + entry.message;
                 }).join('\n');
                 const blob = new Blob([logText], { type: 'text/plain' });
