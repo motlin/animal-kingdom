@@ -1131,10 +1131,11 @@
 
             // --- ACTION HANDLING ---
             actionButtonsContainer.addEventListener('click', (e) => {
-                if (!e.target.matches('.action-btn') || e.target.disabled) return;
+                const button = e.target.closest('.action-btn');
+                if (!button || button.disabled) return;
                 if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) return;
 
-                const action = e.target.dataset.action;
+                const action = button.dataset.action;
                 const source = state.players[state.currentPlayerIndex];
 
                 switch(action) {
