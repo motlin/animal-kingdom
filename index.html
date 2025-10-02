@@ -650,7 +650,9 @@
             const ANIMAL_ROSTER = {
                 Coyote: { name: "Coyote", abilityDesc: "Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns." },
                 Llama: { name: "Llama", abilityDesc: "Spitball: An attack with random damage (0-2)." },
-                Tiger: { name: "Tiger", abilityDesc: "Strike: Hits two different opponents for 1 damage each." }
+                Tiger: { name: "Tiger", abilityDesc: "Strike: Hits two different opponents for 1 damage each." },
+                Gorilla: { name: "Gorilla", abilityDesc: "Rampage: A one-time attack that deals 4x damage." },
+                Monkey: { name: "Monkey", abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently." }
             };
             const INITIAL_HP = 3;
 
@@ -875,13 +877,19 @@
                     const nameInput = setupDiv.querySelector('input[type="text"]');
                     const animalSelect = setupDiv.querySelector('select');
                     const playerName = nameInput.value.trim() || `Player ${index + 1}`;
+                    const animalType = animalSelect.value;
+
+                    let initialHP = INITIAL_HP;
+                    if (animalType === 'Gorilla') {
+                        initialHP = 4;
+                    }
 
                     players.push({
                         id: index,
                         name: playerName,
-                        animal: animalSelect.value,
-                        hp: INITIAL_HP,
-                        maxHp: INITIAL_HP,
+                        animal: animalType,
+                        hp: initialHP,
+                        maxHp: initialHP,
                         isAlive: true,
                         status: {
                             isShielded: false,
@@ -890,8 +898,10 @@
                         oneTimeActions: {
                             hasHealed: false,
                             hasShielded: false,
+                            hasUsedAbility: false,
                         },
                         abilityCooldown: 0,
+                        abilityDisabled: false,
                     });
                 });
 
@@ -1000,10 +1010,12 @@
                         const isAlreadyTargeted = targets.includes(player.id);
 
                         let isSelectable = false;
-                        if (type === 'attack' || type === 'spitball') {
+                        if (type === 'attack' || type === 'spitball' || type === 'rampage') {
                             isSelectable = !isSelf && player.isAlive;
                         } else if (type === 'strike') {
                             isSelectable = !isSelf && player.isAlive && !isAlreadyTargeted;
+                        } else if (type === 'mischief') {
+                            isSelectable = !isSelf && player.isAlive;
                         }
 
                         if (isSelectable) {
@@ -1023,6 +1035,8 @@
                     if (player.oneTimeActions.hasHealed) statusIconsHTML += `<div class="status-icon" title="Heal Used">💚<span class="tooltip">Heal has been used</span></div>`;
                     if (player.oneTimeActions.hasShielded) statusIconsHTML += `<div class="status-icon" title="Shield Used">🛡️<span class="tooltip">Shield has been used</span></div>`;
                     if (player.abilityCooldown > 0) statusIconsHTML += `<div class="status-icon" title="Ability on Cooldown">⏳<span class="tooltip">Ability on cooldown (${player.abilityCooldown} turn/s)</span></div>`;
+                    if (player.abilityDisabled) statusIconsHTML += `<div class="status-icon" title="Ability Disabled">🚫<span class="tooltip">Ability permanently disabled</span></div>`;
+                    if (player.oneTimeActions.hasUsedAbility && (player.animal === 'Gorilla' || player.animal === 'Monkey')) statusIconsHTML += `<div class="status-icon" title="Ability Used">✓<span class="tooltip">One-time ability has been used</span></div>`;
 
                     card.innerHTML = `
                         <div class="player-info">
@@ -1047,25 +1061,31 @@
                 const abilityNames = {
                     'Coyote': 'Howl',
                     'Llama': 'Spitball',
-                    'Tiger': 'Strike'
+                    'Tiger': 'Strike',
+                    'Gorilla': 'Rampage',
+                    'Monkey': 'Mischief'
                 };
                 abilityButton.innerHTML = `<i data-lucide="sparkles"></i><span>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}</span>`;
-                abilityButton.disabled = currentPlayer.abilityCooldown > 0;
+                abilityButton.disabled = currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
                 lucide.createIcons();
 
                 document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
                 document.querySelector('[data-action="shield"]').disabled = currentPlayer.oneTimeActions.hasShielded;
 
-                // Special case for Tiger's Strike
                 if (currentPlayer.animal === 'Tiger') {
                     const livingOpponents = state.players.filter(p => p.isAlive && p.id !== currentPlayer.id).length;
                     if (livingOpponents < 2) {
                         abilityButton.disabled = true;
                     }
                 }
-                
-                // Disable all buttons if an action is in progress
-                 actionButtonsContainer.querySelectorAll('button').forEach(btn => {
+
+                if (currentPlayer.animal === 'Gorilla' || currentPlayer.animal === 'Monkey') {
+                    if (currentPlayer.oneTimeActions.hasUsedAbility) {
+                        abilityButton.disabled = true;
+                    }
+                }
+
+                actionButtonsContainer.querySelectorAll('button').forEach(btn => {
                     if(state.actionInProgress) {
                         btn.style.display = 'none';
                     } else {
@@ -1151,18 +1171,18 @@
 
                 const { type, sourceId, requiredTargets } = state.actionInProgress;
                 if (targets.length === requiredTargets) {
-                    // Action is ready to be executed
                     const source = state.players[sourceId];
                     const targetPlayers = targets.map(id => state.players[id]);
 
                     if(type === 'attack') handleAttack(source, targetPlayers[0]);
                     if(type === 'spitball') handleSpitball(source, targetPlayers[0]);
                     if(type === 'strike') handleStrike(source, targetPlayers[0], targetPlayers[1]);
-                    
+                    if(type === 'rampage') handleRampage(source, targetPlayers[0]);
+                    if(type === 'mischief') handleMischief(source, targetPlayers[0]);
+
                     state.actionInProgress = null;
                     endTurn();
                 } else {
-                    // Still need more targets
                     state.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`
                     render();
                 }
@@ -1228,6 +1248,12 @@
                     case 'Tiger':
                         initiateTargetSelection('strike', source.id, 2, `Select target 1 of 2 for Strike.`);
                         break;
+                    case 'Gorilla':
+                        initiateTargetSelection('rampage', source.id, 1, `Select a target for Rampage.`);
+                        break;
+                    case 'Monkey':
+                        initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
+                        break;
                 }
             }
 
@@ -1263,6 +1289,19 @@
                 logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
                 applyDamage(target1, 1, source);
                 applyDamage(target2, 1, source);
+            }
+
+            function handleRampage(source, target) {
+                source.oneTimeActions.hasUsedAbility = true;
+                logMessage(`${source.name} the Gorilla unleashes a devastating Rampage on ${target.name} (${target.animal})!`, 1);
+                applyDamage(target, 4, source);
+            }
+
+            function handleMischief(source, target) {
+                source.oneTimeActions.hasUsedAbility = true;
+                target.abilityDisabled = true;
+                logMessage(`${source.name} the Monkey uses Mischief on ${target.name} (${target.animal})!`, 1);
+                logMessage(`${target.name}'s (${target.animal}) ability has been permanently disabled!`, 2);
             }
 
             // --- INITIALIZE ---
