@@ -1,6 +1,6 @@
 Please create a browser-based, multiplayer game called "Animal Kingdom" as a single, interactive HTML artifact.
 
-The game should be a turn-based, free-for-all battle for **2-6 players**. The last animal standing wins. Each player chooses an animal at the start, and all animals begin with 3 HP.
+The game should be a turn-based, free-for-all battle for **2-6 players**. The last animal standing wins. Each player chooses an animal at the start, and all animals begin with 3 HP (except Gorilla, which starts with 4 HP).
 
 ### Core Game Mechanics:
 
@@ -19,7 +19,7 @@ On their turn, a player can choose one of the following actions:
 
 ### Animal Roster:
 
-For the initial version, please implement the following three animals:
+The game includes the following five animals:
 
 1.  **Coyote:**
 
@@ -41,6 +41,20 @@ For the initial version, please implement the following three animals:
 
     -   **Cooldown:** None.
 
+4.  **Gorilla:**
+
+    -   **Starting HP:** 4 HP (instead of 3).
+
+    -   **Ability:** Rampage. A devastating one-time attack that deals 4 damage to a single opponent.
+
+    -   **Cooldown:** None. This ability can only be used once per game.
+
+5.  **Monkey:**
+
+    -   **Ability:** Mischief. A one-time ability that permanently disables another player's ability for the rest of the game.
+
+    -   **Cooldown:** None. This ability can only be used once per game.
+
 
 ### Visual Style and UI:
 
@@ -49,6 +63,10 @@ The entire visual theme, including colors and fonts, should be based on the prov
 _(The user would paste the logo here)_
 
 -   **Logo Integration:** The logo should be prominently displayed during the setup screen. Once the game starts, the logo should shrink to a small fixed position in the upper left corner that doesn't affect page flow. Reference the logo file as `logo.png`.
+
+-   **Icons:** Use Lucide Icons (https://unpkg.com/lucide@latest) for all button icons and visual elements.
+
+-   **Styling:** CSS is extracted to an external `styles.css` file for better maintainability.
 
 -   **Color Palette:** Use a warm, earthy color scheme derived from the logo (e.g., golden browns, soft beiges, rich earth tones).
 
@@ -79,10 +97,11 @@ _(The user would paste the logo here)_
     -   Include a game log with nested indentation for related actions. The log should:
         -   Show a player roster at the start
         -   Display HP after damage with format "X/Y HP"
-        -   Use visual indentation for consequences of actions
-        -   Allow saving as a text file at any time
+        -   Use ASCII tree structure with corner brackets for visual nesting
+        -   Nest defeated messages under HP updates
+        -   Include winner announcement in the log
 
-    -   Provide a "Save Log" button that allows players to download the game log as a text file at any time during the game and after the game ends.
+    -   Provide "Save Log" and "Copy to Clipboard" buttons that allow players to download the game log as a text file or copy it to clipboard at any time during the game and after the game ends.
 
     -   Show a clear victory screen when only one player remains, with a 2-second delay to show the final defeat.
 
