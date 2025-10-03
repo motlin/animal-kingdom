@@ -438,9 +438,11 @@
 						});
 					});
 
+					const randomFirstPlayerIndex = Math.floor(Math.random() * players.length);
+
 					state = {
 						players,
-						currentPlayerIndex: 0,
+						currentPlayerIndex: randomFirstPlayerIndex,
 						gameState: 'playing',
 						turn: 1,
 						actionInProgress: null,
@@ -452,6 +454,7 @@
 					players.forEach((player) => {
 						logMessage(`${player.name} is the ${player.animal}`, 1);
 					});
+					logMessage(`${players[randomFirstPlayerIndex].name} (${players[randomFirstPlayerIndex].animal}) will go first!`, 1);
 
 					setupScreen.style.display = 'none';
 					gameScreen.style.display = 'flex';
