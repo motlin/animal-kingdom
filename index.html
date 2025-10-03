@@ -97,10 +97,27 @@
 					<h2 id="winner-announcement"></h2>
 					<div class="button-group">
 						<button id="play-again-btn" class="primary"><i data-lucide="refresh-cw"></i>Play Again</button>
+						<button id="view-log-btn"><i data-lucide="eye"></i>View Log</button>
 						<button id="copy-log-game-over-btn">
 							<i data-lucide="clipboard-copy"></i>Copy to Clipboard
 						</button>
 						<button id="save-log-game-over-btn"><i data-lucide="download"></i>Save Log</button>
+					</div>
+				</div>
+			</div>
+
+			<div id="fullscreen-log-modal">
+				<div class="fullscreen-log-container">
+					<div class="fullscreen-log-header">
+						<h2>Game Log</h2>
+						<button id="close-fullscreen-log-btn"><i data-lucide="x"></i>Close</button>
+					</div>
+					<div id="fullscreen-log-content"></div>
+					<div class="fullscreen-log-actions">
+						<button id="copy-log-fullscreen-btn">
+							<i data-lucide="clipboard-copy"></i>Copy to Clipboard
+						</button>
+						<button id="save-log-fullscreen-btn"><i data-lucide="download"></i>Save Log</button>
 					</div>
 				</div>
 			</div>
@@ -165,6 +182,12 @@
 				const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
 				const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
 				const themeToggleBtn = document.getElementById('theme-toggle-btn');
+				const viewLogBtn = document.getElementById('view-log-btn');
+				const fullscreenLogModal = document.getElementById('fullscreen-log-modal');
+				const closeFullscreenLogBtn = document.getElementById('close-fullscreen-log-btn');
+				const fullscreenLogContent = document.getElementById('fullscreen-log-content');
+				const copyLogFullscreenBtn = document.getElementById('copy-log-fullscreen-btn');
+				const saveLogFullscreenBtn = document.getElementById('save-log-fullscreen-btn');
 
 				// --- GAME STATE ---
 				let state = {};
@@ -197,6 +220,10 @@
 					copyLogGameOverBtn.addEventListener('click', copyGameLog);
 					closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
 					themeToggleBtn.addEventListener('click', toggleTheme);
+					viewLogBtn.addEventListener('click', showFullscreenLog);
+					closeFullscreenLogBtn.addEventListener('click', hideFullscreenLog);
+					copyLogFullscreenBtn.addEventListener('click', copyGameLog);
+					saveLogFullscreenBtn.addEventListener('click', saveGameLog);
 					document.addEventListener('keydown', handleKeyPress);
 				}
 
@@ -225,6 +252,44 @@
 
 				function hideKeyboardShortcuts() {
 					keyboardShortcutsModal.style.display = 'none';
+				}
+
+				function showFullscreenLog() {
+					const logHTML = state.log
+						.map((entry, index) => {
+							let prefix = '';
+							if (entry.indent > 0) {
+								const nextEntry = state.log[index + 1];
+								const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+								const hasChildren = nextEntry && nextEntry.indent > entry.indent;
+
+								if (entry.indent === 1) {
+									if (hasChildren) {
+										prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
+									} else {
+										prefix = hasNextSibling ? '├── ' : '└── ';
+									}
+								} else if (entry.indent === 2) {
+									const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
+									if (hasChildren) {
+										prefix = '  ' + connector;
+									} else {
+										prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
+									}
+								} else if (entry.indent === 3) {
+									const connector = hasNextSibling ? '├── ' : '└── ';
+									prefix = '    ' + connector;
+								}
+							}
+							return `<div class="log-entry">${prefix}${entry.message}</div>`;
+						})
+						.join('');
+					fullscreenLogContent.innerHTML = logHTML;
+					fullscreenLogModal.style.display = 'flex';
+				}
+
+				function hideFullscreenLog() {
+					fullscreenLogModal.style.display = 'none';
 				}
 
 				function handleKeyPress(event) {
