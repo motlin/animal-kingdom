@@ -1,511 +1,591 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Kingdom</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Animal Kingdom</title>
+		<link rel="stylesheet" href="styles.css" />
+		<script src="https://unpkg.com/lucide@latest"></script>
+	</head>
+	<body>
+		<button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme"><i data-lucide="moon"></i></button>
 
-    <button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme"><i data-lucide="moon"></i></button>
+		<header>
+			<img src="logo.png" alt="Animal Kingdom Logo" class="logo" />
+		</header>
 
-    <header>
-        <img src="logo.png" alt="Animal Kingdom Logo" class="logo">
-    </header>
+		<main>
+			<div id="setup-screen">
+				<h2>Game Setup</h2>
 
-    <main>
-        <div id="setup-screen">
-            <h2>Game Setup</h2>
-            <div class="setup-section">
-                <label for="player-count">Number of Players:</label>
-                <select id="player-count">
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </div>
-            <div id="player-selections" class="setup-section">
-                </div>
-            <button id="start-game-btn"><i data-lucide="play"></i>Start Game</button>
-        </div>
+				<div class="animal-abilities-section">
+					<h3>Animal Abilities</h3>
+					<div class="abilities-list">
+						<div class="ability-item">
+							<strong>🐺 Coyote</strong>
+							<p>Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns.</p>
+						</div>
+						<div class="ability-item">
+							<strong>🦙 Llama</strong>
+							<p>Spitball: An attack with random damage (0-2).</p>
+						</div>
+						<div class="ability-item">
+							<strong>🐯 Tiger</strong>
+							<p>Strike: Hits two different opponents for 1 damage each.</p>
+						</div>
+						<div class="ability-item">
+							<strong>🦍 Gorilla</strong>
+							<p>Rampage: A one-time attack that deals 4x damage. Starting HP: 4.</p>
+						</div>
+						<div class="ability-item">
+							<strong>🐒 Monkey</strong>
+							<p>Mischief: A one-time ability that disables another player's ability permanently.</p>
+						</div>
+					</div>
+				</div>
 
-        <div id="game-screen">
-            <div id="players-container">
-                </div>
-            <div id="game-interface">
-                <div id="controls-container">
-                    <div id="turn-indicator">Player 1's Turn</div>
-                    <div class="action-buttons">
-                        <button class="action-btn" data-action="attack"><i data-lucide="crosshair"></i><span><u>A</u>ttack</span></button>
-                        <button class="action-btn" data-action="ability"><i data-lucide="sparkles"></i><span>Use A<u>b</u>ility</span></button>
-                        <button class="action-btn" data-action="heal"><i data-lucide="heart"></i><span><u>H</u>eal (1 left)</span></button>
-                        <button class="action-btn" data-action="shield"><i data-lucide="shield-check"></i><span><u>S</u>hield (1 left)</span></button>
-                        <button class="action-btn" data-action="nothing"><i data-lucide="pause"></i><span>Do <u>N</u>othing</span></button>
-                    </div>
-                </div>
-                <div id="log-container">
-                    <h3>Game Log</h3>
-                    <div id="game-log"></div>
-                    <div class="log-buttons">
-                        <button id="copy-log-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
-                        <button id="save-log-btn"><i data-lucide="download"></i>Save Log</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="game-over-screen">
-            <div class="game-over-modal">
-                <h2 id="winner-announcement"></h2>
-                <div class="button-group">
-                    <button id="play-again-btn" class="primary"><i data-lucide="refresh-cw"></i>Play Again</button>
-                    <button id="copy-log-game-over-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
-                    <button id="save-log-game-over-btn"><i data-lucide="download"></i>Save Log</button>
-                </div>
-            </div>
-        </div>
+				<div class="setup-section">
+					<label for="player-count">Number of Players:</label>
+					<select id="player-count">
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+					</select>
+				</div>
+				<div id="player-selections" class="setup-section"></div>
+				<button id="start-game-btn"><i data-lucide="play"></i>Start Game</button>
+			</div>
 
-        <div id="keyboard-shortcuts-modal">
-            <div class="shortcuts-modal">
-                <h2>Keyboard Shortcuts</h2>
-                <table>
-                    <tr><td>A</td><td>Attack</td></tr>
-                    <tr><td>B</td><td>Use Ability</td></tr>
-                    <tr><td>H</td><td>Heal</td></tr>
-                    <tr><td>S</td><td>Shield</td></tr>
-                    <tr><td>N</td><td>Do Nothing</td></tr>
-                    <tr><td>?</td><td>Show this help</td></tr>
-                    <tr><td>Esc</td><td>Close this help</td></tr>
-                </table>
-                <button id="close-shortcuts-btn"><i data-lucide="x"></i>Close</button>
-            </div>
-        </div>
+			<div id="game-screen">
+				<div id="players-container"></div>
+				<div id="game-interface">
+					<div id="controls-container">
+						<div id="turn-indicator">Player 1's Turn</div>
+						<div class="action-buttons">
+							<button class="action-btn" data-action="attack">
+								<i data-lucide="crosshair"></i><span><u>A</u>ttack</span>
+							</button>
+							<button class="action-btn" data-action="ability">
+								<i data-lucide="sparkles"></i><span>Use A<u>b</u>ility</span>
+							</button>
+							<button class="action-btn" data-action="heal">
+								<i data-lucide="heart"></i><span><u>H</u>eal (1 left)</span>
+							</button>
+							<button class="action-btn" data-action="shield">
+								<i data-lucide="shield-check"></i><span><u>S</u>hield (1 left)</span>
+							</button>
+							<button class="action-btn" data-action="nothing">
+								<i data-lucide="pause"></i><span>Do <u>N</u>othing</span>
+							</button>
+						</div>
+					</div>
+					<div id="log-container">
+						<h3>Game Log</h3>
+						<div id="game-log"></div>
+						<div class="log-buttons">
+							<button id="copy-log-btn"><i data-lucide="clipboard-copy"></i>Copy to Clipboard</button>
+							<button id="save-log-btn"><i data-lucide="download"></i>Save Log</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    </main>
+			<div id="game-over-screen">
+				<div class="game-over-modal">
+					<h2 id="winner-announcement"></h2>
+					<div class="button-group">
+						<button id="play-again-btn" class="primary"><i data-lucide="refresh-cw"></i>Play Again</button>
+						<button id="copy-log-game-over-btn">
+							<i data-lucide="clipboard-copy"></i>Copy to Clipboard
+						</button>
+						<button id="save-log-game-over-btn"><i data-lucide="download"></i>Save Log</button>
+					</div>
+				</div>
+			</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+			<div id="keyboard-shortcuts-modal">
+				<div class="shortcuts-modal">
+					<h2>Keyboard Shortcuts</h2>
+					<table>
+						<tr>
+							<td>A</td>
+							<td>Attack</td>
+						</tr>
+						<tr>
+							<td>B</td>
+							<td>Use Ability</td>
+						</tr>
+						<tr>
+							<td>H</td>
+							<td>Heal</td>
+						</tr>
+						<tr>
+							<td>S</td>
+							<td>Shield</td>
+						</tr>
+						<tr>
+							<td>N</td>
+							<td>Do Nothing</td>
+						</tr>
+						<tr>
+							<td>?</td>
+							<td>Show this help</td>
+						</tr>
+						<tr>
+							<td>Esc</td>
+							<td>Close this help</td>
+						</tr>
+					</table>
+					<button id="close-shortcuts-btn"><i data-lucide="x"></i>Close</button>
+				</div>
+			</div>
+		</main>
 
-            // --- DOM ELEMENTS ---
-            const setupScreen = document.getElementById('setup-screen');
-            const gameScreen = document.getElementById('game-screen');
-            const playerCountSelect = document.getElementById('player-count');
-            const playerSelectionsContainer = document.getElementById('player-selections');
-            const startGameBtn = document.getElementById('start-game-btn');
-            const playersContainer = document.getElementById('players-container');
-            const turnIndicator = document.getElementById('turn-indicator');
-            const actionButtonsContainer = document.querySelector('.action-buttons');
-            const gameLog = document.getElementById('game-log');
-            const gameOverScreen = document.getElementById('game-over-screen');
-            const winnerAnnouncement = document.getElementById('winner-announcement');
-            const playAgainBtn = document.getElementById('play-again-btn');
-            const saveLogBtn = document.getElementById('save-log-btn');
-            const saveLogGameOverBtn = document.getElementById('save-log-game-over-btn');
-            const copyLogBtn = document.getElementById('copy-log-btn');
-            const copyLogGameOverBtn = document.getElementById('copy-log-game-over-btn');
-            const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
-            const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				// --- DOM ELEMENTS ---
+				const setupScreen = document.getElementById('setup-screen');
+				const gameScreen = document.getElementById('game-screen');
+				const playerCountSelect = document.getElementById('player-count');
+				const playerSelectionsContainer = document.getElementById('player-selections');
+				const startGameBtn = document.getElementById('start-game-btn');
+				const playersContainer = document.getElementById('players-container');
+				const turnIndicator = document.getElementById('turn-indicator');
+				const actionButtonsContainer = document.querySelector('.action-buttons');
+				const gameLog = document.getElementById('game-log');
+				const gameOverScreen = document.getElementById('game-over-screen');
+				const winnerAnnouncement = document.getElementById('winner-announcement');
+				const playAgainBtn = document.getElementById('play-again-btn');
+				const saveLogBtn = document.getElementById('save-log-btn');
+				const saveLogGameOverBtn = document.getElementById('save-log-game-over-btn');
+				const copyLogBtn = document.getElementById('copy-log-btn');
+				const copyLogGameOverBtn = document.getElementById('copy-log-game-over-btn');
+				const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
+				const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
+				const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
-            // --- GAME STATE ---
-            let state = {};
+				// --- GAME STATE ---
+				let state = {};
 
-            const ANIMAL_ROSTER = {
-                Coyote: { name: "Coyote", abilityDesc: "Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns." },
-                Llama: { name: "Llama", abilityDesc: "Spitball: An attack with random damage (0-2)." },
-                Tiger: { name: "Tiger", abilityDesc: "Strike: Hits two different opponents for 1 damage each." },
-                Gorilla: { name: "Gorilla", abilityDesc: "Rampage: A one-time attack that deals 4x damage." },
-                Monkey: { name: "Monkey", abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently." }
-            };
-            const INITIAL_HP = 3;
+				const ANIMAL_ROSTER = {
+					Coyote: {
+						name: 'Coyote',
+						abilityDesc: 'Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns.',
+					},
+					Llama: {name: 'Llama', abilityDesc: 'Spitball: An attack with random damage (0-2).'},
+					Tiger: {name: 'Tiger', abilityDesc: 'Strike: Hits two different opponents for 1 damage each.'},
+					Gorilla: {name: 'Gorilla', abilityDesc: 'Rampage: A one-time attack that deals 4x damage.'},
+					Monkey: {
+						name: 'Monkey',
+						abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently.",
+					},
+				};
+				const INITIAL_HP = 3;
 
-            // --- SETUP LOGIC ---
-            function initializeSetup() {
-                loadTheme();
-                updatePlayerSelections();
-                playerCountSelect.addEventListener('change', updatePlayerSelections);
-                startGameBtn.addEventListener('click', startGame);
-                playAgainBtn.addEventListener('click', () => location.reload());
-                saveLogBtn.addEventListener('click', saveGameLog);
-                saveLogGameOverBtn.addEventListener('click', saveGameLog);
-                copyLogBtn.addEventListener('click', copyGameLog);
-                copyLogGameOverBtn.addEventListener('click', copyGameLog);
-                closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
-                themeToggleBtn.addEventListener('click', toggleTheme);
-                document.addEventListener('keydown', handleKeyPress);
-            }
+				// --- SETUP LOGIC ---
+				function initializeSetup() {
+					loadTheme();
+					updatePlayerSelections();
+					playerCountSelect.addEventListener('change', updatePlayerSelections);
+					startGameBtn.addEventListener('click', startGame);
+					playAgainBtn.addEventListener('click', () => location.reload());
+					saveLogBtn.addEventListener('click', saveGameLog);
+					saveLogGameOverBtn.addEventListener('click', saveGameLog);
+					copyLogBtn.addEventListener('click', copyGameLog);
+					copyLogGameOverBtn.addEventListener('click', copyGameLog);
+					closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
+					themeToggleBtn.addEventListener('click', toggleTheme);
+					document.addEventListener('keydown', handleKeyPress);
+				}
 
-            function loadTheme() {
-                const savedTheme = localStorage.getItem('animalKingdomTheme');
-                if (savedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
-                } else {
-                    themeToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
-                }
-                lucide.createIcons();
-            }
+				function loadTheme() {
+					const savedTheme = localStorage.getItem('animalKingdomTheme');
+					if (savedTheme === 'dark') {
+						document.body.classList.add('dark-mode');
+						themeToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
+					} else {
+						themeToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+					}
+					lucide.createIcons();
+				}
 
-            function toggleTheme() {
-                document.body.classList.toggle('dark-mode');
-                const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
-                themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
-                lucide.createIcons();
-            }
+				function toggleTheme() {
+					document.body.classList.toggle('dark-mode');
+					const isDark = document.body.classList.contains('dark-mode');
+					localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
+					themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+					lucide.createIcons();
+				}
 
-            function showKeyboardShortcuts() {
-                keyboardShortcutsModal.style.display = 'flex';
-            }
+				function showKeyboardShortcuts() {
+					keyboardShortcutsModal.style.display = 'flex';
+				}
 
-            function hideKeyboardShortcuts() {
-                keyboardShortcutsModal.style.display = 'none';
-            }
+				function hideKeyboardShortcuts() {
+					keyboardShortcutsModal.style.display = 'none';
+				}
 
-            function handleKeyPress(event) {
-                if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) {
-                    if (event.key === '?' || event.key === '/') {
-                        showKeyboardShortcuts();
-                        event.preventDefault();
-                    } else if (event.key === 'Escape') {
-                        hideKeyboardShortcuts();
-                        event.preventDefault();
-                    }
-                    return;
-                }
+				function handleKeyPress(event) {
+					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) {
+						if (event.key === '?' || event.key === '/') {
+							showKeyboardShortcuts();
+							event.preventDefault();
+						} else if (event.key === 'Escape') {
+							hideKeyboardShortcuts();
+							event.preventDefault();
+						}
+						return;
+					}
 
-                const key = event.key.toLowerCase();
-                const currentPlayer = state.players[state.currentPlayerIndex];
+					const key = event.key.toLowerCase();
+					const currentPlayer = state.players[state.currentPlayerIndex];
 
-                if (key === '?') {
-                    showKeyboardShortcuts();
-                    event.preventDefault();
-                } else if (key === 'escape') {
-                    hideKeyboardShortcuts();
-                    event.preventDefault();
-                } else if (key === 'a') {
-                    document.querySelector('[data-action="attack"]').click();
-                    event.preventDefault();
-                } else if (key === 'b') {
-                    const abilityBtn = document.querySelector('[data-action="ability"]');
-                    if (!abilityBtn.disabled) {
-                        abilityBtn.click();
-                    }
-                    event.preventDefault();
-                } else if (key === 'h') {
-                    const healBtn = document.querySelector('[data-action="heal"]');
-                    if (!healBtn.disabled) {
-                        healBtn.click();
-                    }
-                    event.preventDefault();
-                } else if (key === 's') {
-                    const shieldBtn = document.querySelector('[data-action="shield"]');
-                    if (!shieldBtn.disabled) {
-                        shieldBtn.click();
-                    }
-                    event.preventDefault();
-                } else if (key === 'n') {
-                    document.querySelector('[data-action="nothing"]').click();
-                    event.preventDefault();
-                }
-            }
+					if (key === '?') {
+						showKeyboardShortcuts();
+						event.preventDefault();
+					} else if (key === 'escape') {
+						hideKeyboardShortcuts();
+						event.preventDefault();
+					} else if (key === 'a') {
+						document.querySelector('[data-action="attack"]').click();
+						event.preventDefault();
+					} else if (key === 'b') {
+						const abilityBtn = document.querySelector('[data-action="ability"]');
+						if (!abilityBtn.disabled) {
+							abilityBtn.click();
+						}
+						event.preventDefault();
+					} else if (key === 'h') {
+						const healBtn = document.querySelector('[data-action="heal"]');
+						if (!healBtn.disabled) {
+							healBtn.click();
+						}
+						event.preventDefault();
+					} else if (key === 's') {
+						const shieldBtn = document.querySelector('[data-action="shield"]');
+						if (!shieldBtn.disabled) {
+							shieldBtn.click();
+						}
+						event.preventDefault();
+					} else if (key === 'n') {
+						document.querySelector('[data-action="nothing"]').click();
+						event.preventDefault();
+					}
+				}
 
-            function getLogText() {
-                return state.log.map((entry, index) => {
-                    if (entry.indent === 0) {
-                        return entry.message;
-                    }
+				function getLogText() {
+					return state.log
+						.map((entry, index) => {
+							if (entry.indent === 0) {
+								return entry.message;
+							}
 
-                    const nextEntry = state.log[index + 1];
-                    const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
-                    const hasChildren = nextEntry && nextEntry.indent > entry.indent;
+							const nextEntry = state.log[index + 1];
+							const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+							const hasChildren = nextEntry && nextEntry.indent > entry.indent;
 
-                    let prefix = '';
-                    if (entry.indent === 1) {
-                        if (hasChildren) {
-                            prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
-                        } else {
-                            prefix = hasNextSibling ? '├── ' : '└── ';
-                        }
-                    } else if (entry.indent === 2) {
-                        const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
-                        if (hasChildren) {
-                            prefix = '  ' + connector;
-                        } else {
-                            prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
-                        }
-                    } else if (entry.indent === 3) {
-                        const connector = hasNextSibling ? '├── ' : '└── ';
-                        prefix = '    ' + connector;
-                    }
+							let prefix = '';
+							if (entry.indent === 1) {
+								if (hasChildren) {
+									prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
+								} else {
+									prefix = hasNextSibling ? '├── ' : '└── ';
+								}
+							} else if (entry.indent === 2) {
+								const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
+								if (hasChildren) {
+									prefix = '  ' + connector;
+								} else {
+									prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
+								}
+							} else if (entry.indent === 3) {
+								const connector = hasNextSibling ? '├── ' : '└── ';
+								prefix = '    ' + connector;
+							}
 
-                    return prefix + entry.message;
-                }).join('\n');
-            }
+							return prefix + entry.message;
+						})
+						.join('\n');
+				}
 
-            function saveGameLog() {
-                const logText = getLogText();
-                const blob = new Blob([logText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `animal-kingdom-log-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
+				function saveGameLog() {
+					const logText = getLogText();
+					const blob = new Blob([logText], {type: 'text/plain'});
+					const url = URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `animal-kingdom-log-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`;
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+					URL.revokeObjectURL(url);
+				}
 
-            function copyGameLog() {
-                const logText = getLogText();
-                navigator.clipboard.writeText(logText).then(() => {
-                    const buttonClicked = event.target;
-                    const originalText = buttonClicked.textContent;
-                    buttonClicked.textContent = 'Copied!';
-                    buttonClicked.style.backgroundColor = 'var(--hp-full)';
-                    setTimeout(() => {
-                        buttonClicked.textContent = originalText;
-                        buttonClicked.style.backgroundColor = '';
-                    }, 2000);
-                }).catch(error => {
-                    console.error('Failed to copy log:', error);
-                    const buttonClicked = event.target;
-                    const originalText = buttonClicked.textContent;
-                    buttonClicked.textContent = 'Copy failed';
-                    buttonClicked.style.backgroundColor = 'var(--hp-low)';
-                    setTimeout(() => {
-                        buttonClicked.textContent = originalText;
-                        buttonClicked.style.backgroundColor = '';
-                    }, 2000);
-                });
-            }
+				function copyGameLog() {
+					const logText = getLogText();
+					navigator.clipboard
+						.writeText(logText)
+						.then(() => {
+							const buttonClicked = event.target;
+							const originalText = buttonClicked.textContent;
+							buttonClicked.textContent = 'Copied!';
+							buttonClicked.style.backgroundColor = 'var(--hp-full)';
+							setTimeout(() => {
+								buttonClicked.textContent = originalText;
+								buttonClicked.style.backgroundColor = '';
+							}, 2000);
+						})
+						.catch((error) => {
+							console.error('Failed to copy log:', error);
+							const buttonClicked = event.target;
+							const originalText = buttonClicked.textContent;
+							buttonClicked.textContent = 'Copy failed';
+							buttonClicked.style.backgroundColor = 'var(--hp-low)';
+							setTimeout(() => {
+								buttonClicked.textContent = originalText;
+								buttonClicked.style.backgroundColor = '';
+							}, 2000);
+						});
+				}
 
-            function updatePlayerSelections() {
-                const count = parseInt(playerCountSelect.value, 10);
-                const existingData = [];
-                playerSelectionsContainer.querySelectorAll('.player-setup').forEach(setupDiv => {
-                    const nameInput = setupDiv.querySelector('input[type="text"]');
-                    const animalSelect = setupDiv.querySelector('select');
-                    existingData.push({
-                        name: nameInput ? nameInput.value : '',
-                        animal: animalSelect ? animalSelect.value : ''
-                    });
-                });
+				function updatePlayerSelections() {
+					const count = parseInt(playerCountSelect.value, 10);
+					const existingData = [];
+					playerSelectionsContainer.querySelectorAll('.player-setup').forEach((setupDiv) => {
+						const nameInput = setupDiv.querySelector('input[type="text"]');
+						const animalSelect = setupDiv.querySelector('select');
+						existingData.push({
+							name: nameInput ? nameInput.value : '',
+							animal: animalSelect ? animalSelect.value : '',
+						});
+					});
 
-                playerSelectionsContainer.innerHTML = '';
-                for (let i = 1; i <= count; i++) {
-                    const playerSetupDiv = document.createElement('div');
-                    playerSetupDiv.classList.add('player-setup');
+					playerSelectionsContainer.innerHTML = '';
+					for (let i = 1; i <= count; i++) {
+						const playerSetupDiv = document.createElement('div');
+						playerSetupDiv.classList.add('player-setup');
 
-                    const label = document.createElement('label');
-                    label.textContent = `Player ${i}:`;
-                    label.htmlFor = `player${i}-name`;
+						const label = document.createElement('label');
+						label.textContent = `Player ${i}:`;
+						label.htmlFor = `player${i}-name`;
 
-                    const nameInput = document.createElement('input');
-                    nameInput.type = 'text';
-                    nameInput.id = `player${i}-name`;
-                    nameInput.placeholder = `Player ${i}`;
-                    nameInput.dataset.playerId = i;
-                    if (existingData[i - 1] && existingData[i - 1].name) {
-                        nameInput.value = existingData[i - 1].name;
-                    }
+						const nameInput = document.createElement('input');
+						nameInput.type = 'text';
+						nameInput.id = `player${i}-name`;
+						nameInput.placeholder = `Player ${i}`;
+						nameInput.dataset.playerId = i;
+						if (existingData[i - 1] && existingData[i - 1].name) {
+							nameInput.value = existingData[i - 1].name;
+						}
 
-                    const select = document.createElement('select');
-                    select.id = `player${i}-animal`;
-                    select.dataset.playerId = i;
+						const select = document.createElement('select');
+						select.id = `player${i}-animal`;
+						select.dataset.playerId = i;
 
-                    const previousAnimal = existingData[i - 1] ? existingData[i - 1].animal : '';
+						const previousAnimal = existingData[i - 1] ? existingData[i - 1].animal : '';
 
-                    Object.keys(ANIMAL_ROSTER).forEach(animal => {
-                        const option = document.createElement('option');
-                        option.value = animal;
-                        option.textContent = animal;
-                        if (previousAnimal && animal === previousAnimal) {
-                            option.selected = true;
-                        }
-                        select.appendChild(option);
-                    });
+						Object.keys(ANIMAL_ROSTER).forEach((animal) => {
+							const option = document.createElement('option');
+							option.value = animal;
+							option.textContent = animal;
+							if (previousAnimal && animal === previousAnimal) {
+								option.selected = true;
+							}
+							select.appendChild(option);
+						});
 
-                    playerSetupDiv.appendChild(label);
-                    playerSetupDiv.appendChild(nameInput);
-                    playerSetupDiv.appendChild(select);
-                    playerSelectionsContainer.appendChild(playerSetupDiv);
-                }
-            }
+						playerSetupDiv.appendChild(label);
+						playerSetupDiv.appendChild(nameInput);
+						playerSetupDiv.appendChild(select);
+						playerSelectionsContainer.appendChild(playerSetupDiv);
+					}
+				}
 
-            function startGame() {
-                const setupDivs = playerSelectionsContainer.querySelectorAll('.player-setup');
-                const players = [];
-                setupDivs.forEach((setupDiv, index) => {
-                    const nameInput = setupDiv.querySelector('input[type="text"]');
-                    const animalSelect = setupDiv.querySelector('select');
-                    const playerName = nameInput.value.trim() || `Player ${index + 1}`;
-                    const animalType = animalSelect.value;
+				function startGame() {
+					const setupDivs = playerSelectionsContainer.querySelectorAll('.player-setup');
+					const players = [];
+					setupDivs.forEach((setupDiv, index) => {
+						const nameInput = setupDiv.querySelector('input[type="text"]');
+						const animalSelect = setupDiv.querySelector('select');
+						const playerName = nameInput.value.trim() || `Player ${index + 1}`;
+						const animalType = animalSelect.value;
 
-                    let initialHP = INITIAL_HP;
-                    if (animalType === 'Gorilla') {
-                        initialHP = 4;
-                    }
+						let initialHP = INITIAL_HP;
+						if (animalType === 'Gorilla') {
+							initialHP = 4;
+						}
 
-                    players.push({
-                        id: index,
-                        name: playerName,
-                        animal: animalType,
-                        hp: initialHP,
-                        maxHp: initialHP,
-                        isAlive: true,
-                        status: {
-                            isShielded: false,
-                            isSleeping: false,
-                        },
-                        oneTimeActions: {
-                            hasHealed: false,
-                            hasShielded: false,
-                            hasUsedAbility: false,
-                        },
-                        abilityCooldown: 0,
-                        abilityDisabled: false,
-                    });
-                });
+						players.push({
+							id: index,
+							name: playerName,
+							animal: animalType,
+							hp: initialHP,
+							maxHp: initialHP,
+							isAlive: true,
+							status: {
+								isShielded: false,
+								isSleeping: false,
+							},
+							oneTimeActions: {
+								hasHealed: false,
+								hasShielded: false,
+								hasUsedAbility: false,
+							},
+							abilityCooldown: 0,
+							abilityDisabled: false,
+						});
+					});
 
-                state = {
-                    players,
-                    currentPlayerIndex: 0,
-                    gameState: 'playing',
-                    turn: 1,
-                    actionInProgress: null,
-                    turnSkipped: false,
-                    log: []
-                };
+					state = {
+						players,
+						currentPlayerIndex: 0,
+						gameState: 'playing',
+						turn: 1,
+						actionInProgress: null,
+						turnSkipped: false,
+						log: [],
+					};
 
-                logMessage("The battle for the Animal Kingdom begins!");
-                players.forEach(player => {
-                    logMessage(`${player.name} is the ${player.animal}`, 1);
-                });
+					logMessage('The battle for the Animal Kingdom begins!');
+					players.forEach((player) => {
+						logMessage(`${player.name} is the ${player.animal}`, 1);
+					});
 
-                setupScreen.style.display = 'none';
-                gameScreen.style.display = 'flex';
-                document.body.classList.add('game-active');
+					setupScreen.style.display = 'none';
+					gameScreen.style.display = 'flex';
+					document.body.classList.add('game-active');
 
-                startTurn();
-            }
+					startTurn();
+				}
 
-            // --- GAME FLOW & TURN MANAGEMENT ---
-            function startTurn() {
-                const currentPlayer = state.players[state.currentPlayerIndex];
-                state.turnSkipped = false;
+				// --- GAME FLOW & TURN MANAGEMENT ---
+				function startTurn() {
+					const currentPlayer = state.players[state.currentPlayerIndex];
+					state.turnSkipped = false;
 
-                logMessage(`It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`);
+					logMessage(`It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`);
 
-                if (currentPlayer.status.isShielded) {
-                    currentPlayer.status.isShielded = false;
-                    logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`, 1);
-                }
+					if (currentPlayer.status.isShielded) {
+						currentPlayer.status.isShielded = false;
+						logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`, 1);
+					}
 
-                if (currentPlayer.status.isSleeping) {
-                    currentPlayer.status.isSleeping = false;
-                    logMessage(`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`, 1);
-                    state.actionInProgress = null;
-                    state.turnSkipped = true;
-                    render();
-                    setTimeout(endTurn, 1500);
-                    return;
-                }
+					if (currentPlayer.status.isSleeping) {
+						currentPlayer.status.isSleeping = false;
+						logMessage(
+							`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`,
+							1,
+						);
+						state.actionInProgress = null;
+						state.turnSkipped = true;
+						render();
+						setTimeout(endTurn, 1500);
+						return;
+					}
 
-                render();
-            }
+					render();
+				}
 
-            function endTurn() {
-                // Decrement cooldown for the player who just moved
-                const lastPlayer = state.players[state.currentPlayerIndex];
-                if (lastPlayer.abilityCooldown > 0) {
-                    lastPlayer.abilityCooldown--;
-                }
+				function endTurn() {
+					// Decrement cooldown for the player who just moved
+					const lastPlayer = state.players[state.currentPlayerIndex];
+					if (lastPlayer.abilityCooldown > 0) {
+						lastPlayer.abilityCooldown--;
+					}
 
-                // Check for game over
-                const alivePlayers = state.players.filter(p => p.isAlive);
-                if (alivePlayers.length <= 1) {
-                    render();
-                    setTimeout(() => endGame(alivePlayers[0]), 2000);
-                    return;
-                }
+					// Check for game over
+					const alivePlayers = state.players.filter((p) => p.isAlive);
+					if (alivePlayers.length <= 1) {
+						render();
+						setTimeout(() => endGame(alivePlayers[0]), 2000);
+						return;
+					}
 
-                // Find the next living player
-                let nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
-                while (!state.players[nextIndex].isAlive) {
-                    nextIndex = (nextIndex + 1) % state.players.length;
-                }
-                state.currentPlayerIndex = nextIndex;
-                state.turn++;
+					// Find the next living player
+					let nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
+					while (!state.players[nextIndex].isAlive) {
+						nextIndex = (nextIndex + 1) % state.players.length;
+					}
+					state.currentPlayerIndex = nextIndex;
+					state.turn++;
 
-                startTurn();
-            }
+					startTurn();
+				}
 
+				function endGame(winner) {
+					state.gameState = 'gameOver';
+					const announcement = winner
+						? `${winner.name} the ${winner.animal} is the new ruler!`
+						: "It's a draw!";
+					logMessage(announcement);
+					winnerAnnouncement.textContent = announcement;
+					gameOverScreen.style.display = 'flex';
+				}
 
-            function endGame(winner) {
-                state.gameState = 'gameOver';
-                const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
-                logMessage(announcement);
-                winnerAnnouncement.textContent = announcement;
-                gameOverScreen.style.display = 'flex';
-            }
+				// --- RENDERING ---
+				function render() {
+					renderPlayers();
+					renderControls();
+					renderLog();
+				}
 
-            // --- RENDERING ---
-            function render() {
-                renderPlayers();
-                renderControls();
-                renderLog();
-            }
+				function renderPlayers() {
+					playersContainer.innerHTML = '';
+					state.players.forEach((player) => {
+						const card = document.createElement('div');
+						card.classList.add('player-card');
+						card.dataset.playerId = player.id;
+						if (!player.isAlive) card.classList.add('dead');
+						if (player.id === state.currentPlayerIndex && player.isAlive) card.classList.add('active');
 
-            function renderPlayers() {
-                playersContainer.innerHTML = '';
-                state.players.forEach(player => {
-                    const card = document.createElement('div');
-                    card.classList.add('player-card');
-                    card.dataset.playerId = player.id;
-                    if (!player.isAlive) card.classList.add('dead');
-                    if (player.id === state.currentPlayerIndex && player.isAlive) card.classList.add('active');
+						// Check if card should be selectable
+						if (state.actionInProgress) {
+							const {type, sourceId, targets, requiredTargets} = state.actionInProgress;
+							const isSelf = player.id === sourceId;
+							const isAlreadyTargeted = targets.includes(player.id);
 
-                    // Check if card should be selectable
-                    if (state.actionInProgress) {
-                        const { type, sourceId, targets, requiredTargets } = state.actionInProgress;
-                        const isSelf = player.id === sourceId;
-                        const isAlreadyTargeted = targets.includes(player.id);
+							let isSelectable = false;
+							if (type === 'attack' || type === 'spitball' || type === 'rampage') {
+								isSelectable = !isSelf && player.isAlive;
+							} else if (type === 'strike') {
+								isSelectable = !isSelf && player.isAlive && !isAlreadyTargeted;
+							} else if (type === 'mischief') {
+								isSelectable = !isSelf && player.isAlive;
+							}
 
-                        let isSelectable = false;
-                        if (type === 'attack' || type === 'spitball' || type === 'rampage') {
-                            isSelectable = !isSelf && player.isAlive;
-                        } else if (type === 'strike') {
-                            isSelectable = !isSelf && player.isAlive && !isAlreadyTargeted;
-                        } else if (type === 'mischief') {
-                            isSelectable = !isSelf && player.isAlive;
-                        }
+							if (isSelectable) {
+								card.classList.add('selectable');
+							}
+						}
 
-                        if (isSelectable) {
-                            card.classList.add('selectable');
-                        }
-                    }
+						const hpPercentage = (player.hp / player.maxHp) * 100;
+						let hpColor;
+						if (hpPercentage > 60) hpColor = 'var(--hp-full)';
+						else if (hpPercentage > 30) hpColor = 'var(--hp-medium)';
+						else hpColor = 'var(--hp-low)';
 
-                    const hpPercentage = (player.hp / player.maxHp) * 100;
-                    let hpColor;
-                    if (hpPercentage > 60) hpColor = 'var(--hp-full)';
-                    else if (hpPercentage > 30) hpColor = 'var(--hp-medium)';
-                    else hpColor = 'var(--hp-low)';
+						let statusIconsHTML = '';
+						if (player.status.isShielded)
+							statusIconsHTML += `<div class="status-icon" title="Shielded">🛡️<span class="tooltip">Blocking next damage</span></div>`;
+						if (player.status.isSleeping)
+							statusIconsHTML += `<div class="status-icon" title="Sleeping">💤<span class="tooltip">Skipping next turn</span></div>`;
+						if (player.oneTimeActions.hasHealed)
+							statusIconsHTML += `<div class="status-icon" title="Heal Used">💚<span class="tooltip">Heal has been used</span></div>`;
+						if (player.oneTimeActions.hasShielded)
+							statusIconsHTML += `<div class="status-icon" title="Shield Used">🛡️<span class="tooltip">Shield has been used</span></div>`;
+						if (player.abilityCooldown > 0)
+							statusIconsHTML += `<div class="status-icon" title="Ability on Cooldown">⏳<span class="tooltip">Ability on cooldown (${player.abilityCooldown} turn/s)</span></div>`;
+						if (player.abilityDisabled)
+							statusIconsHTML += `<div class="status-icon" title="Ability Disabled">🚫<span class="tooltip">Ability permanently disabled</span></div>`;
+						if (
+							player.oneTimeActions.hasUsedAbility
+							&& (player.animal === 'Gorilla' || player.animal === 'Monkey')
+						)
+							statusIconsHTML += `<div class="status-icon" title="Ability Used">✓<span class="tooltip">One-time ability has been used</span></div>`;
 
-                    let statusIconsHTML = '';
-                    if (player.status.isShielded) statusIconsHTML += `<div class="status-icon" title="Shielded">🛡️<span class="tooltip">Blocking next damage</span></div>`;
-                    if (player.status.isSleeping) statusIconsHTML += `<div class="status-icon" title="Sleeping">💤<span class="tooltip">Skipping next turn</span></div>`;
-                    if (player.oneTimeActions.hasHealed) statusIconsHTML += `<div class="status-icon" title="Heal Used">💚<span class="tooltip">Heal has been used</span></div>`;
-                    if (player.oneTimeActions.hasShielded) statusIconsHTML += `<div class="status-icon" title="Shield Used">🛡️<span class="tooltip">Shield has been used</span></div>`;
-                    if (player.abilityCooldown > 0) statusIconsHTML += `<div class="status-icon" title="Ability on Cooldown">⏳<span class="tooltip">Ability on cooldown (${player.abilityCooldown} turn/s)</span></div>`;
-                    if (player.abilityDisabled) statusIconsHTML += `<div class="status-icon" title="Ability Disabled">🚫<span class="tooltip">Ability permanently disabled</span></div>`;
-                    if (player.oneTimeActions.hasUsedAbility && (player.animal === 'Gorilla' || player.animal === 'Monkey')) statusIconsHTML += `<div class="status-icon" title="Ability Used">✓<span class="tooltip">One-time ability has been used</span></div>`;
-
-                    card.innerHTML = `
+						card.innerHTML = `
                         <div class="player-info">
                             <span class="player-name">${player.animal}</span>
                             <span class="animal-name">${player.name}</span>
@@ -516,267 +596,282 @@
                         <div>HP: ${player.hp} / ${player.maxHp}</div>
                         <div class="status-icons">${statusIconsHTML}</div>
                     `;
-                    playersContainer.appendChild(card);
-                });
-            }
+						playersContainer.appendChild(card);
+					});
+				}
 
-            function renderControls() {
-                const currentPlayer = state.players[state.currentPlayerIndex];
-                turnIndicator.textContent = state.actionInProgress ? state.actionInProgress.prompt : `It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`;
+				function renderControls() {
+					const currentPlayer = state.players[state.currentPlayerIndex];
+					turnIndicator.textContent = state.actionInProgress
+						? state.actionInProgress.prompt
+						: `It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`;
 
-                const abilityButton = document.querySelector('[data-action="ability"]');
-                const abilityNames = {
-                    'Coyote': 'Howl',
-                    'Llama': 'Spitball',
-                    'Tiger': 'Strike',
-                    'Gorilla': 'Rampage',
-                    'Monkey': 'Mischief'
-                };
-                abilityButton.innerHTML = `<i data-lucide="sparkles"></i><span>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}</span>`;
-                abilityButton.disabled = currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
-                lucide.createIcons();
+					const abilityButton = document.querySelector('[data-action="ability"]');
+					const abilityNames = {
+						Coyote: 'Howl',
+						Llama: 'Spitball',
+						Tiger: 'Strike',
+						Gorilla: 'Rampage',
+						Monkey: 'Mischief',
+					};
+					abilityButton.innerHTML = `<i data-lucide="sparkles"></i><span>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}</span>`;
+					abilityButton.disabled = currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
+					lucide.createIcons();
 
-                document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
-                document.querySelector('[data-action="shield"]').disabled = currentPlayer.oneTimeActions.hasShielded;
+					document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
+					document.querySelector('[data-action="shield"]').disabled =
+						currentPlayer.oneTimeActions.hasShielded;
 
-                if (currentPlayer.animal === 'Tiger') {
-                    const livingOpponents = state.players.filter(p => p.isAlive && p.id !== currentPlayer.id).length;
-                    if (livingOpponents < 2) {
-                        abilityButton.disabled = true;
-                    }
-                }
+					if (currentPlayer.animal === 'Tiger') {
+						const livingOpponents = state.players.filter(
+							(p) => p.isAlive && p.id !== currentPlayer.id,
+						).length;
+						if (livingOpponents < 2) {
+							abilityButton.disabled = true;
+						}
+					}
 
-                if (currentPlayer.animal === 'Gorilla' || currentPlayer.animal === 'Monkey') {
-                    if (currentPlayer.oneTimeActions.hasUsedAbility) {
-                        abilityButton.disabled = true;
-                    }
-                }
+					if (currentPlayer.animal === 'Gorilla' || currentPlayer.animal === 'Monkey') {
+						if (currentPlayer.oneTimeActions.hasUsedAbility) {
+							abilityButton.disabled = true;
+						}
+					}
 
-                actionButtonsContainer.querySelectorAll('button').forEach(btn => {
-                    if(state.actionInProgress) {
-                        btn.style.display = 'none';
-                    } else {
-                        btn.style.display = 'inline-flex';
-                    }
-                });
-            }
+					actionButtonsContainer.querySelectorAll('button').forEach((btn) => {
+						if (state.actionInProgress) {
+							btn.style.display = 'none';
+						} else {
+							btn.style.display = 'inline-flex';
+						}
+					});
+				}
 
-            function renderLog() {
-                gameLog.innerHTML = state.log.map((entry, index) => {
-                    let prefix = '';
-                    if (entry.indent > 0) {
-                        const nextEntry = state.log[index + 1];
-                        const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
-                        const hasChildren = nextEntry && nextEntry.indent > entry.indent;
+				function renderLog() {
+					gameLog.innerHTML = state.log
+						.map((entry, index) => {
+							let prefix = '';
+							if (entry.indent > 0) {
+								const nextEntry = state.log[index + 1];
+								const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
+								const hasChildren = nextEntry && nextEntry.indent > entry.indent;
 
-                        if (entry.indent === 1) {
-                            if (hasChildren) {
-                                prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
-                            } else {
-                                prefix = hasNextSibling ? '├── ' : '└── ';
-                            }
-                        } else if (entry.indent === 2) {
-                            const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
-                            if (hasChildren) {
-                                prefix = '  ' + connector;
-                            } else {
-                                prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
-                            }
-                        } else if (entry.indent === 3) {
-                            const connector = hasNextSibling ? '├── ' : '└── ';
-                            prefix = '    ' + connector;
-                        }
-                    }
-                    return `<div class="log-entry">${prefix}${entry.message}</div>`;
-                }).join('');
-                gameLog.scrollTop = gameLog.scrollHeight;
-            }
+								if (entry.indent === 1) {
+									if (hasChildren) {
+										prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
+									} else {
+										prefix = hasNextSibling ? '├── ' : '└── ';
+									}
+								} else if (entry.indent === 2) {
+									const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
+									if (hasChildren) {
+										prefix = '  ' + connector;
+									} else {
+										prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
+									}
+								} else if (entry.indent === 3) {
+									const connector = hasNextSibling ? '├── ' : '└── ';
+									prefix = '    ' + connector;
+								}
+							}
+							return `<div class="log-entry">${prefix}${entry.message}</div>`;
+						})
+						.join('');
+					gameLog.scrollTop = gameLog.scrollHeight;
+				}
 
-            function logMessage(message, indent = 0) {
-                state.log.push({ message, indent });
-            }
+				function logMessage(message, indent = 0) {
+					state.log.push({message, indent});
+				}
 
-            // --- ACTION HANDLING ---
-            actionButtonsContainer.addEventListener('click', (e) => {
-                const button = e.target.closest('.action-btn');
-                if (!button || button.disabled) return;
-                if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) return;
+				// --- ACTION HANDLING ---
+				actionButtonsContainer.addEventListener('click', (e) => {
+					const button = e.target.closest('.action-btn');
+					if (!button || button.disabled) return;
+					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) return;
 
-                const action = button.dataset.action;
-                const source = state.players[state.currentPlayerIndex];
+					const action = button.dataset.action;
+					const source = state.players[state.currentPlayerIndex];
 
-                switch(action) {
-                    case 'attack':
-                        initiateTargetSelection('attack', source.id, 1, `Select a target to attack.`);
-                        break;
-                    case 'ability':
-                        handleAbility(source);
-                        break;
-                    case 'heal':
-                        handleHeal(source);
-                        break;
-                    case 'shield':
-                        handleShield(source);
-                        break;
-                    case 'nothing':
-                        logMessage(`${source.name} (${source.animal}) did nothing.`, 1);
-                        endTurn();
-                        break;
-                }
-            });
+					switch (action) {
+						case 'attack':
+							initiateTargetSelection('attack', source.id, 1, `Select a target to attack.`);
+							break;
+						case 'ability':
+							handleAbility(source);
+							break;
+						case 'heal':
+							handleHeal(source);
+							break;
+						case 'shield':
+							handleShield(source);
+							break;
+						case 'nothing':
+							logMessage(`${source.name} (${source.animal}) did nothing.`, 1);
+							endTurn();
+							break;
+					}
+				});
 
-            playersContainer.addEventListener('click', (e) => {
-                if (!state.actionInProgress || state.turnSkipped) return;
-                const card = e.target.closest('.player-card.selectable');
-                if (!card) return;
+				playersContainer.addEventListener('click', (e) => {
+					if (!state.actionInProgress || state.turnSkipped) return;
+					const card = e.target.closest('.player-card.selectable');
+					if (!card) return;
 
-                const targetId = parseInt(card.dataset.playerId, 10);
-                const { targets } = state.actionInProgress;
+					const targetId = parseInt(card.dataset.playerId, 10);
+					const {targets} = state.actionInProgress;
 
-                if (!targets.includes(targetId)) {
-                    targets.push(targetId);
-                }
+					if (!targets.includes(targetId)) {
+						targets.push(targetId);
+					}
 
-                const { type, sourceId, requiredTargets } = state.actionInProgress;
-                if (targets.length === requiredTargets) {
-                    const source = state.players[sourceId];
-                    const targetPlayers = targets.map(id => state.players[id]);
+					const {type, sourceId, requiredTargets} = state.actionInProgress;
+					if (targets.length === requiredTargets) {
+						const source = state.players[sourceId];
+						const targetPlayers = targets.map((id) => state.players[id]);
 
-                    if(type === 'attack') handleAttack(source, targetPlayers[0]);
-                    if(type === 'spitball') handleSpitball(source, targetPlayers[0]);
-                    if(type === 'strike') handleStrike(source, targetPlayers[0], targetPlayers[1]);
-                    if(type === 'rampage') handleRampage(source, targetPlayers[0]);
-                    if(type === 'mischief') handleMischief(source, targetPlayers[0]);
+						if (type === 'attack') handleAttack(source, targetPlayers[0]);
+						if (type === 'spitball') handleSpitball(source, targetPlayers[0]);
+						if (type === 'strike') handleStrike(source, targetPlayers[0], targetPlayers[1]);
+						if (type === 'rampage') handleRampage(source, targetPlayers[0]);
+						if (type === 'mischief') handleMischief(source, targetPlayers[0]);
 
-                    state.actionInProgress = null;
-                    endTurn();
-                } else {
-                    state.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`
-                    render();
-                }
-            });
+						state.actionInProgress = null;
+						endTurn();
+					} else {
+						state.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`;
+						render();
+					}
+				});
 
-            function initiateTargetSelection(type, sourceId, requiredTargets, prompt) {
-                state.actionInProgress = {
-                    type,
-                    sourceId,
-                    requiredTargets,
-                    targets: [],
-                    prompt
-                };
-                render();
-            }
+				function initiateTargetSelection(type, sourceId, requiredTargets, prompt) {
+					state.actionInProgress = {
+						type,
+						sourceId,
+						requiredTargets,
+						targets: [],
+						prompt,
+					};
+					render();
+				}
 
-            function applyDamage(target, damage, source) {
-                if (target.status.isShielded) {
-                    logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 2);
-                    return 0;
-                }
+				function applyDamage(target, damage, source) {
+					if (target.status.isShielded) {
+						logMessage(
+							`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`,
+							2,
+						);
+						return 0;
+					}
 
-                const actualDamage = Math.min(target.hp, damage);
-                target.hp -= actualDamage;
-                logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 2);
-                if (target.hp <= 0) {
-                    target.isAlive = false;
-                    logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 3);
-                }
-                return actualDamage;
-            }
+					const actualDamage = Math.min(target.hp, damage);
+					target.hp -= actualDamage;
+					logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 2);
+					if (target.hp <= 0) {
+						target.isAlive = false;
+						logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 3);
+					}
+					return actualDamage;
+				}
 
-            function handleAttack(source, target) {
-                logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
-                applyDamage(target, 1, source);
-            }
+				function handleAttack(source, target) {
+					logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
+					applyDamage(target, 1, source);
+				}
 
-            function handleHeal(source) {
-                source.oneTimeActions.hasHealed = true;
-                const amountToHeal = Math.min(1, source.maxHp - source.hp);
-                source.hp += amountToHeal;
-                logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
-                endTurn();
-            }
+				function handleHeal(source) {
+					source.oneTimeActions.hasHealed = true;
+					const amountToHeal = Math.min(1, source.maxHp - source.hp);
+					source.hp += amountToHeal;
+					logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
+					endTurn();
+				}
 
-            function handleShield(source) {
-                source.oneTimeActions.hasShielded = true;
-                source.status.isShielded = true;
-                logMessage(`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`, 1);
-                endTurn();
-            }
+				function handleShield(source) {
+					source.oneTimeActions.hasShielded = true;
+					source.status.isShielded = true;
+					logMessage(
+						`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`,
+						1,
+					);
+					endTurn();
+				}
 
-            // --- ABILITY LOGIC ---
-            function handleAbility(source) {
-                switch(source.animal) {
-                    case 'Coyote':
-                        handleHowl(source);
-                        render();
-                        break;
-                    case 'Llama':
-                        initiateTargetSelection('spitball', source.id, 1, `Select a target for Spitball.`);
-                        break;
-                    case 'Tiger':
-                        initiateTargetSelection('strike', source.id, 2, `Select target 1 of 2 for Strike.`);
-                        break;
-                    case 'Gorilla':
-                        initiateTargetSelection('rampage', source.id, 1, `Select a target for Rampage.`);
-                        break;
-                    case 'Monkey':
-                        initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
-                        break;
-                }
-            }
+				// --- ABILITY LOGIC ---
+				function handleAbility(source) {
+					switch (source.animal) {
+						case 'Coyote':
+							handleHowl(source);
+							render();
+							break;
+						case 'Llama':
+							initiateTargetSelection('spitball', source.id, 1, `Select a target for Spitball.`);
+							break;
+						case 'Tiger':
+							initiateTargetSelection('strike', source.id, 2, `Select target 1 of 2 for Strike.`);
+							break;
+						case 'Gorilla':
+							initiateTargetSelection('rampage', source.id, 1, `Select a target for Rampage.`);
+							break;
+						case 'Monkey':
+							initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
+							break;
+					}
+				}
 
-            function handleHowl(source) {
-                source.abilityCooldown = 2;
-                logMessage(`${source.name} the Coyote lets out a piercing Howl!`, 1);
-                state.players.forEach(p => {
-                    if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
-                        p.status.isSleeping = true;
-                    }
-                });
-            }
+				function handleHowl(source) {
+					source.abilityCooldown = 2;
+					logMessage(`${source.name} the Coyote lets out a piercing Howl!`, 1);
+					state.players.forEach((p) => {
+						if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
+							p.status.isSleeping = true;
+						}
+					});
+				}
 
-            function handleSpitball(source, target) {
-                const rand = Math.random();
-                let damage = 0;
-                if (rand < 0.15) {
-                    damage = 2;
-                } else if (rand < 0.55) {
-                    damage = 1;
-                }
+				function handleSpitball(source, target) {
+					const rand = Math.random();
+					let damage = 0;
+					if (rand < 0.15) {
+						damage = 2;
+					} else if (rand < 0.55) {
+						damage = 1;
+					}
 
-                logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`, 1);
-                if (damage > 0) {
-                    logMessage(`It's a direct hit for ${damage} damage!`, 2);
-                    applyDamage(target, damage, source);
-                } else {
-                    logMessage(`It missed! 0 damage.`, 2);
-                }
-            }
+					logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`, 1);
+					if (damage > 0) {
+						logMessage(`It's a direct hit for ${damage} damage!`, 2);
+						applyDamage(target, damage, source);
+					} else {
+						logMessage(`It missed! 0 damage.`, 2);
+					}
+				}
 
-            function handleStrike(source, target1, target2) {
-                logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
-                applyDamage(target1, 1, source);
-                applyDamage(target2, 1, source);
-            }
+				function handleStrike(source, target1, target2) {
+					logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
+					applyDamage(target1, 1, source);
+					applyDamage(target2, 1, source);
+				}
 
-            function handleRampage(source, target) {
-                source.oneTimeActions.hasUsedAbility = true;
-                logMessage(`${source.name} the Gorilla unleashes a devastating Rampage on ${target.name} (${target.animal})!`, 1);
-                applyDamage(target, 4, source);
-            }
+				function handleRampage(source, target) {
+					source.oneTimeActions.hasUsedAbility = true;
+					logMessage(
+						`${source.name} the Gorilla unleashes a devastating Rampage on ${target.name} (${target.animal})!`,
+						1,
+					);
+					applyDamage(target, 4, source);
+				}
 
-            function handleMischief(source, target) {
-                source.oneTimeActions.hasUsedAbility = true;
-                target.abilityDisabled = true;
-                logMessage(`${source.name} the Monkey uses Mischief on ${target.name} (${target.animal})!`, 1);
-                logMessage(`${target.name}'s (${target.animal}) ability has been permanently disabled!`, 2);
-            }
+				function handleMischief(source, target) {
+					source.oneTimeActions.hasUsedAbility = true;
+					target.abilityDisabled = true;
+					logMessage(`${source.name} the Monkey uses Mischief on ${target.name} (${target.animal})!`, 1);
+					logMessage(`${target.name}'s (${target.animal}) ability has been permanently disabled!`, 2);
+				}
 
-            // --- INITIALIZE ---
-            initializeSetup();
-            lucide.createIcons();
-        });
-    </script>
-
-</body>
+				// --- INITIALIZE ---
+				initializeSetup();
+				lucide.createIcons();
+			});
+		</script>
+	</body>
 </html>

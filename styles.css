@@ -121,6 +121,56 @@ main {
     margin-bottom: 20px;
 }
 
+.animal-abilities-section {
+    background-color: #fff;
+    border: 2px solid var(--color-accent);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+body.dark-mode .animal-abilities-section {
+    background-color: var(--color-light);
+}
+
+.animal-abilities-section h3 {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.abilities-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.ability-item {
+    padding: 12px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+}
+
+body.dark-mode .ability-item {
+    background-color: var(--color-background);
+}
+
+.ability-item strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: var(--color-primary);
+}
+
+.ability-item p {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
 .setup-section {
     margin-bottom: 20px;
 }
