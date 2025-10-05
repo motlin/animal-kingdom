@@ -1,6 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'daily'
+      time: '07:00'
+      timezone: 'America/New_York'
+    open-pull-requests-limit: 25
+    labels:
+      - 'dependencies'
+    ignore:
+      - dependency-name: 'ataylorme/eslint-annotate-action'
+    commit-message:
+      prefix: 'dependabot'
+      include: 'scope'
