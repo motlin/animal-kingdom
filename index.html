@@ -19,6 +19,15 @@
 			<div id="setup-screen">
 				<h2>Game Setup</h2>
 
+				<div class="mode-selection">
+					<button id="standard-mode-btn" class="mode-btn active">
+						<i data-lucide="users"></i><span>Standard Battle</span>
+					</button>
+					<button id="challenger-mode-btn" class="mode-btn">
+						<i data-lucide="trophy"></i><span>New Challenger</span>
+					</button>
+				</div>
+
 				<div class="animal-abilities-section collapsed">
 					<div class="abilities-header">
 						<h3>Animal Abilities</h3>
@@ -29,21 +38,34 @@
 					<div class="abilities-list hidden"></div>
 				</div>
 
-				<div class="setup-section">
-					<label for="player-count">Number of Players:</label>
-					<select id="player-count">
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-						<option value="10">10</option>
-					</select>
+				<div id="standard-setup">
+					<div class="setup-section">
+						<label for="player-count">Number of Players:</label>
+						<select id="player-count">
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
+					</div>
+					<div id="player-selections" class="setup-section"></div>
 				</div>
-				<div id="player-selections" class="setup-section"></div>
+
+				<div id="challenger-setup" class="setup-section" style="display: none;">
+					<div class="challenger-selection">
+						<h3>Choose Your Fighter</h3>
+						<div id="unlocked-animals-grid"></div>
+					</div>
+					<div class="challenger-opponent">
+						<h3>Your Opponent</h3>
+						<div id="challenger-opponent-display"></div>
+					</div>
+				</div>
 				<button id="start-game-btn"><i data-lucide="play"></i>Start Game</button>
 			</div>
 
@@ -192,6 +214,12 @@
 				const abilitiesList = document.querySelector('.abilities-list');
 				const undoBtn = document.getElementById('undo-btn');
 				const muteToggleBtn = document.getElementById('mute-toggle-btn');
+				const standardModeBtn = document.getElementById('standard-mode-btn');
+				const challengerModeBtn = document.getElementById('challenger-mode-btn');
+				const standardSetup = document.getElementById('standard-setup');
+				const challengerSetup = document.getElementById('challenger-setup');
+				const unlockedAnimalsGrid = document.getElementById('unlocked-animals-grid');
+				const challengerOpponentDisplay = document.getElementById('challenger-opponent-display');
 
 				// --- SOUND SYSTEM ---
 				const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -391,6 +419,9 @@
 				let state = {};
 				let stateHistory = [];
 				let unlockedAnimals = new Set();
+				let currentMode = 'standard';
+				let selectedChallengerAnimal = null;
+				let selectedOpponentAnimal = null;
 
 				const ANIMAL_ROSTER = {
 					Coyote: {
@@ -414,6 +445,7 @@
 					loadMutePreference();
 					updateAbilitiesList();
 					updatePlayerSelections();
+					updateChallengerMode();
 					playerCountSelect.addEventListener('change', updatePlayerSelections);
 					startGameBtn.addEventListener('click', startGame);
 					playAgainBtn.addEventListener('click', () => location.reload());
@@ -430,6 +462,8 @@
 					saveLogFullscreenBtn.addEventListener('click', saveGameLog);
 					toggleAbilitiesBtn.addEventListener('click', toggleAbilities);
 					undoBtn.addEventListener('click', handleUndo);
+					standardModeBtn.addEventListener('click', () => switchMode('standard'));
+					challengerModeBtn.addEventListener('click', () => switchMode('challenger'));
 					document.addEventListener('keydown', handleKeyPress);
 				}
 
@@ -723,6 +757,80 @@
 						});
 				}
 
+				function switchMode(mode) {
+					currentMode = mode;
+					if (mode === 'standard') {
+						standardModeBtn.classList.add('active');
+						challengerModeBtn.classList.remove('active');
+						standardSetup.style.display = 'block';
+						challengerSetup.style.display = 'none';
+						startGameBtn.textContent = 'Start Game';
+						lucide.createIcons();
+					} else {
+						standardModeBtn.classList.remove('active');
+						challengerModeBtn.classList.add('active');
+						standardSetup.style.display = 'none';
+						challengerSetup.style.display = 'block';
+						startGameBtn.innerHTML = '<i data-lucide="play"></i><span>Fight Challenger</span>';
+						lucide.createIcons();
+						updateChallengerMode();
+					}
+					updateStartButtonState();
+				}
+
+				function updateChallengerMode() {
+					if (currentMode !== 'challenger') return;
+
+					const lockedAnimals = Object.keys(ANIMAL_ROSTER).filter(animal => !unlockedAnimals.has(animal));
+
+					unlockedAnimalsGrid.innerHTML = '';
+					[...unlockedAnimals].forEach(animal => {
+						const card = document.createElement('div');
+						card.classList.add('animal-choice-card');
+						if (selectedChallengerAnimal === animal) {
+							card.classList.add('selected');
+						}
+						card.innerHTML = `
+							<div class="animal-choice-name">${animal}</div>
+							<div class="animal-choice-desc">${ANIMAL_ROSTER[animal].abilityDesc}</div>
+						`;
+						card.addEventListener('click', () => {
+							selectedChallengerAnimal = animal;
+							updateChallengerMode();
+							updateStartButtonState();
+						});
+						unlockedAnimalsGrid.appendChild(card);
+					});
+
+					if (lockedAnimals.length > 0) {
+						if (!selectedOpponentAnimal || unlockedAnimals.has(selectedOpponentAnimal)) {
+							selectedOpponentAnimal = lockedAnimals[Math.floor(Math.random() * lockedAnimals.length)];
+						}
+						challengerOpponentDisplay.innerHTML = `
+							<div class="challenger-opponent-card">
+								<div class="opponent-name">${selectedOpponentAnimal}</div>
+								<div class="opponent-label">Computer Opponent</div>
+							</div>
+						`;
+					} else {
+						challengerOpponentDisplay.innerHTML = `
+							<div class="no-challengers">
+								<p>All animals unlocked!</p>
+								<p>Play standard mode to test your skills.</p>
+							</div>
+						`;
+					}
+				}
+
+				function updateStartButtonState() {
+					if (currentMode === 'challenger') {
+						const lockedAnimals = Object.keys(ANIMAL_ROSTER).filter(animal => !unlockedAnimals.has(animal));
+						startGameBtn.disabled = !selectedChallengerAnimal || lockedAnimals.length === 0;
+					} else {
+						startGameBtn.disabled = false;
+					}
+				}
+
 				function updatePlayerSelections() {
 					const count = parseInt(playerCountSelect.value, 10);
 					const existingData = [];
@@ -814,29 +922,21 @@
 				}
 
 				function startGame() {
-					const setupDivs = playerSelectionsContainer.querySelectorAll('.player-setup');
 					const players = [];
-					setupDivs.forEach((setupDiv, index) => {
-						const nameInput = setupDiv.querySelector('input[type="text"]');
-						const animalSelect = setupDiv.querySelector('select');
-						const playerTypeSelect = setupDiv.querySelector('.player-type-select');
-						const playerName = nameInput.value.trim() || `Player ${index + 1}`;
-						const animalType = animalSelect.value;
-						const playerType = playerTypeSelect.value;
 
-						let initialHP = INITIAL_HP;
-						if (animalType === 'Gorilla') {
-							initialHP = 4;
+					if (currentMode === 'challenger') {
+						let playerHP = INITIAL_HP;
+						if (selectedChallengerAnimal === 'Gorilla') {
+							playerHP = 4;
 						}
-
 						players.push({
-							id: index,
-							name: playerName,
-							animal: animalType,
-							hp: initialHP,
-							maxHp: initialHP,
+							id: 0,
+							name: 'You',
+							animal: selectedChallengerAnimal,
+							hp: playerHP,
+							maxHp: playerHP,
 							isAlive: true,
-							isComputer: playerType === 'computer',
+							isComputer: false,
 							status: {
 								isShielded: false,
 								isSleeping: false,
@@ -849,7 +949,68 @@
 							abilityCooldown: 0,
 							abilityDisabled: false,
 						});
-					});
+
+						let opponentHP = INITIAL_HP;
+						if (selectedOpponentAnimal === 'Gorilla') {
+							opponentHP = 4;
+						}
+						players.push({
+							id: 1,
+							name: 'Challenger',
+							animal: selectedOpponentAnimal,
+							hp: opponentHP,
+							maxHp: opponentHP,
+							isAlive: true,
+							isComputer: true,
+							status: {
+								isShielded: false,
+								isSleeping: false,
+							},
+							oneTimeActions: {
+								hasHealed: false,
+								hasShielded: false,
+								hasUsedAbility: false,
+							},
+							abilityCooldown: 0,
+							abilityDisabled: false,
+						});
+					} else {
+						const setupDivs = playerSelectionsContainer.querySelectorAll('.player-setup');
+						setupDivs.forEach((setupDiv, index) => {
+							const nameInput = setupDiv.querySelector('input[type="text"]');
+							const animalSelect = setupDiv.querySelector('select');
+							const playerTypeSelect = setupDiv.querySelector('.player-type-select');
+							const playerName = nameInput.value.trim() || `Player ${index + 1}`;
+							const animalType = animalSelect.value;
+							const playerType = playerTypeSelect.value;
+
+							let initialHP = INITIAL_HP;
+							if (animalType === 'Gorilla') {
+								initialHP = 4;
+							}
+
+							players.push({
+								id: index,
+								name: playerName,
+								animal: animalType,
+								hp: initialHP,
+								maxHp: initialHP,
+								isAlive: true,
+								isComputer: playerType === 'computer',
+								status: {
+									isShielded: false,
+									isSleeping: false,
+								},
+								oneTimeActions: {
+									hasHealed: false,
+									hasShielded: false,
+									hasUsedAbility: false,
+								},
+								abilityCooldown: 0,
+								abilityDisabled: false,
+							});
+						});
+					}
 
 					const randomFirstPlayerIndex = Math.floor(Math.random() * players.length);
 
