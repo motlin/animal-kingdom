@@ -31,6 +31,6 @@
 		"newLine": "lf",
 		"types": ["node", "vitest/globals"]
 	},
-	"include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts", "eslint.config.ts"],
+	"include": ["src/**/*", "vite.config.ts", "vitest.config.ts", "eslint.config.ts"],
 	"exclude": ["node_modules", "dist", "build", "coverage"]
 }
