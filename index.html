@@ -68,6 +68,9 @@
 								<i data-lucide="pause"></i><span>Do <u>N</u>othing</span>
 							</button>
 						</div>
+						<button id="undo-btn" class="undo-btn" title="Undo last turn (U)">
+							<i data-lucide="undo"></i><span><u>U</u>ndo</span>
+						</button>
 					</div>
 					<div id="log-container">
 						<h3>Game Log</h3>
@@ -135,6 +138,10 @@
 							<td>Do Nothing</td>
 						</tr>
 						<tr>
+							<td>U</td>
+							<td>Undo</td>
+						</tr>
+						<tr>
 							<td>?</td>
 							<td>Show this help</td>
 						</tr>
@@ -178,9 +185,11 @@
 				const saveLogFullscreenBtn = document.getElementById('save-log-fullscreen-btn');
 				const toggleAbilitiesBtn = document.getElementById('toggle-abilities-btn');
 				const abilitiesList = document.querySelector('.abilities-list');
+				const undoBtn = document.getElementById('undo-btn');
 
 				// --- GAME STATE ---
 				let state = {};
+				let stateHistory = [];
 				let unlockedAnimals = new Set();
 
 				const ANIMAL_ROSTER = {
@@ -218,6 +227,7 @@
 					copyLogFullscreenBtn.addEventListener('click', copyGameLog);
 					saveLogFullscreenBtn.addEventListener('click', saveGameLog);
 					toggleAbilitiesBtn.addEventListener('click', toggleAbilities);
+					undoBtn.addEventListener('click', handleUndo);
 					document.addEventListener('keydown', handleKeyPress);
 				}
 
@@ -350,6 +360,11 @@
 						} else if (event.key === 'Escape') {
 							hideKeyboardShortcuts();
 							event.preventDefault();
+						} else if ((event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey)) || event.key.toLowerCase() === 'u') {
+							if (!undoBtn.disabled) {
+								handleUndo();
+							}
+							event.preventDefault();
 						}
 						return;
 					}
@@ -361,6 +376,11 @@
 						event.preventDefault();
 					} else if (key === 'escape') {
 						hideKeyboardShortcuts();
+						event.preventDefault();
+					} else if ((key === 'z' && (event.ctrlKey || event.metaKey)) || key === 'u') {
+						if (!undoBtn.disabled) {
+							handleUndo();
+						}
 						event.preventDefault();
 					} else if (key === 'a') {
 						document.querySelector('[data-action="attack"]').click();
@@ -604,6 +624,8 @@
 						log: [],
 					};
 
+					stateHistory = [];
+
 					logMessage('The battle for the Animal Kingdom begins!');
 					players.forEach((player) => {
 						logMessage(`${player.name} is the ${player.animal}`, 1);
@@ -621,7 +643,25 @@
 				}
 
 				// --- GAME FLOW & TURN MANAGEMENT ---
+				function saveStateToHistory() {
+					const stateCopy = JSON.parse(JSON.stringify(state));
+					stateHistory.push(stateCopy);
+				}
+
+				function handleUndo() {
+					if (stateHistory.length === 0) return;
+
+					const previousState = stateHistory.pop();
+					state = JSON.parse(JSON.stringify(previousState));
+
+					logMessage('⏪ Turn undone.');
+
+					render();
+				}
+
 				function startTurn() {
+					saveStateToHistory();
+
 					const currentPlayer = state.players[state.currentPlayerIndex];
 					state.turnSkipped = false;
 
@@ -821,6 +861,8 @@
 							btn.style.display = 'inline-flex';
 						}
 					});
+
+					undoBtn.disabled = stateHistory.length === 0 || state.actionInProgress || currentPlayer.isComputer;
 				}
 
 				function renderLog() {
