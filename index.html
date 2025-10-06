@@ -366,8 +366,9 @@
 							hideKeyboardShortcuts();
 							event.preventDefault();
 						} else if (
-							(event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey))
-							|| event.key.toLowerCase() === 'u'
+							state.gameState === 'playing'
+							&& ((event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey))
+							|| event.key.toLowerCase() === 'u')
 						) {
 							if (!undoBtn.disabled) {
 								handleUndo();
@@ -716,6 +717,64 @@
 					}, 1000);
 				}
 
+				function showConfetti() {
+					const confettiContainer = document.createElement('div');
+					confettiContainer.id = 'confetti-container';
+					confettiContainer.style.cssText = `
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						pointer-events: none;
+						z-index: 50;
+					`;
+					document.body.appendChild(confettiContainer);
+
+					const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
+					const confettiCount = 100;
+
+					for (let i = 0; i < confettiCount; i++) {
+						const confetti = document.createElement('div');
+						confetti.style.cssText = `
+							position: absolute;
+							width: 10px;
+							height: 10px;
+							background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+							top: -10px;
+							left: ${Math.random() * 100}%;
+							opacity: ${0.7 + Math.random() * 0.3};
+							transform: rotate(${Math.random() * 360}deg);
+						`;
+						confettiContainer.appendChild(confetti);
+
+						const duration = 2000 + Math.random() * 1000;
+						const startTime = Date.now();
+						const startLeft = parseFloat(confetti.style.left);
+						const horizontalDrift = (Math.random() - 0.5) * 30;
+
+						const animate = () => {
+							const elapsed = Date.now() - startTime;
+							const progress = elapsed / duration;
+
+							if (progress < 1) {
+								confetti.style.top = `${progress * 110}vh`;
+								confetti.style.left = `${startLeft + horizontalDrift * progress}%`;
+								confetti.style.transform = `rotate(${progress * 720}deg)`;
+								requestAnimationFrame(animate);
+							} else {
+								confetti.remove();
+							}
+						};
+
+						setTimeout(() => requestAnimationFrame(animate), Math.random() * 100);
+					}
+
+					setTimeout(() => {
+						confettiContainer.remove();
+					}, 3500);
+				}
+
 				function endTurn() {
 					const lastPlayer = state.players[state.currentPlayerIndex];
 					if (lastPlayer.abilityCooldown > 0) {
@@ -724,7 +783,9 @@
 
 					const alivePlayers = state.players.filter((p) => p.isAlive);
 					if (alivePlayers.length <= 1) {
+						state.gameState = 'gameEnding';
 						render();
+						showConfetti();
 						setTimeout(() => endGame(alivePlayers[0]), 2000);
 						return;
 					}
@@ -837,6 +898,8 @@
 						? state.actionInProgress.prompt
 						: `It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`;
 
+					const isGameEnding = state.gameState === 'gameEnding';
+
 					const abilityButton = document.querySelector('[data-action="ability"]');
 					const abilityNames = {
 						Coyote: 'Howl',
@@ -846,12 +909,14 @@
 						Monkey: 'Mischief',
 					};
 					abilityButton.innerHTML = `<i data-lucide="sparkles"></i><span>Use A<u>b</u>ility: ${abilityNames[currentPlayer.animal]}</span>`;
-					abilityButton.disabled = currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
+					abilityButton.disabled = isGameEnding || currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
 					lucide.createIcons();
 
-					document.querySelector('[data-action="heal"]').disabled = currentPlayer.oneTimeActions.hasHealed;
-					document.querySelector('[data-action="shield"]').disabled =
+					document.querySelector('[data-action="heal"]').disabled = isGameEnding || currentPlayer.oneTimeActions.hasHealed;
+					document.querySelector('[data-action="shield"]').disabled = isGameEnding ||
 						currentPlayer.oneTimeActions.hasShielded;
+					document.querySelector('[data-action="attack"]').disabled = isGameEnding;
+					document.querySelector('[data-action="nothing"]').disabled = isGameEnding;
 
 					if (currentPlayer.animal === 'Tiger') {
 						const livingOpponents = state.players.filter(
@@ -876,7 +941,7 @@
 						}
 					});
 
-					undoBtn.disabled = stateHistory.length === 0 || state.actionInProgress || currentPlayer.isComputer;
+					undoBtn.disabled = stateHistory.length === 0 || state.actionInProgress || currentPlayer.isComputer || isGameEnding;
 				}
 
 				function renderLog() {
