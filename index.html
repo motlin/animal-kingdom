@@ -315,7 +315,9 @@
 				}
 
 				function handleKeyPress(event) {
-					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) {
+					const currentPlayer = state.players[state.currentPlayerIndex];
+
+					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped || (currentPlayer && currentPlayer.isComputer)) {
 						if (event.key === '?' || event.key === '/') {
 							showKeyboardShortcuts();
 							event.preventDefault();
@@ -327,7 +329,6 @@
 					}
 
 					const key = event.key.toLowerCase();
-					const currentPlayer = state.players[state.currentPlayerIndex];
 
 					if (key === '?') {
 						showKeyboardShortcuts();
@@ -443,9 +444,11 @@
 					playerSelectionsContainer.querySelectorAll('.player-setup').forEach((setupDiv) => {
 						const nameInput = setupDiv.querySelector('input[type="text"]');
 						const animalSelect = setupDiv.querySelector('select');
+						const playerTypeSelect = setupDiv.querySelector('.player-type-select');
 						existingData.push({
 							name: nameInput ? nameInput.value : '',
 							animal: animalSelect ? animalSelect.value : '',
+							playerType: playerTypeSelect ? playerTypeSelect.value : 'human',
 						});
 					});
 
@@ -483,9 +486,28 @@
 							select.appendChild(option);
 						});
 
+						const playerTypeSelect = document.createElement('select');
+						playerTypeSelect.classList.add('player-type-select');
+						playerTypeSelect.id = `player${i}-type`;
+						playerTypeSelect.dataset.playerId = i;
+
+						const humanOption = document.createElement('option');
+						humanOption.value = 'human';
+						humanOption.textContent = 'Human';
+						playerTypeSelect.appendChild(humanOption);
+
+						const computerOption = document.createElement('option');
+						computerOption.value = 'computer';
+						computerOption.textContent = 'Computer';
+						playerTypeSelect.appendChild(computerOption);
+
+						const previousPlayerType = existingData[i - 1] ? existingData[i - 1].playerType : 'human';
+						playerTypeSelect.value = previousPlayerType;
+
 						playerSetupDiv.appendChild(label);
 						playerSetupDiv.appendChild(nameInput);
 						playerSetupDiv.appendChild(select);
+						playerSetupDiv.appendChild(playerTypeSelect);
 						playerSelectionsContainer.appendChild(playerSetupDiv);
 					}
 				}
@@ -496,8 +518,10 @@
 					setupDivs.forEach((setupDiv, index) => {
 						const nameInput = setupDiv.querySelector('input[type="text"]');
 						const animalSelect = setupDiv.querySelector('select');
+						const playerTypeSelect = setupDiv.querySelector('.player-type-select');
 						const playerName = nameInput.value.trim() || `Player ${index + 1}`;
 						const animalType = animalSelect.value;
+						const playerType = playerTypeSelect.value;
 
 						let initialHP = INITIAL_HP;
 						if (animalType === 'Gorilla') {
@@ -511,6 +535,7 @@
 							hp: initialHP,
 							maxHp: initialHP,
 							isAlive: true,
+							isComputer: playerType === 'computer',
 							status: {
 								isShielded: false,
 								isSleeping: false,
@@ -579,16 +604,34 @@
 					}
 
 					render();
+
+					if (currentPlayer.isComputer) {
+						setTimeout(() => {
+							playComputerTurn(currentPlayer);
+						}, 1000);
+					}
+				}
+
+				function playComputerTurn(player) {
+					const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== player.id);
+					if (aliveOpponents.length === 0) {
+						endTurn();
+						return;
+					}
+
+					const randomTarget = aliveOpponents[Math.floor(Math.random() * aliveOpponents.length)];
+					handleAttack(player, randomTarget);
+					setTimeout(() => {
+						endTurn();
+					}, 1000);
 				}
 
 				function endTurn() {
-					// Decrement cooldown for the player who just moved
 					const lastPlayer = state.players[state.currentPlayerIndex];
 					if (lastPlayer.abilityCooldown > 0) {
 						lastPlayer.abilityCooldown--;
 					}
 
-					// Check for game over
 					const alivePlayers = state.players.filter((p) => p.isAlive);
 					if (alivePlayers.length <= 1) {
 						render();
@@ -596,7 +639,6 @@
 						return;
 					}
 
-					// Find the next living player
 					let nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
 					while (!state.players[nextIndex].isAlive) {
 						nextIndex = (nextIndex + 1) % state.players.length;
@@ -780,10 +822,11 @@
 				actionButtonsContainer.addEventListener('click', (e) => {
 					const button = e.target.closest('.action-btn');
 					if (!button || button.disabled) return;
-					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped) return;
+					const currentPlayer = state.players[state.currentPlayerIndex];
+					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped || currentPlayer.isComputer) return;
 
 					const action = button.dataset.action;
-					const source = state.players[state.currentPlayerIndex];
+					const source = currentPlayer;
 
 					switch (action) {
 						case 'attack':
@@ -806,7 +849,8 @@
 				});
 
 				playersContainer.addEventListener('click', (e) => {
-					if (!state.actionInProgress || state.turnSkipped) return;
+					const currentPlayer = state.players[state.currentPlayerIndex];
+					if (!state.actionInProgress || state.turnSkipped || currentPlayer.isComputer) return;
 					const card = e.target.closest('.player-card.selectable');
 					if (!card) return;
 
