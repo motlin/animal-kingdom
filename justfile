@@ -1,5 +1,7 @@
+# `just --list --unsorted`
+[group('default')]
 default:
-    @just --list
+    @just --list --unsorted
 
 build:
     rm -rf dist
