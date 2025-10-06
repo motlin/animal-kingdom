@@ -36,10 +36,7 @@ describe('Game flow', () => {
 	});
 
 	it('initializes game state with two players', () => {
-		const players = [
-			createPlayer(0, 'Player 1', 'Coyote', false),
-			createPlayer(1, 'Player 2', 'Coyote', false),
-		];
+		const players = [createPlayer(0, 'Player 1', 'Coyote', false), createPlayer(1, 'Player 2', 'Coyote', false)];
 
 		initializeState(players);
 
@@ -50,10 +47,7 @@ describe('Game flow', () => {
 	});
 
 	it('starts turn for first player', () => {
-		const players = [
-			createPlayer(0, 'Player 1', 'Coyote', false),
-			createPlayer(1, 'Player 2', 'Coyote', false),
-		];
+		const players = [createPlayer(0, 'Player 1', 'Coyote', false), createPlayer(1, 'Player 2', 'Coyote', false)];
 
 		initializeState(players);
 		startTurn();
@@ -63,10 +57,7 @@ describe('Game flow', () => {
 	});
 
 	it('ends turn and moves to next player', () => {
-		const players = [
-			createPlayer(0, 'Player 1', 'Coyote', false),
-			createPlayer(1, 'Player 2', 'Coyote', false),
-		];
+		const players = [createPlayer(0, 'Player 1', 'Coyote', false), createPlayer(1, 'Player 2', 'Coyote', false)];
 
 		initializeState(players);
 		const initialPlayerIndex = state.currentPlayerIndex;
@@ -77,10 +68,7 @@ describe('Game flow', () => {
 	});
 
 	it('tracks alive players correctly', () => {
-		const players = [
-			createPlayer(0, 'Player 1', 'Coyote', false),
-			createPlayer(1, 'Player 2', 'Coyote', false),
-		];
+		const players = [createPlayer(0, 'Player 1', 'Coyote', false), createPlayer(1, 'Player 2', 'Coyote', false)];
 
 		initializeState(players);
 

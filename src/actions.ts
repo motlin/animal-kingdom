@@ -5,10 +5,7 @@ import {playSound} from './sound.ts';
 export function applyDamage(target: Player, damage: number, source: Player): number {
 	if (target.status.isShielded) {
 		playSound('shield');
-		logMessage(
-			`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`,
-			2,
-		);
+		logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 2);
 		return 0;
 	}
 
@@ -36,10 +33,7 @@ export function handleHeal(source: Player): void {
 	source.oneTimeActions.hasHealed = true;
 	if (source.hp >= source.maxHp) {
 		source.hp += 1;
-		logMessage(
-			`${source.name} (${source.animal}) is overhealed for 1 HP! (${source.hp}/${source.maxHp})`,
-			1,
-		);
+		logMessage(`${source.name} (${source.animal}) is overhealed for 1 HP! (${source.hp}/${source.maxHp})`, 1);
 	} else {
 		const amountToHeal = Math.min(1, source.maxHp - source.hp);
 		source.hp += amountToHeal;
@@ -51,10 +45,7 @@ export function handleShield(source: Player): void {
 	playSound('shield');
 	source.oneTimeActions.hasShielded = true;
 	source.status.isShielded = true;
-	logMessage(
-		`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`,
-		1,
-	);
+	logMessage(`${source.name} (${source.animal}) raised a shield! It will block the next incoming damage.`, 1);
 }
 
 export function handleHowl(source: Player): void {
@@ -98,10 +89,7 @@ export function handleStrike(source: Player, target1: Player, target2: Player): 
 export function handleRampage(source: Player, target: Player): void {
 	playSound('rampage');
 	source.oneTimeActions.hasUsedAbility = true;
-	logMessage(
-		`${source.name} the Gorilla unleashes a devastating Rampage on ${target.name} (${target.animal})!`,
-		1,
-	);
+	logMessage(`${source.name} the Gorilla unleashes a devastating Rampage on ${target.name} (${target.animal})!`, 1);
 	applyDamage(target, 4, source);
 }
 

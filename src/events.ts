@@ -10,22 +10,11 @@ import {
 	updateThemeToggle,
 	updateMuteToggle,
 } from './ui.ts';
-import {
-	handleAbility,
-	handleUndo,
-	endTurn,
-	initiateTargetSelection,
-	executeTargetedAction,
-} from './game-flow.ts';
+import {handleAbility, handleUndo, endTurn, initiateTargetSelection, executeTargetedAction} from './game-flow.ts';
 import {handleHeal, handleShield} from './actions.ts';
 import {playSound, setMuted, isSoundMuted} from './sound.ts';
 import {loadTheme, saveTheme, saveMutePreference} from './storage.ts';
-import {
-	updatePlayerSelections,
-	toggleAbilities,
-	switchMode,
-	startGame,
-} from './setup.ts';
+import {updatePlayerSelections, toggleAbilities, switchMode, startGame} from './setup.ts';
 
 export function setupEventListeners(): void {
 	const playerCountSelect = getElement('player-count');
@@ -76,12 +65,7 @@ export function setupEventListeners(): void {
 		const currentPlayer = state.players[state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
-		if (
-			state.gameState !== 'playing' ||
-			state.actionInProgress ||
-			state.turnSkipped ||
-			currentPlayer.isComputer
-		)
+		if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped || currentPlayer.isComputer)
 			return;
 
 		const action = button.dataset['action'];
@@ -160,8 +144,7 @@ function handleKeyPress(event: KeyboardEvent): void {
 			event.preventDefault();
 		} else if (
 			state.gameState === 'playing' &&
-			((event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey)) ||
-				event.key.toLowerCase() === 'u')
+			((event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey)) || event.key.toLowerCase() === 'u')
 		) {
 			const undoBtn = getElement<HTMLButtonElement>('undo-btn');
 			if (!undoBtn.disabled) {

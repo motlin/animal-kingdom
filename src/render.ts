@@ -65,10 +65,7 @@ export function renderPlayers(): void {
 			statusIconsHTML += `<div class="status-icon" title="Ability on Cooldown">⏳<span class="tooltip">Ability on cooldown (${player.abilityCooldown} turn/s)</span></div>`;
 		if (player.abilityDisabled)
 			statusIconsHTML += `<div class="status-icon" title="Ability Disabled">🚫<span class="tooltip">Ability permanently disabled</span></div>`;
-		if (
-			player.oneTimeActions.hasUsedAbility &&
-			(player.animal === 'Gorilla' || player.animal === 'Monkey')
-		)
+		if (player.oneTimeActions.hasUsedAbility && (player.animal === 'Gorilla' || player.animal === 'Monkey'))
 			statusIconsHTML += `<div class="status-icon" title="Ability Used">✓<span class="tooltip">One-time ability has been used</span></div>`;
 
 		card.innerHTML = `
@@ -102,15 +99,15 @@ export function renderControls(): void {
 	abilityButton.disabled = isGameEnding || currentPlayer.abilityCooldown > 0 || currentPlayer.abilityDisabled;
 	lucide.createIcons();
 
-	querySelector<HTMLButtonElement>('[data-action="heal"]').disabled = isGameEnding || currentPlayer.oneTimeActions.hasHealed;
-	querySelector<HTMLButtonElement>('[data-action="shield"]').disabled = isGameEnding || currentPlayer.oneTimeActions.hasShielded;
+	querySelector<HTMLButtonElement>('[data-action="heal"]').disabled =
+		isGameEnding || currentPlayer.oneTimeActions.hasHealed;
+	querySelector<HTMLButtonElement>('[data-action="shield"]').disabled =
+		isGameEnding || currentPlayer.oneTimeActions.hasShielded;
 	querySelector<HTMLButtonElement>('[data-action="attack"]').disabled = isGameEnding;
 	querySelector<HTMLButtonElement>('[data-action="nothing"]').disabled = isGameEnding;
 
 	if (currentPlayer.animal === 'Tiger') {
-		const livingOpponents = state.players.filter(
-			(p) => p.isAlive && p.id !== currentPlayer.id,
-		).length;
+		const livingOpponents = state.players.filter((p) => p.isAlive && p.id !== currentPlayer.id).length;
 		if (livingOpponents < 2) {
 			abilityButton.disabled = true;
 		}
@@ -131,7 +128,8 @@ export function renderControls(): void {
 	});
 
 	const undoBtn = getElement<HTMLButtonElement>('undo-btn');
-	undoBtn.disabled = stateHistory.length === 0 || !!state.actionInProgress || currentPlayer.isComputer || isGameEnding;
+	undoBtn.disabled =
+		stateHistory.length === 0 || !!state.actionInProgress || currentPlayer.isComputer || isGameEnding;
 }
 
 export function renderLog(): void {

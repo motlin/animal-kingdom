@@ -49,12 +49,7 @@ export function unlockAnimal(animalName: string): void {
 	}
 }
 
-export function createPlayer(
-	id: number,
-	name: string,
-	animal: string,
-	isComputer: boolean,
-): Player {
+export function createPlayer(id: number, name: string, animal: string, isComputer: boolean): Player {
 	let initialHP = INITIAL_HP;
 	if (animal === 'Gorilla') {
 		initialHP = 4;

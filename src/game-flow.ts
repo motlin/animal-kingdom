@@ -3,14 +3,7 @@ import {state, saveStateToHistory, restorePreviousState, logMessage} from './gam
 import {render} from './render.ts';
 import {playSound} from './sound.ts';
 import {showConfetti} from './ui.ts';
-import {
-	handleAttack,
-	handleSpitball,
-	handleStrike,
-	handleRampage,
-	handleMischief,
-	handleHowl,
-} from './actions.ts';
+import {handleAttack, handleSpitball, handleStrike, handleRampage, handleMischief, handleHowl} from './actions.ts';
 import {getElement} from './dom.ts';
 
 export function startTurn(): void {
@@ -30,10 +23,7 @@ export function startTurn(): void {
 
 	if (currentPlayer.status.isSleeping) {
 		currentPlayer.status.isSleeping = false;
-		logMessage(
-			`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`,
-			1,
-		);
+		logMessage(`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`, 1);
 		state.actionInProgress = null;
 		state.turnSkipped = true;
 		render();
@@ -94,9 +84,7 @@ export function endTurn(): void {
 export function endGame(winner: Player | undefined): void {
 	state.gameState = 'gameOver';
 	playSound('victory');
-	const announcement = winner
-		? `${winner.name} the ${winner.animal} is the new ruler!`
-		: "It's a draw!";
+	const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
 	logMessage(announcement);
 	getElement('winner-announcement').textContent = announcement;
 	getElement('game-over-screen').style.display = 'flex';

@@ -75,10 +75,10 @@ export function updateChallengerMode(): void {
 
 	const unlockedAnimalsGrid = getElement('unlocked-animals-grid');
 	const challengerOpponentDisplay = getElement('challenger-opponent-display');
-	const lockedAnimals = (Object.keys(ANIMAL_ROSTER) as AnimalType[]).filter(animal => !unlockedAnimals.has(animal));
+	const lockedAnimals = (Object.keys(ANIMAL_ROSTER) as AnimalType[]).filter((animal) => !unlockedAnimals.has(animal));
 
 	unlockedAnimalsGrid.innerHTML = '';
-	([...unlockedAnimals] as AnimalType[]).forEach(animal => {
+	([...unlockedAnimals] as AnimalType[]).forEach((animal) => {
 		const card = document.createElement('div');
 		card.classList.add('animal-choice-card');
 		if (selectedChallengerAnimal === animal) {
@@ -119,7 +119,9 @@ export function updateChallengerMode(): void {
 export function updateStartButtonState(): void {
 	const startGameBtn = getElement<HTMLButtonElement>('start-game-btn');
 	if (currentMode === 'challenger') {
-		const lockedAnimals = (Object.keys(ANIMAL_ROSTER) as AnimalType[]).filter(animal => !unlockedAnimals.has(animal));
+		const lockedAnimals = (Object.keys(ANIMAL_ROSTER) as AnimalType[]).filter(
+			(animal) => !unlockedAnimals.has(animal),
+		);
 		startGameBtn.disabled = !selectedChallengerAnimal || lockedAnimals.length === 0;
 	} else {
 		startGameBtn.disabled = false;
@@ -251,10 +253,7 @@ export function startGame(): void {
 	});
 	const firstPlayer = players[0];
 	if (firstPlayer) {
-		logMessage(
-			`${firstPlayer.name} (${firstPlayer.animal}) will go first!`,
-			1,
-		);
+		logMessage(`${firstPlayer.name} (${firstPlayer.animal}) will go first!`, 1);
 	}
 
 	setupScreen.style.display = 'none';

@@ -4,7 +4,9 @@ let audioContext: AudioContext;
 let isMuted = false;
 
 export function initializeAudioContext(): void {
-	audioContext = new (window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext)();
+	audioContext = new (
+		window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext
+	)();
 }
 
 export function setMuted(muted: boolean): void {

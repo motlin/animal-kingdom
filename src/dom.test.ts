@@ -26,9 +26,7 @@ describe('DOM utilities', () => {
 		});
 
 		it('throws error when element does not exist', () => {
-			expect(() => querySelector('.nonexistent')).toThrow(
-				'Element with selector ".nonexistent" not found',
-			);
+			expect(() => querySelector('.nonexistent')).toThrow('Element with selector ".nonexistent" not found');
 		});
 	});
 
