@@ -25,28 +25,7 @@
 							<i data-lucide="chevron-down"></i><span>Show Abilities</span>
 						</button>
 					</div>
-					<div class="abilities-list hidden">
-						<div class="ability-item">
-							<strong>🐺 Coyote</strong>
-							<p>Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns.</p>
-						</div>
-						<div class="ability-item">
-							<strong>🦙 Llama</strong>
-							<p>Spitball: An attack with random damage (0-2).</p>
-						</div>
-						<div class="ability-item">
-							<strong>🐯 Tiger</strong>
-							<p>Strike: Hits two different opponents for 1 damage each.</p>
-						</div>
-						<div class="ability-item">
-							<strong>🦍 Gorilla</strong>
-							<p>Rampage: A one-time attack that deals 4x damage. Starting HP: 4.</p>
-						</div>
-						<div class="ability-item">
-							<strong>🐒 Monkey</strong>
-							<p>Mischief: A one-time ability that disables another player's ability permanently.</p>
-						</div>
-					</div>
+					<div class="abilities-list hidden"></div>
 				</div>
 
 				<div class="setup-section">
@@ -202,6 +181,7 @@
 
 				// --- GAME STATE ---
 				let state = {};
+				let unlockedAnimals = new Set();
 
 				const ANIMAL_ROSTER = {
 					Coyote: {
@@ -220,7 +200,9 @@
 
 				// --- SETUP LOGIC ---
 				function initializeSetup() {
+					loadUnlockedAnimals();
 					loadTheme();
+					updateAbilitiesList();
 					updatePlayerSelections();
 					playerCountSelect.addEventListener('change', updatePlayerSelections);
 					startGameBtn.addEventListener('click', startGame);
@@ -237,6 +219,26 @@
 					saveLogFullscreenBtn.addEventListener('click', saveGameLog);
 					toggleAbilitiesBtn.addEventListener('click', toggleAbilities);
 					document.addEventListener('keydown', handleKeyPress);
+				}
+
+				function loadUnlockedAnimals() {
+					const saved = localStorage.getItem('animalKingdomUnlockedAnimals');
+					if (saved) {
+						unlockedAnimals = new Set(JSON.parse(saved));
+					} else {
+						unlockedAnimals = new Set(['Coyote']);
+					}
+				}
+
+				function saveUnlockedAnimals() {
+					localStorage.setItem('animalKingdomUnlockedAnimals', JSON.stringify([...unlockedAnimals]));
+				}
+
+				function unlockAnimal(animalName) {
+					if (!unlockedAnimals.has(animalName)) {
+						unlockedAnimals.add(animalName);
+						saveUnlockedAnimals();
+					}
 				}
 
 				function loadTheme() {
@@ -256,6 +258,30 @@
 					localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
 					themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
 					lucide.createIcons();
+				}
+
+				function updateAbilitiesList() {
+					const animalEmojis = {
+						Coyote: '🐺',
+						Llama: '🦙',
+						Tiger: '🐯',
+						Gorilla: '🦍',
+						Monkey: '🐒',
+					};
+
+					const abilitiesHTML = Object.keys(ANIMAL_ROSTER)
+						.filter((animal) => unlockedAnimals.has(animal))
+						.map((animal) => {
+							const emoji = animalEmojis[animal];
+							const desc = ANIMAL_ROSTER[animal].abilityDesc;
+							return `<div class="ability-item">
+								<strong>${emoji} ${animal}</strong>
+								<p>${desc}</p>
+							</div>`;
+						})
+						.join('');
+
+					abilitiesList.innerHTML = abilitiesHTML;
 				}
 
 				function toggleAbilities() {
@@ -476,16 +502,6 @@
 
 						const previousAnimal = existingData[i - 1] ? existingData[i - 1].animal : '';
 
-						Object.keys(ANIMAL_ROSTER).forEach((animal) => {
-							const option = document.createElement('option');
-							option.value = animal;
-							option.textContent = animal;
-							if (previousAnimal && animal === previousAnimal) {
-								option.selected = true;
-							}
-							select.appendChild(option);
-						});
-
 						const playerTypeSelect = document.createElement('select');
 						playerTypeSelect.classList.add('player-type-select');
 						playerTypeSelect.id = `player${i}-type`;
@@ -503,6 +519,32 @@
 
 						const previousPlayerType = existingData[i - 1] ? existingData[i - 1].playerType : 'human';
 						playerTypeSelect.value = previousPlayerType;
+
+						const updateAnimalSelectOptions = () => {
+							const isHuman = playerTypeSelect.value === 'human';
+							const currentValue = select.value || previousAnimal;
+							select.innerHTML = '';
+
+							const availableAnimals = isHuman
+								? Object.keys(ANIMAL_ROSTER).filter((animal) => unlockedAnimals.has(animal))
+								: Object.keys(ANIMAL_ROSTER);
+
+							availableAnimals.forEach((animal) => {
+								const option = document.createElement('option');
+								option.value = animal;
+								option.textContent = animal;
+								select.appendChild(option);
+							});
+
+							if (availableAnimals.includes(currentValue)) {
+								select.value = currentValue;
+							} else if (availableAnimals.length > 0) {
+								select.value = availableAnimals[0];
+							}
+						};
+
+						playerTypeSelect.addEventListener('change', updateAnimalSelectOptions);
+						updateAnimalSelectOptions();
 
 						playerSetupDiv.appendChild(label);
 						playerSetupDiv.appendChild(nameInput);
@@ -906,6 +948,7 @@
 					if (target.hp <= 0) {
 						target.isAlive = false;
 						logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 3);
+						unlockAnimal(target.animal);
 					}
 					return actualDamage;
 				}
