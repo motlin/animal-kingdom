@@ -19,8 +19,13 @@
 				<h2>Game Setup</h2>
 
 				<div class="animal-abilities-section">
-					<h3>Animal Abilities</h3>
-					<div class="abilities-list">
+					<div class="abilities-header">
+						<h3>Animal Abilities</h3>
+						<button id="toggle-abilities-btn" class="toggle-abilities-btn">
+							<i data-lucide="chevron-down"></i><span>Show Abilities</span>
+						</button>
+					</div>
+					<div class="abilities-list hidden">
 						<div class="ability-item">
 							<strong>🐺 Coyote</strong>
 							<p>Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns.</p>
@@ -188,6 +193,8 @@
 				const fullscreenLogContent = document.getElementById('fullscreen-log-content');
 				const copyLogFullscreenBtn = document.getElementById('copy-log-fullscreen-btn');
 				const saveLogFullscreenBtn = document.getElementById('save-log-fullscreen-btn');
+				const toggleAbilitiesBtn = document.getElementById('toggle-abilities-btn');
+				const abilitiesList = document.querySelector('.abilities-list');
 
 				// --- GAME STATE ---
 				let state = {};
@@ -224,6 +231,7 @@
 					closeFullscreenLogBtn.addEventListener('click', hideFullscreenLog);
 					copyLogFullscreenBtn.addEventListener('click', copyGameLog);
 					saveLogFullscreenBtn.addEventListener('click', saveGameLog);
+					toggleAbilitiesBtn.addEventListener('click', toggleAbilities);
 					document.addEventListener('keydown', handleKeyPress);
 				}
 
@@ -243,6 +251,16 @@
 					const isDark = document.body.classList.contains('dark-mode');
 					localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
 					themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+					lucide.createIcons();
+				}
+
+				function toggleAbilities() {
+					const isHidden = abilitiesList.classList.toggle('hidden');
+					if (isHidden) {
+						toggleAbilitiesBtn.innerHTML = '<i data-lucide="chevron-down"></i><span>Show Abilities</span>';
+					} else {
+						toggleAbilitiesBtn.innerHTML = '<i data-lucide="chevron-up"></i><span>Hide Abilities</span>';
+					}
 					lucide.createIcons();
 				}
 
@@ -519,7 +537,10 @@
 					players.forEach((player) => {
 						logMessage(`${player.name} is the ${player.animal}`, 1);
 					});
-					logMessage(`${players[randomFirstPlayerIndex].name} (${players[randomFirstPlayerIndex].animal}) will go first!`, 1);
+					logMessage(
+						`${players[randomFirstPlayerIndex].name} (${players[randomFirstPlayerIndex].animal}) will go first!`,
+						1,
+					);
 
 					setupScreen.style.display = 'none';
 					gameScreen.style.display = 'flex';
