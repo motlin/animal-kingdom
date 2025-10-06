@@ -19,7 +19,7 @@
 			<div id="setup-screen">
 				<h2>Game Setup</h2>
 
-				<div class="animal-abilities-section">
+				<div class="animal-abilities-section collapsed">
 					<div class="abilities-header">
 						<h3>Animal Abilities</h3>
 						<button id="toggle-abilities-btn" class="toggle-abilities-btn">
@@ -516,10 +516,13 @@
 				}
 
 				function toggleAbilities() {
+					const section = document.querySelector('.animal-abilities-section');
 					const isHidden = abilitiesList.classList.toggle('hidden');
 					if (isHidden) {
+						section.classList.add('collapsed');
 						toggleAbilitiesBtn.innerHTML = '<i data-lucide="chevron-down"></i><span>Show Abilities</span>';
 					} else {
+						section.classList.remove('collapsed');
 						toggleAbilitiesBtn.innerHTML = '<i data-lucide="chevron-up"></i><span>Hide Abilities</span>';
 					}
 					lucide.createIcons();
