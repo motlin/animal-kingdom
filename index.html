@@ -353,14 +353,22 @@
 				function handleKeyPress(event) {
 					const currentPlayer = state.players[state.currentPlayerIndex];
 
-					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped || (currentPlayer && currentPlayer.isComputer)) {
+					if (
+						state.gameState !== 'playing'
+						|| state.actionInProgress
+						|| state.turnSkipped
+						|| (currentPlayer && currentPlayer.isComputer)
+					) {
 						if (event.key === '?' || event.key === '/') {
 							showKeyboardShortcuts();
 							event.preventDefault();
 						} else if (event.key === 'Escape') {
 							hideKeyboardShortcuts();
 							event.preventDefault();
-						} else if ((event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey)) || event.key.toLowerCase() === 'u') {
+						} else if (
+							(event.key.toLowerCase() === 'z' && (event.ctrlKey || event.metaKey))
+							|| event.key.toLowerCase() === 'u'
+						) {
 							if (!undoBtn.disabled) {
 								handleUndo();
 							}
@@ -777,11 +785,17 @@
 							}
 						}
 
-						const hpPercentage = (player.hp / player.maxHp) * 100;
+						const hpPercentage = Math.min((player.hp / player.maxHp) * 100, 100);
 						let hpColor;
-						if (hpPercentage > 60) hpColor = 'var(--hp-full)';
-						else if (hpPercentage > 30) hpColor = 'var(--hp-medium)';
-						else hpColor = 'var(--hp-low)';
+						if (player.hp > player.maxHp) {
+							hpColor = '#3498DB';
+						} else if (hpPercentage > 60) {
+							hpColor = 'var(--hp-full)';
+						} else if (hpPercentage > 30) {
+							hpColor = 'var(--hp-medium)';
+						} else {
+							hpColor = 'var(--hp-low)';
+						}
 
 						let statusIconsHTML = '';
 						if (player.status.isShielded)
@@ -907,7 +921,13 @@
 					const button = e.target.closest('.action-btn');
 					if (!button || button.disabled) return;
 					const currentPlayer = state.players[state.currentPlayerIndex];
-					if (state.gameState !== 'playing' || state.actionInProgress || state.turnSkipped || currentPlayer.isComputer) return;
+					if (
+						state.gameState !== 'playing'
+						|| state.actionInProgress
+						|| state.turnSkipped
+						|| currentPlayer.isComputer
+					)
+						return;
 
 					const action = button.dataset.action;
 					const source = currentPlayer;
@@ -1002,9 +1022,17 @@
 
 				function handleHeal(source) {
 					source.oneTimeActions.hasHealed = true;
-					const amountToHeal = Math.min(1, source.maxHp - source.hp);
-					source.hp += amountToHeal;
-					logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
+					if (source.hp >= source.maxHp) {
+						source.hp += 1;
+						logMessage(
+							`${source.name} (${source.animal}) is overhealed for 1 HP! (${source.hp}/${source.maxHp})`,
+							1,
+						);
+					} else {
+						const amountToHeal = Math.min(1, source.maxHp - source.hp);
+						source.hp += amountToHeal;
+						logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
+					}
 					endTurn();
 				}
 
