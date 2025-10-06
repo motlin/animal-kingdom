@@ -9,6 +9,7 @@
 	</head>
 	<body>
 		<button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme"><i data-lucide="moon"></i></button>
+		<button id="mute-toggle-btn" class="mute-toggle" title="Toggle sound (M)"><i data-lucide="volume-2"></i></button>
 
 		<header>
 			<img src="logo.png" alt="Animal Kingdom Logo" class="logo" />
@@ -142,6 +143,10 @@
 							<td>Undo</td>
 						</tr>
 						<tr>
+							<td>M</td>
+							<td>Toggle Mute</td>
+						</tr>
+						<tr>
 							<td>?</td>
 							<td>Show this help</td>
 						</tr>
@@ -186,11 +191,14 @@
 				const toggleAbilitiesBtn = document.getElementById('toggle-abilities-btn');
 				const abilitiesList = document.querySelector('.abilities-list');
 				const undoBtn = document.getElementById('undo-btn');
+				const muteToggleBtn = document.getElementById('mute-toggle-btn');
 
 				// --- SOUND SYSTEM ---
 				const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+				let isMuted = false;
 
 				function playSound(type, options = {}) {
+					if (isMuted) return;
 					const now = audioContext.currentTime;
 					const oscillator = audioContext.createOscillator();
 					const gainNode = audioContext.createGain();
@@ -403,6 +411,7 @@
 				function initializeSetup() {
 					loadUnlockedAnimals();
 					loadTheme();
+					loadMutePreference();
 					updateAbilitiesList();
 					updatePlayerSelections();
 					playerCountSelect.addEventListener('change', updatePlayerSelections);
@@ -414,6 +423,7 @@
 					copyLogGameOverBtn.addEventListener('click', copyGameLog);
 					closeShortcutsBtn.addEventListener('click', hideKeyboardShortcuts);
 					themeToggleBtn.addEventListener('click', toggleTheme);
+					muteToggleBtn.addEventListener('click', toggleMute);
 					viewLogBtn.addEventListener('click', showFullscreenLog);
 					closeFullscreenLogBtn.addEventListener('click', hideFullscreenLog);
 					copyLogFullscreenBtn.addEventListener('click', copyGameLog);
@@ -459,6 +469,25 @@
 					const isDark = document.body.classList.contains('dark-mode');
 					localStorage.setItem('animalKingdomTheme', isDark ? 'dark' : 'light');
 					themeToggleBtn.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+					lucide.createIcons();
+				}
+
+				function loadMutePreference() {
+					const savedMute = localStorage.getItem('animalKingdomMuted');
+					if (savedMute === 'true') {
+						isMuted = true;
+						muteToggleBtn.innerHTML = '<i data-lucide="volume-x"></i>';
+					} else {
+						isMuted = false;
+						muteToggleBtn.innerHTML = '<i data-lucide="volume-2"></i>';
+					}
+					lucide.createIcons();
+				}
+
+				function toggleMute() {
+					isMuted = !isMuted;
+					localStorage.setItem('animalKingdomMuted', isMuted.toString());
+					muteToggleBtn.innerHTML = isMuted ? '<i data-lucide="volume-x"></i>' : '<i data-lucide="volume-2"></i>';
 					lucide.createIcons();
 				}
 
@@ -543,6 +572,14 @@
 				}
 
 				function handleKeyPress(event) {
+					const key = event.key.toLowerCase();
+
+					if (key === 'm') {
+						toggleMute();
+						event.preventDefault();
+						return;
+					}
+
 					const currentPlayer = state.players[state.currentPlayerIndex];
 
 					if (
@@ -569,8 +606,6 @@
 						}
 						return;
 					}
-
-					const key = event.key.toLowerCase();
 
 					if (key === '?') {
 						showKeyboardShortcuts();

@@ -113,6 +113,36 @@ main {
     transform: scale(1.1);
 }
 
+.mute-toggle {
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+}
+
+.mute-toggle svg {
+    width: 24px;
+    height: 24px;
+}
+
+.mute-toggle:hover {
+    background-color: var(--color-primary);
+    transform: scale(1.1);
+}
+
 #setup-screen {
     text-align: center;
 }
