@@ -62,7 +62,7 @@ export function switchMode(mode: GameMode): void {
 		standardModeBtn.classList.remove('active');
 		challengerModeBtn.classList.add('active');
 		standardSetup.style.display = 'none';
-		challengerSetup.style.display = 'block';
+		challengerSetup.style.display = 'grid';
 		startGameBtn.innerHTML = '<i data-lucide="play"></i><span>Fight Challenger</span>';
 		lucide.createIcons();
 		updateChallengerMode();
