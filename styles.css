@@ -181,9 +181,10 @@ main {
 }
 
 #challenger-setup {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
+    align-items: start;
 }
 
 .challenger-selection h3,
@@ -194,9 +195,10 @@ main {
 }
 
 #unlocked-animals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 15px;
+    align-items: stretch;
 }
 
 .animal-choice-card {
@@ -250,8 +252,6 @@ body.dark-mode .animal-choice-card.selected {
     border-radius: 12px;
     padding: 30px;
     text-align: center;
-    max-width: 400px;
-    margin: 0 auto;
 }
 
 body.dark-mode .challenger-opponent-card {
@@ -277,8 +277,6 @@ body.dark-mode .challenger-opponent-card {
     border-radius: 10px;
     padding: 30px;
     text-align: center;
-    max-width: 400px;
-    margin: 0 auto;
 }
 
 .no-challengers p {
@@ -901,6 +899,11 @@ body.dark-mode #fullscreen-log-content {
     #game-interface {
         grid-template-columns: 1fr;
     }
+
+    #challenger-setup {
+        grid-template-columns: 1fr;
+    }
+
     .player-name {
         font-size: 18px;
     }
