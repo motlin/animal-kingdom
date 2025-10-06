@@ -1,22 +1,11 @@
 import js from '@eslint/js';
 import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import type {Linter} from 'eslint';
 
 const config: Linter.Config[] = [
 	{ignores: ['dist', 'build', '.llm/**']},
-	{
-		files: ['public/**/*.{ts,tsx}'],
-		languageOptions: {
-			globals: {
-				ServiceWorkerGlobalScope: 'readonly',
-				ExtendableEvent: 'readonly',
-			},
-		},
-	},
 	{
 		files: ['vite.config.ts', 'vitest.config.ts'],
 		languageOptions: {
@@ -26,7 +15,7 @@ const config: Linter.Config[] = [
 		},
 	},
 	{
-		files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/setupTests.{js,ts}'],
+		files: ['**/*.test.{js,ts}', '**/*.spec.{js,ts}', '**/setupTests.{js,ts}'],
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -41,7 +30,7 @@ const config: Linter.Config[] = [
 		},
 	},
 	{
-		files: ['**/*.{js,jsx}'],
+		files: ['**/*.js'],
 		languageOptions: {
 			ecmaVersion: 2020,
 			globals: {
@@ -50,26 +39,18 @@ const config: Linter.Config[] = [
 			},
 			parserOptions: {
 				ecmaVersion: 'latest',
-				ecmaFeatures: {jsx: true},
 				sourceType: 'module',
 			},
 		},
-		plugins: {
-			'react-hooks': reactHooks,
-			'react-refresh': reactRefresh,
-		},
 		rules: {
 			...js.configs.recommended.rules,
-			...reactHooks.configs.recommended.rules,
-			'react-hooks/exhaustive-deps': 'error',
 			'no-unused-vars': ['error', {varsIgnorePattern: '^[A-Z_]'}],
-			'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
 			eqeqeq: ['error', 'smart'],
 			'one-var': ['error', 'never'],
 		},
 	},
 	{
-		files: ['**/*.{ts,tsx}'],
+		files: ['**/*.ts'],
 		languageOptions: {
 			ecmaVersion: 2020,
 			globals: {
@@ -79,23 +60,17 @@ const config: Linter.Config[] = [
 			parser: tsparser,
 			parserOptions: {
 				ecmaVersion: 'latest',
-				ecmaFeatures: {jsx: true},
 				sourceType: 'module',
 				project: './tsconfig.json',
 			},
 		},
 		plugins: {
 			'@typescript-eslint': tseslint as any,
-			'react-hooks': reactHooks,
-			'react-refresh': reactRefresh,
 		},
 		rules: {
-			...tseslint.configs.recommended.rules,
-			...reactHooks.configs.recommended.rules,
-			'react-hooks/exhaustive-deps': 'error',
+			...(tseslint.configs?.['recommended']?.rules || {}),
 			'@typescript-eslint/no-unused-vars': ['error', {varsIgnorePattern: '^[A-Z_]'}],
-			'@typescript-eslint/no-explicit-any': 'off', // TODO: Consider enabling this later
-			'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
+			'@typescript-eslint/no-explicit-any': 'off',
 			eqeqeq: ['error', 'smart'],
 			'one-var': ['error', 'never'],
 		},

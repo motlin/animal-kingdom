@@ -6,6 +6,7 @@
 		<title>Animal Kingdom</title>
 		<link rel="stylesheet" href="styles.css" />
 		<script src="https://unpkg.com/lucide@latest"></script>
+		<script type="module" src="/src/main.ts"></script>
 	</head>
 	<body>
 		<button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme"><i data-lucide="moon"></i></button>
@@ -183,6 +184,9 @@
 		</main>
 
 		<script>
+			// NOTE: Game logic has been moved to /src/main.ts
+			// This inline script is temporarily preserved for backward compatibility
+			// and will be removed in the next task when porting to TypeScript
 			document.addEventListener('DOMContentLoaded', () => {
 				// --- DOM ELEMENTS ---
 				const setupScreen = document.getElementById('setup-screen');
