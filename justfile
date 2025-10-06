@@ -3,17 +3,45 @@
 default:
     @just --list --unsorted
 
-[group('build')]
-build:
-    rm -rf dist
-    mkdir -p dist
-    cp index.html dist/
-    cp logo.png dist/
-    cp styles.css dist/
+[group('dev')]
+dev:
+    npm run dev
 
 [group('dev')]
-serve:
-    python3 -m http.server 8000
+preview:
+    npm run preview
+
+[group('dev')]
+test:
+    npm run test
+
+[group('build')]
+build:
+    npm run build
+
+[group('ci')]
+typecheck:
+    npm run ci:typecheck
+
+[group('ci')]
+lint:
+    npm run lint
+
+[group('ci')]
+format:
+    npm run format
+
+[group('ci')]
+format-check:
+    npm run ci:biome
+    npm run ci:prettier
+
+[group('ci')]
+test-once:
+    npm run test:run
+
+[group('ci')]
+ci: format-check typecheck test-once build
 
 [group('build')]
 precommit:
