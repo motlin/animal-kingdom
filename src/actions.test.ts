@@ -1,23 +1,17 @@
 import {describe, it, expect, beforeEach, vi} from 'vitest';
 import {handleHeal, handleShield, applyDamage} from './actions.ts';
-import {createPlayer} from './game-state.ts';
+import {createPlayer, initializeState, setUnlockedAnimals} from './game-state.ts';
 
 vi.mock('./sound.ts', () => ({
 	playSound: vi.fn(),
 }));
 
-vi.mock('./game-state.ts', async (importOriginal) => {
-	const actual = (await importOriginal()) as any;
-	return {
-		...actual,
-		logMessage: vi.fn(),
-		unlockAnimal: vi.fn(),
-	};
-});
-
 describe('Player actions', () => {
 	beforeEach(() => {
 		document.body.innerHTML = '<div id="game-log"></div>';
+		const testPlayer = createPlayer(0, 'Test', 'Coyote', false);
+		initializeState([testPlayer]);
+		setUnlockedAnimals(new Set());
 	});
 
 	describe('handleHeal', () => {
