@@ -2,6 +2,8 @@ import {useState, useCallback, useEffect} from 'react';
 import {Header} from './components/Header/Header';
 import {SetupScreen} from './screens/SetupScreen/SetupScreen';
 import {GameScreen} from './screens/GameScreen/GameScreen';
+import {ThemeToggle} from './components/ThemeToggle/ThemeToggle';
+import {MuteToggle} from './components/MuteToggle/MuteToggle';
 import type {PlayerConfiguration} from './screens/SetupScreen/StandardSetup';
 import type {GameMode, AnimalType} from './types';
 import {useGameState} from './hooks/useGameState';
@@ -35,6 +37,10 @@ function App() {
 	useEffect(() => {
 		gameState.setUnlockedAnimals(storage.unlockedAnimals);
 	}, [storage.unlockedAnimals, gameState]);
+
+	useEffect(() => {
+		document.body.classList.toggle('dark-mode', storage.theme === 'dark');
+	}, [storage.theme]);
 
 	const triggerRender = useCallback(() => {
 		forceUpdate({});
@@ -218,9 +224,27 @@ function App() {
 		URL.revokeObjectURL(url);
 	}, [gameState]);
 
+	const handleThemeToggle = useCallback(() => {
+		storage.setTheme(storage.theme === 'light' ? 'dark' : 'light');
+	}, [storage]);
+
+	const handleMuteToggle = useCallback(() => {
+		const newMutedState = !storage.isMuted;
+		storage.setIsMuted(newMutedState);
+		sound.setIsMuted(newMutedState);
+	}, [storage, sound]);
+
 	if (screen === 'setup') {
 		return (
 			<div className="app">
+				<ThemeToggle
+					theme={storage.theme}
+					onToggle={handleThemeToggle}
+				/>
+				<MuteToggle
+					isMuted={storage.isMuted}
+					onToggle={handleMuteToggle}
+				/>
 				<Header isGameActive={false} />
 				<SetupScreen
 					mode={mode}
@@ -294,6 +318,14 @@ function App() {
 
 	return (
 		<div className="app">
+			<ThemeToggle
+				theme={storage.theme}
+				onToggle={handleThemeToggle}
+			/>
+			<MuteToggle
+				isMuted={storage.isMuted}
+				onToggle={handleMuteToggle}
+			/>
 			<Header isGameActive={true} />
 			<GameScreen
 				players={gameState.state.players}
