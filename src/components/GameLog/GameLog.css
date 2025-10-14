@@ -1,0 +1,49 @@
+.game-log-container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.game-log-header {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	margin: 0;
+	font-size: 0.9em;
+	color: var(--color-secondary);
+	opacity: 0.8;
+	z-index: 10;
+	background-color: transparent;
+	pointer-events: none;
+}
+
+.game-log-content {
+	flex-grow: 1;
+	background-color: #fff;
+	border: 1px solid var(--color-accent);
+	border-radius: 8px;
+	padding: 10px;
+	overflow-y: auto;
+	height: 200px;
+	font-size: 14px;
+	white-space: pre-wrap;
+	font-family: monospace;
+}
+
+body.dark-mode .game-log-content {
+	background-color: var(--color-light);
+}
+
+.log-entry {
+	margin: 2px 0;
+}
+
+.log-buttons {
+	display: flex;
+	gap: 10px;
+}
+
+.log-buttons button {
+	flex: 1;
+}
