@@ -1,4 +1,4 @@
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 import './OpponentCard.css';
 
 export interface OpponentCardProperties {

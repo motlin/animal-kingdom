@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {expect, userEvent, within, fn} from '@storybook/test';
 import {SetupScreen} from './SetupScreen';
 import type {PlayerConfiguration} from './StandardSetup';
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 import type {GameMode} from '../../components/ModeSelector/ModeSelector';
 
 const meta = {

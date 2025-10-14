@@ -1,7 +1,7 @@
 import {AnimalCard} from '../../components/AnimalCard/AnimalCard';
 import {OpponentCard} from '../../components/OpponentCard/OpponentCard';
-import {ANIMAL_ROSTER} from '../../constants';
-import type {AnimalType} from '../../types';
+import {ANIMAL_ROSTER} from '../../lib/constants';
+import type {AnimalType} from '../../lib/types';
 import './ChallengerSetup.css';
 
 export interface ChallengerSetupProperties {

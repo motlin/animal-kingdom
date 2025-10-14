@@ -1,7 +1,7 @@
 import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
 import {renderHook, act} from '@testing-library/react';
 import {useStorage} from './useStorage.ts';
-import type {AnimalType} from '../types.ts';
+import type {AnimalType} from '../lib/types.ts';
 
 function mockLocalStorage() {
 	const store: Record<string, string> = {};

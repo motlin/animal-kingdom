@@ -3,7 +3,7 @@ import {ModeSelector, type GameMode} from '../../components/ModeSelector/ModeSel
 import {AnimalAbilities} from '../../components/AnimalAbilities/AnimalAbilities';
 import {StandardSetup, type PlayerConfiguration} from './StandardSetup';
 import {ChallengerSetup} from './ChallengerSetup';
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 import './SetupScreen.css';
 
 export interface SetupScreenProperties {

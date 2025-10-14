@@ -1,7 +1,7 @@
 import {describe, it, expect, vi, beforeEach} from 'vitest';
 import {renderHook} from '@testing-library/react';
 import {useGameActions} from './useGameActions.ts';
-import type {Player, GameState} from '../types.ts';
+import type {Player, GameState} from '../lib/types.ts';
 import * as sound from '../sound.ts';
 
 vi.mock('../sound.ts', () => ({

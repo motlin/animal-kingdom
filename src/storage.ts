@@ -1,4 +1,4 @@
-import type {AnimalType} from './types.ts';
+import type {AnimalType} from './lib/types.ts';
 
 const UNLOCKED_ANIMALS_KEY = 'animalKingdomUnlockedAnimals';
 const THEME_KEY = 'animalKingdomTheme';

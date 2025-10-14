@@ -1,5 +1,5 @@
-import type {AnimalType} from '../../types';
-import {ANIMAL_EMOJIS, ABILITY_NAMES} from '../../constants';
+import type {AnimalType} from '../../lib/types';
+import {ANIMAL_EMOJIS, ABILITY_NAMES} from '../../lib/constants';
 import './AbilityCard.css';
 
 export interface AbilityCardProperties {

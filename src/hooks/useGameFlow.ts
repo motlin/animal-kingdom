@@ -1,5 +1,5 @@
 import {useCallback, useRef} from 'react';
-import type {Player, ActionInProgress} from '../types.ts';
+import type {Player, ActionInProgress} from '../lib/types.ts';
 import type {UseGameStateReturn} from './useGameState.ts';
 import type {UseGameActionsReturn} from './useGameActions.ts';
 import {playSound} from '../sound.ts';

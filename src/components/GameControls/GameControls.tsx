@@ -1,7 +1,7 @@
 import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
-import type {AnimalType} from '../../types';
-import {ABILITY_NAMES} from '../../constants';
+import type {AnimalType} from '../../lib/types';
+import {ABILITY_NAMES} from '../../lib/constants';
 import './GameControls.css';
 
 export interface GameControlsProperties {

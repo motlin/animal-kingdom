@@ -1,5 +1,5 @@
 import {useState, useEffect, useCallback} from 'react';
-import type {AnimalType} from '../types.ts';
+import type {AnimalType} from '../lib/types.ts';
 import {
 	loadUnlockedAnimals as loadUnlockedAnimalsFromStorage,
 	saveUnlockedAnimals as saveUnlockedAnimalsToStorage,

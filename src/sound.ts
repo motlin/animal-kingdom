@@ -1,4 +1,4 @@
-import type {SoundType} from './types.ts';
+import type {SoundType} from './lib/types.ts';
 
 let audioContext: AudioContext;
 let isMuted = false;

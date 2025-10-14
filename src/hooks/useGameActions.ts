@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import type {Player, GameState} from '../types.ts';
+import type {Player, GameState} from '../lib/types.ts';
 import {playSound} from '../sound.ts';
 
 export interface UseGameActionsReturn {

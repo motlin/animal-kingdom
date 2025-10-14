@@ -1,5 +1,5 @@
 import {useState, useEffect, useCallback} from 'react';
-import type {SoundType} from '../types.ts';
+import type {SoundType} from '../lib/types.ts';
 import {
 	initializeAudioContext,
 	setMuted as setMutedInSound,

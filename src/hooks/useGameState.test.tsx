@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest';
 import {renderHook, act} from '@testing-library/react';
 import {useGameState} from './useGameState.ts';
-import type {Player} from '../types.ts';
+import type {Player} from '../lib/types.ts';
 
 describe('useGameState', () => {
 	it('initializes with default state', () => {

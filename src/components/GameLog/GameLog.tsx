@@ -1,7 +1,7 @@
 import {useRef, useEffect} from 'react';
 import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
-import type {LogEntry} from '../../types';
+import type {LogEntry} from '../../lib/types';
 import './GameLog.css';
 
 export interface GameLogProperties {

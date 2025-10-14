@@ -1,4 +1,4 @@
-import type {Player} from '../../types';
+import type {Player} from '../../lib/types';
 import {HPBar} from '../HPBar/HPBar';
 import {Icon} from '../Icon/Icon';
 import './PlayerCard.css';

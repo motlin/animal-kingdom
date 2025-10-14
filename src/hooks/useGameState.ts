@@ -1,6 +1,6 @@
 import {useState, useCallback} from 'react';
-import type {GameState, Player, AnimalType, GameMode} from '../types.ts';
-import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../constants.ts';
+import type {GameState, Player, AnimalType, GameMode} from '../lib/types.ts';
+import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../lib/constants.ts';
 import {saveUnlockedAnimals} from '../storage.ts';
 
 export interface UseGameStateReturn {

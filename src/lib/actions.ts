@@ -1,6 +1,6 @@
 import type {Player} from './types.ts';
 import {state, logMessage, unlockAnimal} from './game-state.ts';
-import {playSound} from './sound.ts';
+import {playSound} from '../sound.ts';
 
 export function applyDamage(target: Player, damage: number, source: Player): number {
 	if (target.status.isShielded) {

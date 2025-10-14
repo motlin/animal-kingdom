@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {useState} from 'react';
 import {ChallengerSetup} from './ChallengerSetup';
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 
 const meta = {
 	title: 'Screens/ChallengerSetup',

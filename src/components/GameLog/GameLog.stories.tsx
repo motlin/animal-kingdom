@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {GameLog} from './GameLog';
-import type {LogEntry} from '../../types';
+import type {LogEntry} from '../../lib/types';
 
 const meta = {
 	title: 'Components/GameLog',

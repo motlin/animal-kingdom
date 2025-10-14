@@ -1,4 +1,4 @@
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 import './AnimalCard.css';
 
 export interface AnimalCardProperties {

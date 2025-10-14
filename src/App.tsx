@@ -5,7 +5,7 @@ import {GameScreen} from './screens/GameScreen/GameScreen';
 import {ThemeToggle} from './components/ThemeToggle/ThemeToggle';
 import {MuteToggle} from './components/MuteToggle/MuteToggle';
 import type {PlayerConfiguration} from './screens/SetupScreen/StandardSetup';
-import type {GameMode, AnimalType} from './types';
+import type {GameMode, AnimalType} from './lib/types';
 import {useGameState} from './hooks/useGameState';
 import {useGameActions} from './hooks/useGameActions';
 import {useGameFlow} from './hooks/useGameFlow';

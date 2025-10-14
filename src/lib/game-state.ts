@@ -1,6 +1,6 @@
 import type {GameState, Player, AnimalType, GameMode} from './types.ts';
 import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from './constants.ts';
-import {saveUnlockedAnimals} from './storage.ts';
+import {saveUnlockedAnimals} from '../storage.ts';
 
 export let state: GameState;
 export let stateHistory: GameState[] = [];

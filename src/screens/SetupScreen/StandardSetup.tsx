@@ -1,6 +1,6 @@
 import {Select, type SelectOption} from '../../components/Select/Select';
 import {PlayerSetup} from '../../components/PlayerSetup/PlayerSetup';
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 import './StandardSetup.css';
 
 export interface PlayerConfiguration {

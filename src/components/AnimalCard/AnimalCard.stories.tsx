@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {AnimalCard} from './AnimalCard';
-import {ANIMAL_ROSTER} from '../../constants';
+import {ANIMAL_ROSTER} from '../../lib/constants';
 
 const meta = {
 	title: 'Components/AnimalCard',

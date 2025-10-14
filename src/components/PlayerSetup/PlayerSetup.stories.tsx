@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {useState} from 'react';
 import {PlayerSetup} from './PlayerSetup';
-import type {AnimalType} from '../../types';
+import type {AnimalType} from '../../lib/types';
 
 const meta = {
 	title: 'Components/PlayerSetup',

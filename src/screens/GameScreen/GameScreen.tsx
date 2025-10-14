@@ -2,7 +2,7 @@ import {PlayerCard} from '../../components/PlayerCard/PlayerCard';
 import {GameControls} from '../../components/GameControls/GameControls';
 import {GameLog} from '../../components/GameLog/GameLog';
 import {GameOverModal} from '../../components/GameOverModal/GameOverModal';
-import type {Player, LogEntry, AnimalType} from '../../types';
+import type {Player, LogEntry, AnimalType} from '../../lib/types';
 import './GameScreen.css';
 
 export interface GameScreenProperties {

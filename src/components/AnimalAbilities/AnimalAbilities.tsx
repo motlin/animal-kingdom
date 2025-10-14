@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import type {AnimalType} from '../../types';
-import {ANIMAL_ROSTER, ANIMAL_UNLOCK_ORDER} from '../../constants';
+import type {AnimalType} from '../../lib/types';
+import {ANIMAL_ROSTER, ANIMAL_UNLOCK_ORDER} from '../../lib/constants';
 import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
 import {AbilityCard} from '../AbilityCard/AbilityCard';

@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {PlayerCard} from './PlayerCard';
-import type {Player} from '../../types';
+import type {Player} from '../../lib/types';
 
 const meta = {
 	title: 'Components/PlayerCard',
