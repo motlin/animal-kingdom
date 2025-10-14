@@ -1,0 +1,123 @@
+button {
+	font-family: var(--font-main);
+	padding: 10px 15px;
+	border-radius: 8px;
+	border: 1px solid var(--color-accent);
+	background-color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+body.dark-mode button {
+	background-color: var(--color-light);
+	color: var(--color-text);
+}
+
+button svg {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	vertical-align: middle;
+}
+
+button u {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+}
+
+.button-primary {
+	background-color: var(--color-primary);
+	color: white;
+	border: none;
+}
+
+.button-primary:hover:not(:disabled) {
+	background-color: var(--color-secondary);
+}
+
+.button-primary:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+.button-mode {
+	flex: 1;
+	max-width: 250px;
+	padding: 15px 20px;
+	font-size: 1.1em;
+	background-color: var(--color-accent);
+	color: var(--color-text);
+	border: 2px solid var(--color-accent);
+}
+
+.button-mode:hover:not(:disabled) {
+	background-color: var(--color-primary);
+	color: white;
+	border-color: var(--color-primary);
+}
+
+.button-mode.active {
+	background-color: var(--color-primary);
+	color: white;
+	border-color: var(--color-secondary);
+}
+
+.button-undo {
+	margin-top: 15px;
+	width: 100%;
+	background-color: #9b59b6;
+	color: white;
+	border: none;
+}
+
+.button-undo:hover:not(:disabled) {
+	background-color: #8e44ad;
+}
+
+.button-undo:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+.button-toggle {
+	position: fixed;
+	background-color: var(--color-accent);
+	border: 2px solid var(--color-primary);
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	font-size: 24px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0;
+	padding: 0;
+}
+
+.button-toggle svg {
+	width: 24px;
+	height: 24px;
+}
+
+.button-toggle:hover {
+	background-color: var(--color-primary);
+	transform: scale(1.1);
+}
+
+.button-log {
+	flex: 1;
+	background-color: var(--color-primary);
+	color: white;
+	border: none;
+}
+
+.button-log:hover:not(:disabled) {
+	background-color: var(--color-secondary);
+}
