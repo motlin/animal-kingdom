@@ -1,0 +1,64 @@
+.player-card {
+	background-color: #fff;
+	border: 2px solid var(--color-accent);
+	border-radius: 10px;
+	padding: 15px;
+	transition: all 0.2s ease-in-out;
+}
+
+body.dark-mode .player-card {
+	background-color: var(--color-light);
+}
+
+.player-card.active {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 15px var(--color-primary);
+	transform: scale(1.03);
+}
+
+.player-card.selectable {
+	cursor: pointer;
+	border-color: #3498db;
+}
+
+.player-card.selectable:hover {
+	box-shadow: 0 0 15px #3498db;
+}
+
+.player-card.dead {
+	opacity: 0.5;
+	background-color: #f0f0f0;
+}
+
+body.dark-mode .player-card.dead {
+	background-color: #3a3a3a;
+}
+
+.player-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.player-name {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.animal-name {
+	font-style: italic;
+	color: #555;
+}
+
+.status-icons {
+	display: flex;
+	gap: 10px;
+	min-height: 24px;
+	align-items: center;
+}
+
+.status-icon {
+	font-size: 22px;
+	position: relative;
+}
