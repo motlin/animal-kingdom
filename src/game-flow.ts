@@ -66,8 +66,14 @@ export function endTurn(): void {
 	if (alivePlayers.length <= 1) {
 		state.gameState = 'gameEnding';
 		render();
-		showConfetti();
-		setTimeout(() => endGame(alivePlayers[0]), 2000);
+
+		const winner = alivePlayers[0];
+		const shouldShowConfetti = state.gameMode === 'standard' || (winner && !winner.isComputer);
+		if (shouldShowConfetti) {
+			showConfetti();
+		}
+
+		setTimeout(() => endGame(winner), 2000);
 		return;
 	}
 

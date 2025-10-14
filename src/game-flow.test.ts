@@ -1,8 +1,11 @@
-import {describe, it, expect, beforeEach, vi} from 'vitest';
+import {describe, it, expect, beforeEach, vi, afterEach} from 'vitest';
 import {initializeState, createPlayer, state} from './game-state.ts';
 import {startTurn, endTurn} from './game-flow.ts';
+import * as ui from './ui.ts';
 
 describe('Game flow', () => {
+	let showConfettiSpy: any;
+
 	beforeEach(() => {
 		document.body.innerHTML = `
 			<div id="game-screen">
@@ -33,6 +36,12 @@ describe('Game flow', () => {
 			setMuted: vi.fn(),
 			isSoundMuted: vi.fn(() => false),
 		}));
+
+		showConfettiSpy = vi.spyOn(ui, 'showConfetti').mockImplementation(() => {});
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
 	});
 
 	it('initializes game state with two players', () => {
@@ -74,5 +83,52 @@ describe('Game flow', () => {
 
 		const alivePlayers = state.players.filter((p) => p.isAlive);
 		expect(alivePlayers).toHaveLength(2);
+	});
+
+	it('shows confetti in standard mode when game ends', () => {
+		vi.useFakeTimers();
+
+		const players = [createPlayer(0, 'Player 1', 'Coyote', false), createPlayer(1, 'Player 2', 'Coyote', false)];
+
+		initializeState(players, 'standard');
+		state.players[1]!.isAlive = false;
+
+		endTurn();
+
+		expect(showConfettiSpy).toHaveBeenCalled();
+
+		vi.useRealTimers();
+	});
+
+	it('shows confetti in challenger mode when human player wins', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Coyote', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Tiger', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.players[1]!.isAlive = false;
+
+		endTurn();
+
+		expect(showConfettiSpy).toHaveBeenCalled();
+
+		vi.useRealTimers();
+	});
+
+	it('does not show confetti in challenger mode when computer wins', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Coyote', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Tiger', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.players[0]!.isAlive = false;
+
+		endTurn();
+
+		expect(showConfettiSpy).not.toHaveBeenCalled();
+
+		vi.useRealTimers();
 	});
 });
