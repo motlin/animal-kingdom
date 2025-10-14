@@ -1,0 +1,23 @@
+.ability-card {
+	padding: 12px;
+	background-color: var(--color-background);
+	border: 1px solid var(--color-accent);
+	border-radius: 8px;
+}
+
+body.dark-mode .ability-card {
+	background-color: var(--color-background);
+}
+
+.ability-card strong {
+	display: block;
+	font-size: 1.1em;
+	margin-bottom: 5px;
+	color: var(--color-primary);
+}
+
+.ability-card p {
+	margin: 0;
+	font-size: 0.9em;
+	line-height: 1.4;
+}
