@@ -1,0 +1,23 @@
+.player-setup {
+	display: grid;
+	grid-template-columns: 100px 1fr 1fr 1fr;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.player-setup .player-label {
+	font-weight: bold;
+	color: var(--color-text);
+	text-align: right;
+}
+
+.player-setup .input-container,
+.player-setup .select-container {
+	margin: 0;
+}
+
+.player-setup .input-container label,
+.player-setup .select-container label {
+	display: none;
+}
