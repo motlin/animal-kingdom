@@ -119,7 +119,9 @@ export const StandardGameInProgress: Story = {
 		const attackButton = canvas.getByRole('button', {name: 'Attack'});
 		await expect(attackButton).toBeEnabled();
 
-		await userEvent.click(attackButton);
+		if (attackButton) {
+			await userEvent.click(attackButton);
+		}
 		await expect(args.onAttack).toHaveBeenCalledTimes(1);
 	},
 };
@@ -203,7 +205,9 @@ export const WithStatusEffects: Story = {
 		const shieldButton = canvas.getByRole('button', {name: 'Shield (0)'});
 		await expect(shieldButton).toBeDisabled();
 
-		await userEvent.click(healButton);
+		if (healButton) {
+			await userEvent.click(healButton);
+		}
 		await expect(args.onHeal).toHaveBeenCalledTimes(1);
 	},
 };

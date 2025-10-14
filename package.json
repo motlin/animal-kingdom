@@ -17,7 +17,8 @@
 		"test:ui": "vitest --ui",
 		"test:run": "vitest run",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"test-storybook": "npx concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npx http-server storybook-static --port 6006 --silent\" \"npx wait-on tcp:127.0.0.1:6006 && test-storybook\""
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.2",

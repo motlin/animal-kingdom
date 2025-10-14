@@ -48,7 +48,9 @@ export const AllEnabled: Story = {
 		const attackButton = canvas.getByRole('button', {name: /Attack/i});
 		await expect(attackButton).toBeEnabled();
 
-		await userEvent.click(attackButton);
+		if (attackButton) {
+			await userEvent.click(attackButton);
+		}
 		await expect(args.onAttack).toHaveBeenCalledTimes(1);
 	},
 };
