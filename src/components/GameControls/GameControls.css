@@ -1,0 +1,24 @@
+.game-controls {
+	padding: 15px;
+	border: 2px solid var(--color-accent);
+	border-radius: 10px;
+	background-color: #fff;
+}
+
+body.dark-mode .game-controls {
+	background-color: var(--color-light);
+}
+
+.turn-indicator {
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-bottom: 15px;
+	color: var(--color-primary);
+}
+
+.action-buttons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
