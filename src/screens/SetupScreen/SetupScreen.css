@@ -1,0 +1,19 @@
+.setup-screen {
+	text-align: center;
+}
+
+.setup-screen h2 {
+	margin-bottom: 20px;
+}
+
+.start-game-container {
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+}
+
+.start-game-container .button-primary {
+	min-width: 200px;
+	font-size: 1.2em;
+	padding: 15px 30px;
+}
