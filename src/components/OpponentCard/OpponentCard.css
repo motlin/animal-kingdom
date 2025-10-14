@@ -1,0 +1,24 @@
+.opponent-card {
+	background-color: #fff;
+	border: 3px solid #e74c3c;
+	border-radius: 12px;
+	padding: 30px;
+	text-align: center;
+}
+
+body.dark-mode .opponent-card {
+	background-color: var(--color-light);
+}
+
+.opponent-name {
+	font-size: 2em;
+	font-weight: bold;
+	color: #e74c3c;
+	margin-bottom: 10px;
+}
+
+.opponent-label {
+	font-size: 1.1em;
+	color: var(--color-secondary);
+	font-style: italic;
+}
