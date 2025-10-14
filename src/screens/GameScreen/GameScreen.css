@@ -1,0 +1,41 @@
+.game-screen {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.players-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px;
+}
+
+.game-interface {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.controls-container {
+	padding: 15px;
+	border: 2px solid var(--color-accent);
+	border-radius: 10px;
+	background-color: #fff;
+}
+
+body.dark-mode .controls-container {
+	background-color: var(--color-light);
+}
+
+.log-container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+@media (max-width: 768px) {
+	.game-interface {
+		grid-template-columns: 1fr;
+	}
+}
