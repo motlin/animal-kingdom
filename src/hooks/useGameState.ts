@@ -1,0 +1,163 @@
+import {useState, useCallback} from 'react';
+import type {GameState, Player, AnimalType, GameMode} from '../types.ts';
+import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../constants.ts';
+import {saveUnlockedAnimals} from '../storage.ts';
+
+export interface UseGameStateReturn {
+	state: GameState;
+	stateHistory: GameState[];
+	unlockedAnimals: Set<string>;
+	setUnlockedAnimals: (animals: Set<string>) => void;
+	initializeState: (players: Player[], gameMode?: GameMode) => void;
+	saveStateToHistory: () => void;
+	restorePreviousState: () => void;
+	logMessage: (message: string, indent?: number) => void;
+	unlockAnimal: (animalName: string) => void;
+	getNextLockedAnimal: () => AnimalType | null;
+	createPlayer: (id: number, name: string, animal: string, isComputer: boolean) => Player;
+}
+
+interface StateWithHistory {
+	current: GameState;
+	history: GameState[];
+}
+
+export function useGameState(): UseGameStateReturn {
+	const [stateWithHistory, setStateWithHistory] = useState<StateWithHistory>({
+		current: {
+			players: [],
+			currentPlayerIndex: 0,
+			gameState: 'playing',
+			gameMode: 'standard',
+			turn: 1,
+			actionInProgress: null,
+			turnSkipped: false,
+			log: [],
+		},
+		history: [],
+	});
+
+	const [unlockedAnimals, setUnlockedAnimalsState] = useState<Set<string>>(new Set());
+
+	const setUnlockedAnimals = useCallback((animals: Set<string>) => {
+		setUnlockedAnimalsState(animals);
+	}, []);
+
+	const initializeState = useCallback((players: Player[], gameMode: GameMode = 'standard') => {
+		const randomFirstPlayerIndex = Math.floor(Math.random() * players.length);
+
+		setStateWithHistory({
+			current: {
+				players,
+				currentPlayerIndex: randomFirstPlayerIndex,
+				gameState: 'playing',
+				gameMode,
+				turn: 1,
+				actionInProgress: null,
+				turnSkipped: false,
+				log: [],
+			},
+			history: [],
+		});
+	}, []);
+
+	const saveStateToHistory = useCallback(() => {
+		setStateWithHistory((prev) => {
+			const stateCopy = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			return {
+				current: prev.current,
+				history: [...prev.history, stateCopy],
+			};
+		});
+	}, []);
+
+	const restorePreviousState = useCallback(() => {
+		setStateWithHistory((prev) => {
+			if (prev.history.length === 0) {
+				return prev;
+			}
+			const newHistory = [...prev.history];
+			const previousState = newHistory.pop();
+			if (previousState) {
+				return {
+					current: JSON.parse(JSON.stringify(previousState)) as GameState,
+					history: newHistory,
+				};
+			}
+			return prev;
+		});
+	}, []);
+
+	const logMessage = useCallback((message: string, indent = 0) => {
+		setStateWithHistory((prev) => ({
+			...prev,
+			current: {
+				...prev.current,
+				log: [...prev.current.log, {message, indent}],
+			},
+		}));
+	}, []);
+
+	const unlockAnimal = useCallback((animalName: string) => {
+		setUnlockedAnimalsState((current) => {
+			if (!current.has(animalName)) {
+				const updated = new Set(current);
+				updated.add(animalName);
+				saveUnlockedAnimals(updated as Set<never>);
+				return updated;
+			}
+			return current;
+		});
+	}, []);
+
+	const getNextLockedAnimal = useCallback((): AnimalType | null => {
+		for (const animal of ANIMAL_UNLOCK_ORDER) {
+			if (!unlockedAnimals.has(animal)) {
+				return animal;
+			}
+		}
+		return null;
+	}, [unlockedAnimals]);
+
+	const createPlayer = useCallback((id: number, name: string, animal: string, isComputer: boolean): Player => {
+		let initialHP = INITIAL_HP;
+		if (animal === 'Gorilla') {
+			initialHP = 4;
+		}
+
+		return {
+			id,
+			name,
+			animal: animal as never,
+			hp: initialHP,
+			maxHp: initialHP,
+			isAlive: true,
+			isComputer,
+			status: {
+				isShielded: false,
+				isSleeping: false,
+			},
+			oneTimeActions: {
+				hasHealed: false,
+				hasShielded: false,
+				hasUsedAbility: false,
+			},
+			abilityCooldown: 0,
+			abilityDisabled: false,
+		};
+	}, []);
+
+	return {
+		state: stateWithHistory.current,
+		stateHistory: stateWithHistory.history,
+		unlockedAnimals,
+		setUnlockedAnimals,
+		initializeState,
+		saveStateToHistory,
+		restorePreviousState,
+		logMessage,
+		unlockAnimal,
+		getNextLockedAnimal,
+		createPlayer,
+	};
+}
