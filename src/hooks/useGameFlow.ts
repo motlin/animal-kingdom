@@ -1,5 +1,5 @@
-import {useCallback} from 'react';
-import type {Player, ActionInProgress, GameState} from '../types.ts';
+import {useCallback, useRef} from 'react';
+import type {Player, ActionInProgress} from '../types.ts';
 import type {UseGameStateReturn} from './useGameState.ts';
 import type {UseGameActionsReturn} from './useGameActions.ts';
 import {playSound} from '../sound.ts';
@@ -11,19 +11,18 @@ export interface UseGameFlowCallbacks {
 }
 
 export interface UseGameFlowReturn {
-	startTurn: (state: GameState) => void;
-	endTurn: (state: GameState) => void;
-	playComputerTurn: (player: Player, state: GameState) => void;
+	startTurn: () => void;
+	endTurn: () => void;
+	playComputerTurn: (player: Player) => void;
 	handleUndo: () => void;
 	initiateTargetSelection: (
-		state: GameState,
 		type: ActionInProgress['type'],
 		sourceId: number,
 		requiredTargets: number,
 		prompt: string,
 	) => void;
-	handleAbility: (source: Player, state: GameState) => void;
-	executeTargetedAction: (state: GameState, targetId: number) => void;
+	handleAbility: (source: Player) => void;
+	executeTargetedAction: (targetId: number) => void;
 }
 
 export function useGameFlow(
@@ -31,127 +30,179 @@ export function useGameFlow(
 	gameActions: UseGameActionsReturn,
 	callbacks: UseGameFlowCallbacks = {},
 ): UseGameFlowReturn {
-	const {saveStateToHistory, restorePreviousState, logMessage, unlockAnimal} = gameState;
+	const gameStateRef = useRef(gameState);
+	const gameActionsRef = useRef(gameActions);
+
+	gameStateRef.current = gameState;
+	gameActionsRef.current = gameActions;
+
+	const {saveStateToHistory, restorePreviousState, logMessage, unlockAnimal, updateState} = gameState;
 	const {handleAttack, handleHowl, handleSpitball, handleStrike, handleRampage, handleMischief} = gameActions;
 	const {onRender, onShowConfetti, onEndGame} = callbacks;
 
+	const startTurnRef = useRef<(() => void) | null>(null);
+	const endTurnRef = useRef<(() => void) | null>(null);
+	const playComputerTurnRef = useRef<((player: Player) => void) | null>(null);
+
 	const endGame = useCallback(
-		(state: GameState, winner: Player | undefined): void => {
-			state.gameState = 'gameOver';
+		(winner: Player | undefined): void => {
+			const state = gameStateRef.current.state;
 			playSound('victory');
 			const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
-			logMessage(announcement);
+			const gameMode = state.gameMode;
+			const opponent = state.players.find((p) => p.isComputer);
 
-			if (state.gameMode === 'challenger' && winner && !winner.isComputer) {
-				const opponent = state.players.find((p) => p.isComputer);
-				if (opponent) {
-					unlockAnimal(opponent.animal);
-					logMessage(`You unlocked the ${opponent.animal}!`, 1);
+			updateState((newState) => {
+				newState.gameState = 'gameOver';
+				newState.log.push({message: announcement, indent: 0});
+
+				if (gameMode === 'challenger' && winner && !winner.isComputer && opponent) {
+					newState.log.push({message: `You unlocked the ${opponent.animal}!`, indent: 1});
 				}
+			});
+
+			if (gameMode === 'challenger' && winner && !winner.isComputer && opponent) {
+				unlockAnimal(opponent.animal);
 			}
 
 			if (onEndGame) {
 				onEndGame(winner, announcement);
 			}
 		},
-		[logMessage, unlockAnimal, onEndGame],
+		[updateState, unlockAnimal, onEndGame],
 	);
 
-	const endTurn = useCallback(
-		(state: GameState): void => {
-			const lastPlayer = state.players[state.currentPlayerIndex];
-			if (lastPlayer && lastPlayer.abilityCooldown > 0) {
-				lastPlayer.abilityCooldown--;
-			}
+	const endTurn = useCallback((): void => {
+		const state = gameStateRef.current.state;
+		const currentPlayerIndex = state.currentPlayerIndex;
+		const lastPlayer = state.players[currentPlayerIndex];
+		const lastPlayerCooldown = lastPlayer?.abilityCooldown ?? 0;
 
-			const alivePlayers = state.players.filter((p) => p.isAlive);
-			if (alivePlayers.length <= 1) {
-				state.gameState = 'gameEnding';
-				if (onRender) {
-					onRender();
-				}
-
-				const winner = alivePlayers[0];
-				const shouldShowConfetti = state.gameMode === 'standard' || (winner && !winner.isComputer);
-				if (shouldShowConfetti && onShowConfetti) {
-					onShowConfetti();
-				}
-
-				setTimeout(() => endGame(state, winner), 2000);
-				return;
-			}
-
-			let nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
-			while (state.players[nextIndex] && !state.players[nextIndex]!.isAlive) {
-				nextIndex = (nextIndex + 1) % state.players.length;
-			}
-			state.currentPlayerIndex = nextIndex;
-			state.turn++;
-
-			startTurn(state);
-		},
-		[onRender, onShowConfetti, endGame],
-	);
-
-	const playComputerTurn = useCallback(
-		(player: Player, state: GameState): void => {
-			const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== player.id);
-			if (aliveOpponents.length === 0) {
-				endTurn(state);
-				return;
-			}
-
-			const randomTarget = aliveOpponents[Math.floor(Math.random() * aliveOpponents.length)];
-			if (randomTarget) {
-				handleAttack(player, randomTarget, logMessage, unlockAnimal);
-			}
-			setTimeout(() => {
-				endTurn(state);
-			}, 1000);
-		},
-		[endTurn, handleAttack, logMessage, unlockAnimal],
-	);
-
-	const startTurn = useCallback(
-		(state: GameState): void => {
-			saveStateToHistory();
-
-			const currentPlayer = state.players[state.currentPlayerIndex];
-			if (!currentPlayer) return;
-
-			state.turnSkipped = false;
-
-			logMessage(`It's ${currentPlayer.name}'s (${currentPlayer.animal}) turn!`);
-
-			if (currentPlayer.status.isShielded) {
-				currentPlayer.status.isShielded = false;
-				logMessage(`${currentPlayer.name}'s (${currentPlayer.animal}) shield has worn off.`, 1);
-			}
-
-			if (currentPlayer.status.isSleeping) {
-				currentPlayer.status.isSleeping = false;
-				logMessage(`${currentPlayer.name} (${currentPlayer.animal}) is asleep and skips their turn!`, 1);
-				state.actionInProgress = null;
-				state.turnSkipped = true;
-				if (onRender) {
-					onRender();
-				}
-				setTimeout(() => endTurn(state), 1500);
-				return;
-			}
+		const alivePlayers = state.players.filter((p) => p.isAlive);
+		if (alivePlayers.length <= 1) {
+			updateState((newState) => {
+				newState.gameState = 'gameEnding';
+			});
 
 			if (onRender) {
 				onRender();
 			}
 
-			if (currentPlayer.isComputer) {
-				setTimeout(() => {
-					playComputerTurn(currentPlayer, state);
-				}, 1000);
+			const winner = alivePlayers[0];
+			const shouldShowConfetti = state.gameMode === 'standard' || (winner && !winner.isComputer);
+			if (shouldShowConfetti && onShowConfetti) {
+				onShowConfetti();
 			}
+
+			setTimeout(() => endGame(winner), 2000);
+			return;
+		}
+
+		let nextIndex = (currentPlayerIndex + 1) % state.players.length;
+		while (state.players[nextIndex] && !state.players[nextIndex]!.isAlive) {
+			nextIndex = (nextIndex + 1) % state.players.length;
+		}
+
+		updateState((newState) => {
+			if (lastPlayerCooldown > 0) {
+				const player = newState.players[currentPlayerIndex];
+				if (player) {
+					player.abilityCooldown = lastPlayerCooldown - 1;
+				}
+			}
+			newState.currentPlayerIndex = nextIndex;
+			newState.turn++;
+		});
+
+		setTimeout(() => startTurnRef.current?.(), 0);
+	}, [updateState, onRender, onShowConfetti, endGame]);
+
+	const playComputerTurn = useCallback(
+		(player: Player): void => {
+			const state = gameStateRef.current.state;
+			const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== player.id);
+			if (aliveOpponents.length === 0) {
+				endTurnRef.current?.();
+				return;
+			}
+
+			const randomTarget = aliveOpponents[Math.floor(Math.random() * aliveOpponents.length)];
+			if (randomTarget) {
+				updateState((newState) => {
+					const localLog = (message: string, indent = 0) => {
+						newState.log.push({message, indent});
+					};
+
+					const source = newState.players.find((p) => p.id === player.id);
+					const target = newState.players.find((p) => p.id === randomTarget.id);
+
+					if (source && target) {
+						handleAttack(source, target, localLog, unlockAnimal);
+					}
+				});
+			}
+			setTimeout(() => {
+				endTurnRef.current?.();
+			}, 1000);
 		},
-		[saveStateToHistory, logMessage, onRender, endTurn, playComputerTurn],
+		[updateState, handleAttack, unlockAnimal],
 	);
+
+	const startTurn = useCallback((): void => {
+		saveStateToHistory();
+
+		const state = gameStateRef.current.state;
+		const currentPlayerIndex = state.currentPlayerIndex;
+		const currentPlayer = state.players[currentPlayerIndex];
+		if (!currentPlayer) return;
+
+		const wasShielded = currentPlayer.status.isShielded;
+		const wasSleeping = currentPlayer.status.isSleeping;
+
+		updateState((newState) => {
+			const player = newState.players[currentPlayerIndex];
+			if (!player) return;
+
+			newState.turnSkipped = false;
+			newState.log.push({message: `It's ${player.name}'s (${player.animal}) turn!`, indent: 0});
+
+			if (wasShielded) {
+				player.status.isShielded = false;
+				newState.log.push({
+					message: `${player.name}'s (${player.animal}) shield has worn off.`,
+					indent: 1,
+				});
+			}
+
+			if (wasSleeping) {
+				player.status.isSleeping = false;
+				newState.log.push({
+					message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
+					indent: 1,
+				});
+				newState.actionInProgress = null;
+				newState.turnSkipped = true;
+			}
+		});
+
+		if (wasSleeping) {
+			if (onRender) {
+				onRender();
+			}
+			setTimeout(() => endTurnRef.current?.(), 1500);
+			return;
+		}
+
+		if (onRender) {
+			onRender();
+		}
+
+		if (currentPlayer.isComputer) {
+			setTimeout(() => {
+				playComputerTurnRef.current?.(currentPlayer);
+			}, 1000);
+		}
+	}, [saveStateToHistory, updateState, onRender]);
 
 	const handleUndo = useCallback((): void => {
 		restorePreviousState();
@@ -162,32 +213,53 @@ export function useGameFlow(
 	}, [restorePreviousState, logMessage, onRender]);
 
 	const executeTargetedAction = useCallback(
-		(state: GameState, targetId: number): void => {
-			if (!state.actionInProgress) return;
+		(targetId: number): void => {
+			const state = gameStateRef.current.state;
+			const actionInProgress = state.actionInProgress;
+			if (!actionInProgress) return;
 
-			const {targets, type, sourceId, requiredTargets} = state.actionInProgress;
+			const {type, sourceId, requiredTargets} = actionInProgress;
+			const currentTargets = [...actionInProgress.targets];
 
-			if (!targets.includes(targetId)) {
-				targets.push(targetId);
+			if (!currentTargets.includes(targetId)) {
+				currentTargets.push(targetId);
 			}
 
-			if (targets.length === requiredTargets) {
-				const source = state.players[sourceId];
-				const targetPlayers = targets.map((id) => state.players[id]).filter((p): p is Player => !!p);
+			if (currentTargets.length === requiredTargets) {
+				updateState((newState) => {
+					const action = newState.actionInProgress;
+					if (!action) return;
 
-				if (source) {
-					if (type === 'attack') handleAttack(source, targetPlayers[0]!, logMessage, unlockAnimal);
-					if (type === 'spitball') handleSpitball(source, targetPlayers[0]!, logMessage, unlockAnimal);
-					if (type === 'strike')
-						handleStrike(source, targetPlayers[0]!, targetPlayers[1]!, logMessage, unlockAnimal);
-					if (type === 'rampage') handleRampage(source, targetPlayers[0]!, logMessage, unlockAnimal);
-					if (type === 'mischief') handleMischief(source, targetPlayers[0]!, logMessage);
-				}
+					action.targets = currentTargets;
 
-				state.actionInProgress = null;
-				endTurn(state);
+					const localLog = (message: string, indent = 0) => {
+						newState.log.push({message, indent});
+					};
+
+					const source = newState.players[sourceId];
+					const targetPlayers = currentTargets
+						.map((id) => newState.players[id])
+						.filter((p): p is Player => !!p);
+
+					if (source) {
+						if (type === 'attack') handleAttack(source, targetPlayers[0]!, localLog, unlockAnimal);
+						if (type === 'spitball') handleSpitball(source, targetPlayers[0]!, localLog, unlockAnimal);
+						if (type === 'strike')
+							handleStrike(source, targetPlayers[0]!, targetPlayers[1]!, localLog, unlockAnimal);
+						if (type === 'rampage') handleRampage(source, targetPlayers[0]!, localLog, unlockAnimal);
+						if (type === 'mischief') handleMischief(source, targetPlayers[0]!, localLog);
+					}
+
+					newState.actionInProgress = null;
+				});
+				endTurn();
 			} else {
-				state.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`;
+				updateState((newState) => {
+					if (newState.actionInProgress) {
+						newState.actionInProgress.targets = currentTargets;
+						newState.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`;
+					}
+				});
 				if (onRender) {
 					onRender();
 				}
@@ -203,72 +275,101 @@ export function useGameFlow(
 			unlockAnimal,
 			endTurn,
 			onRender,
+			updateState,
 		],
 	);
 
 	const initiateTargetSelection = useCallback(
-		(
-			state: GameState,
-			type: ActionInProgress['type'],
-			sourceId: number,
-			requiredTargets: number,
-			prompt: string,
-		): void => {
+		(type: ActionInProgress['type'], sourceId: number, requiredTargets: number, prompt: string): void => {
+			const state = gameStateRef.current.state;
 			if (state.gameMode === 'challenger' && requiredTargets === 1) {
 				const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== sourceId);
 				if (aliveOpponents.length === 1) {
-					state.actionInProgress = {
-						type,
-						sourceId,
-						requiredTargets,
-						targets: [],
-						prompt,
-					};
-					executeTargetedAction(state, aliveOpponents[0]!.id);
+					const targetId = aliveOpponents[0]!.id;
+					updateState((newState) => {
+						newState.actionInProgress = {
+							type,
+							sourceId,
+							requiredTargets,
+							targets: [targetId],
+							prompt,
+						};
+
+						const localLog = (message: string, indent = 0) => {
+							newState.log.push({message, indent});
+						};
+
+						const source = newState.players[sourceId];
+						const target = newState.players[targetId];
+
+						if (source && target) {
+							if (type === 'attack') handleAttack(source, target, localLog, unlockAnimal);
+							if (type === 'spitball') handleSpitball(source, target, localLog, unlockAnimal);
+							if (type === 'rampage') handleRampage(source, target, localLog, unlockAnimal);
+							if (type === 'mischief') handleMischief(source, target, localLog);
+						}
+
+						newState.actionInProgress = null;
+					});
+					setTimeout(() => endTurnRef.current?.(), 0);
 					return;
 				}
 			}
 
-			state.actionInProgress = {
-				type,
-				sourceId,
-				requiredTargets,
-				targets: [],
-				prompt,
-			};
+			updateState((newState) => {
+				newState.actionInProgress = {
+					type,
+					sourceId,
+					requiredTargets,
+					targets: [],
+					prompt,
+				};
+			});
 			if (onRender) {
 				onRender();
 			}
 		},
-		[executeTargetedAction, onRender],
+		[handleAttack, handleSpitball, handleRampage, handleMischief, unlockAnimal, onRender, updateState],
 	);
 
 	const handleAbility = useCallback(
-		(source: Player, state: GameState): void => {
+		(source: Player): void => {
 			switch (source.animal) {
 				case 'Coyote':
-					handleHowl(source, state, logMessage);
+					updateState((newState) => {
+						const localLog = (message: string, indent = 0) => {
+							newState.log.push({message, indent});
+						};
+						const coyote = newState.players.find((p) => p.id === source.id);
+						if (coyote) {
+							handleHowl(coyote, newState, localLog);
+						}
+					});
 					if (onRender) {
 						onRender();
 					}
-					setTimeout(() => endTurn(state), 0);
+					setTimeout(() => endTurnRef.current?.(), 0);
 					break;
 				case 'Llama':
-					initiateTargetSelection(state, 'spitball', source.id, 1, `Select a target for Spitball.`);
+					initiateTargetSelection('spitball', source.id, 1, `Select a target for Spitball.`);
 					break;
 				case 'Tiger':
-					initiateTargetSelection(state, 'strike', source.id, 2, `Select target 1 of 2 for Strike.`);
+					initiateTargetSelection('strike', source.id, 2, `Select target 1 of 2 for Strike.`);
 					break;
 				case 'Gorilla':
-					initiateTargetSelection(state, 'rampage', source.id, 1, `Select a target for Rampage.`);
+					initiateTargetSelection('rampage', source.id, 1, `Select a target for Rampage.`);
 					break;
 				case 'Monkey':
-					initiateTargetSelection(state, 'mischief', source.id, 1, `Select a target for Mischief.`);
+					initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
 					break;
 			}
 		},
-		[handleHowl, logMessage, onRender, initiateTargetSelection],
+		[updateState, handleHowl, onRender, initiateTargetSelection],
 	);
+
+	startTurnRef.current = startTurn;
+	endTurnRef.current = endTurn;
+	playComputerTurnRef.current = playComputerTurn;
 
 	return {
 		startTurn,

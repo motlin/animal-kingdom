@@ -15,6 +15,7 @@ export interface UseGameStateReturn {
 	unlockAnimal: (animalName: string) => void;
 	getNextLockedAnimal: () => AnimalType | null;
 	createPlayer: (id: number, name: string, animal: string, isComputer: boolean) => Player;
+	updateState: (updater: (state: GameState) => void) => void;
 }
 
 interface StateWithHistory {
@@ -89,13 +90,14 @@ export function useGameState(): UseGameStateReturn {
 	}, []);
 
 	const logMessage = useCallback((message: string, indent = 0) => {
-		setStateWithHistory((prev) => ({
-			...prev,
-			current: {
-				...prev.current,
-				log: [...prev.current.log, {message, indent}],
-			},
-		}));
+		setStateWithHistory((prev) => {
+			const clonedState = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			clonedState.log.push({message, indent});
+			return {
+				...prev,
+				current: clonedState,
+			};
+		});
 	}, []);
 
 	const unlockAnimal = useCallback((animalName: string) => {
@@ -147,6 +149,17 @@ export function useGameState(): UseGameStateReturn {
 		};
 	}, []);
 
+	const updateState = useCallback((updater: (state: GameState) => void) => {
+		setStateWithHistory((prev) => {
+			const clonedState = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			updater(clonedState);
+			return {
+				...prev,
+				current: clonedState,
+			};
+		});
+	}, []);
+
 	return {
 		state: stateWithHistory.current,
 		stateHistory: stateWithHistory.history,
@@ -159,5 +172,6 @@ export function useGameState(): UseGameStateReturn {
 		unlockAnimal,
 		getNextLockedAnimal,
 		createPlayer,
+		updateState,
 	};
 }
