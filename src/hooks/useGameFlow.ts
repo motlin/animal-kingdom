@@ -229,7 +229,7 @@ export function useGameFlow(
 
 	const handleUndo = useCallback((): void => {
 		restorePreviousState();
-		logMessage('⏪ Turn undone.');
+		logMessage('Turn undone');
 		if (onRender) {
 			onRender();
 		}
@@ -275,7 +275,7 @@ export function useGameFlow(
 
 					newState.actionInProgress = null;
 				});
-				endTurn();
+				setTimeout(() => endTurnRef.current?.(), 0);
 			} else {
 				updateState((newState) => {
 					if (newState.actionInProgress) {
@@ -295,7 +295,6 @@ export function useGameFlow(
 			handleRampage,
 			handleMischief,
 			unlockAnimal,
-			endTurn,
 			onRender,
 			updateState,
 		],
