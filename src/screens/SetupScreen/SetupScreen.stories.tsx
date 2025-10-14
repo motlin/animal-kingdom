@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {useState} from 'react';
+import {expect, userEvent, within, fn} from '@storybook/test';
 import {SetupScreen} from './SetupScreen';
 import type {PlayerConfiguration} from './StandardSetup';
 import type {AnimalType} from '../../types';
@@ -34,12 +35,24 @@ export const StandardModeInitial: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: fn(),
+		onPlayerCountChange: fn(),
+		onPlayerChange: fn(),
+		onAnimalSelect: fn(),
+		onStartGame: fn(),
 		canStartGame: true,
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Game Setup')).toBeInTheDocument();
+		await expect(canvas.getByText('Standard Battle')).toBeInTheDocument();
+
+		const startButton = canvas.getByText('Start Game');
+		await expect(startButton).toBeEnabled();
+
+		await userEvent.click(startButton);
+		await expect(args.onStartGame).toHaveBeenCalledTimes(1);
 	},
 };
 
@@ -91,12 +104,24 @@ export const ChallengerModeInitial: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: 'Llama',
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: fn(),
+		onPlayerCountChange: fn(),
+		onPlayerChange: fn(),
+		onAnimalSelect: fn(),
+		onStartGame: fn(),
 		canStartGame: false,
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('New Challenger')).toBeInTheDocument();
+
+		const startButton = canvas.getByText('Start Game');
+		await expect(startButton).toBeDisabled();
+
+		const coyoteCard = canvas.getByText('Coyote');
+		await userEvent.click(coyoteCard);
+		await expect(args.onAnimalSelect).toHaveBeenCalledWith('Coyote');
 	},
 };
 
@@ -108,12 +133,21 @@ export const ChallengerModeSelected: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: 'Coyote',
 		opponentAnimal: 'Tiger',
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: fn(),
+		onPlayerCountChange: fn(),
+		onPlayerChange: fn(),
+		onAnimalSelect: fn(),
+		onStartGame: fn(),
 		canStartGame: true,
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		const startButton = canvas.getByText('Start Game');
+		await expect(startButton).toBeEnabled();
+
+		await userEvent.click(startButton);
+		await expect(args.onStartGame).toHaveBeenCalledTimes(1);
 	},
 };
 
@@ -159,12 +193,18 @@ export const StandardModeCannotStart: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: fn(),
+		onPlayerCountChange: fn(),
+		onPlayerChange: fn(),
+		onAnimalSelect: fn(),
+		onStartGame: fn(),
 		canStartGame: false,
+	},
+	play: async ({canvasElement}) => {
+		const canvas = within(canvasElement);
+
+		const startButton = canvas.getByText('Start Game');
+		await expect(startButton).toBeDisabled();
 	},
 };
 
@@ -265,7 +305,34 @@ export const Interactive = {
 	},
 };
 
-export const ModeSwitching = {
+export const ModeSwitching: Story = {
+	args: {
+		mode: 'standard',
+		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger']),
+		playerCount: 3,
+		players: createDefaultPlayers(),
+		selectedAnimal: null,
+		opponentAnimal: null,
+		onModeChange: fn(),
+		onPlayerCountChange: fn(),
+		onPlayerChange: fn(),
+		onAnimalSelect: fn(),
+		onStartGame: fn(),
+		canStartGame: true,
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		const standardButton = canvas.getByRole('button', {name: /Standard Battle/});
+		await expect(standardButton).toHaveClass('active');
+
+		const challengerButton = canvas.getByRole('button', {name: /New Challenger/});
+		await userEvent.click(challengerButton);
+		await expect(args.onModeChange).toHaveBeenCalledWith('challenger');
+	},
+};
+
+export const ModeSwitchingDemo = {
 	render: () => {
 		const ModeSwitchingDemo = () => {
 			const [mode, setMode] = useState<GameMode>('standard');

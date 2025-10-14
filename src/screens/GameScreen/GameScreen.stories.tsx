@@ -1,4 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
+import {expect, userEvent, within, fn} from '@storybook/test';
 import {GameScreen} from './GameScreen';
 import type {Player, LogEntry} from '../../types';
 
@@ -100,15 +101,26 @@ export const StandardGameInProgress: Story = {
 		logEntries: basicLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => console.log('Player clicked:', playerId),
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: fn(),
+		onAttack: fn(),
+		onUseAbility: fn(),
+		onHeal: fn(),
+		onShield: fn(),
+		onDoNothing: fn(),
+		onUndo: fn(),
+		onCopyToClipboard: fn(),
+		onSaveLog: fn(),
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText("Alice's Turn")).toBeInTheDocument();
+
+		const attackButton = canvas.getByRole('button', {name: 'Attack'});
+		await expect(attackButton).toBeEnabled();
+
+		await userEvent.click(attackButton);
+		await expect(args.onAttack).toHaveBeenCalledTimes(1);
 	},
 };
 
@@ -134,10 +146,19 @@ export const WithTargetSelection: Story = {
 		logEntries: basicLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [2, 3, 4],
-		onPlayerClick: (playerId: number) => console.log('Target selected:', playerId),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: fn(),
+		onUndo: fn(),
+		onCopyToClipboard: fn(),
+		onSaveLog: fn(),
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText("Alice's Turn - Select a target")).toBeInTheDocument();
+
+		const bobCard = canvas.getByText('Bob');
+		await userEvent.click(bobCard);
+		await expect(args.onPlayerClick).toHaveBeenCalledWith(2);
 	},
 };
 
@@ -163,15 +184,27 @@ export const WithStatusEffects: Story = {
 		logEntries: extendedLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => console.log('Player clicked:', playerId),
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: fn(),
+		onAttack: fn(),
+		onUseAbility: fn(),
+		onHeal: fn(),
+		onShield: fn(),
+		onDoNothing: fn(),
+		onUndo: fn(),
+		onCopyToClipboard: fn(),
+		onSaveLog: fn(),
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		const healButton = canvas.getByRole('button', {name: 'Heal (1)'});
+		await expect(healButton).toBeEnabled();
+
+		const shieldButton = canvas.getByRole('button', {name: 'Shield (0)'});
+		await expect(shieldButton).toBeDisabled();
+
+		await userEvent.click(healButton);
+		await expect(args.onHeal).toHaveBeenCalledTimes(1);
 	},
 };
 
@@ -308,12 +341,23 @@ export const GameOverSingleWinner: Story = {
 		isGameOver: true,
 		winnerAnnouncement: '🎉 Alice wins! 🎉',
 		selectablePlayerIds: [],
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onViewLog: () => console.log('View Log clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveGameLog: () => console.log('Save Game Log clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: fn(),
+		onViewLog: fn(),
+		onCopyLog: fn(),
+		onSaveGameLog: fn(),
+		onCopyToClipboard: fn(),
+		onSaveLog: fn(),
+	},
+	play: async ({canvasElement, args}) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('🎉 Alice wins! 🎉')).toBeInTheDocument();
+
+		const playAgainButton = canvas.getByText('Play Again');
+		await expect(playAgainButton).toBeInTheDocument();
+
+		await userEvent.click(playAgainButton);
+		await expect(args.onPlayAgain).toHaveBeenCalledTimes(1);
 	},
 };
 
