@@ -1,6 +1,6 @@
 import {describe, it, expect, beforeEach, vi, afterEach} from 'vitest';
-import {initializeState, createPlayer, state} from './game-state.ts';
-import {startTurn, endTurn} from './game-flow.ts';
+import {initializeState, createPlayer, state, setUnlockedAnimals} from './game-state.ts';
+import {startTurn, endTurn, initiateTargetSelection} from './game-flow.ts';
 import * as ui from './ui.ts';
 
 describe('Game flow', () => {
@@ -130,5 +130,126 @@ describe('Game flow', () => {
 		expect(showConfettiSpy).not.toHaveBeenCalled();
 
 		vi.useRealTimers();
+	});
+});
+
+describe('Automatic targeting in challenger mode', () => {
+	beforeEach(() => {
+		document.body.innerHTML = `
+			<div id="game-screen">
+				<div id="players-container"></div>
+				<div id="turn-indicator"></div>
+				<div class="action-buttons">
+					<button data-action="attack">Attack</button>
+					<button data-action="ability">Ability</button>
+					<button data-action="heal">Heal</button>
+					<button data-action="shield">Shield</button>
+					<button data-action="nothing">Nothing</button>
+				</div>
+				<button id="undo-btn">Undo</button>
+				<div id="game-log"></div>
+			</div>
+			<div id="game-over-screen" style="display: none;">
+				<h2 id="winner-announcement"></h2>
+			</div>
+		`;
+
+		(global as any).lucide = {
+			createIcons: vi.fn(),
+		};
+
+		setUnlockedAnimals(new Set());
+
+		vi.mock('./sound.ts', () => ({
+			playSound: vi.fn(),
+			initializeAudioContext: vi.fn(),
+			setMuted: vi.fn(),
+			isSoundMuted: vi.fn(() => false),
+		}));
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it('automatically targets opponent when attacking in challenger mode', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Coyote', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Tiger', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.currentPlayerIndex = 0;
+
+		initiateTargetSelection('attack', humanPlayer.id, 1, 'Select a target to attack.');
+
+		expect(computerPlayer.hp).toBeLessThan(computerPlayer.maxHp);
+		expect(state.actionInProgress).toBe(null);
+
+		vi.useRealTimers();
+	});
+
+	it('automatically targets opponent for Llama Spitball in challenger mode', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Llama', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Coyote', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.currentPlayerIndex = 0;
+
+		initiateTargetSelection('spitball', humanPlayer.id, 1, 'Select a target for Spitball.');
+
+		expect(state.actionInProgress).toBe(null);
+
+		vi.useRealTimers();
+	});
+
+	it('automatically targets opponent for Gorilla Rampage in challenger mode', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Gorilla', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Coyote', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.currentPlayerIndex = 0;
+
+		initiateTargetSelection('rampage', humanPlayer.id, 1, 'Select a target for Rampage.');
+
+		expect(computerPlayer.hp).toBeLessThan(computerPlayer.maxHp);
+		expect(state.actionInProgress).toBe(null);
+
+		vi.useRealTimers();
+	});
+
+	it('automatically targets opponent for Monkey Mischief in challenger mode', () => {
+		vi.useFakeTimers();
+
+		const humanPlayer = createPlayer(0, 'Human', 'Monkey', false);
+		const computerPlayer = createPlayer(1, 'Computer', 'Coyote', true);
+
+		initializeState([humanPlayer, computerPlayer], 'challenger');
+		state.currentPlayerIndex = 0;
+
+		initiateTargetSelection('mischief', humanPlayer.id, 1, 'Select a target for Mischief.');
+
+		expect(computerPlayer.abilityDisabled).toBe(true);
+		expect(state.actionInProgress).toBe(null);
+
+		vi.useRealTimers();
+	});
+
+	it('requires manual target selection in standard mode', () => {
+		const player1 = createPlayer(0, 'Player 1', 'Coyote', false);
+		const player2 = createPlayer(1, 'Player 2', 'Tiger', false);
+		const player3 = createPlayer(2, 'Player 3', 'Llama', false);
+
+		initializeState([player1, player2, player3], 'standard');
+		state.currentPlayerIndex = 0;
+
+		initiateTargetSelection('attack', player1.id, 1, 'Select a target to attack.');
+
+		expect(state.actionInProgress).not.toBe(null);
+		expect(state.actionInProgress?.type).toBe('attack');
 	});
 });

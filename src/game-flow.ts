@@ -117,6 +117,21 @@ export function initiateTargetSelection(
 	requiredTargets: number,
 	prompt: string,
 ): void {
+	if (state.gameMode === 'challenger' && requiredTargets === 1) {
+		const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== sourceId);
+		if (aliveOpponents.length === 1) {
+			state.actionInProgress = {
+				type,
+				sourceId,
+				requiredTargets,
+				targets: [],
+				prompt,
+			};
+			executeTargetedAction(aliveOpponents[0]!.id);
+			return;
+		}
+	}
+
 	state.actionInProgress = {
 		type,
 		sourceId,
