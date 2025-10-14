@@ -1,0 +1,28 @@
+.header {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 20px;
+	transition: all 0.3s ease;
+}
+
+.header img.logo {
+	max-width: 400px;
+	width: 90%;
+	height: auto;
+	transition: all 0.3s ease;
+}
+
+.header.game-active {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: auto;
+	margin: 0;
+	z-index: 50;
+	pointer-events: none;
+}
+
+.header.game-active img.logo {
+	max-width: 120px;
+	width: 120px;
+}
