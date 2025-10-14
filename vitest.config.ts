@@ -1,8 +1,38 @@
-import {defineConfig} from 'vitest/config';
+import {defineConfig, defineProject, mergeConfig} from 'vitest/config';
+import {storybookTest} from '@storybook/addon-vitest/vitest-plugin';
+import viteConfig from './vite.config';
 
-export default defineConfig({
-	test: {
-		globals: true,
-		environment: 'jsdom',
-	},
-});
+export default mergeConfig(
+	viteConfig,
+	defineConfig({
+		test: {
+			projects: [
+				defineProject({
+					test: {
+						name: 'unit',
+						globals: true,
+						environment: 'jsdom',
+					},
+				}),
+				defineProject({
+					plugins: [
+						storybookTest({
+							configDir: '.storybook',
+							storybookScript: 'npm run storybook -- --ci',
+						}),
+					],
+					test: {
+						name: 'storybook',
+						browser: {
+							enabled: true,
+							name: 'chromium',
+							provider: 'playwright',
+							headless: true,
+						},
+						setupFiles: ['./.storybook/vitest.setup.ts'],
+					},
+				}),
+			],
+		},
+	}),
+);
