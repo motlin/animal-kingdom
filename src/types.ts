@@ -23,6 +23,7 @@ export interface GameState {
 	players: Player[];
 	currentPlayerIndex: number;
 	gameState: 'playing' | 'gameEnding' | 'gameOver';
+	gameMode: GameMode;
 	turn: number;
 	actionInProgress: ActionInProgress | null;
 	turnSkipped: boolean;

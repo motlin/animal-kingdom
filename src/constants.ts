@@ -31,3 +31,5 @@ export const ABILITY_NAMES: Record<AnimalType, string> = {
 	Gorilla: 'Rampage',
 	Monkey: 'Mischief',
 };
+
+export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];

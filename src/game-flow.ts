@@ -1,5 +1,5 @@
 import type {Player, ActionInProgress} from './types.ts';
-import {state, saveStateToHistory, restorePreviousState, logMessage} from './game-state.ts';
+import {state, saveStateToHistory, restorePreviousState, logMessage, unlockAnimal} from './game-state.ts';
 import {render} from './render.ts';
 import {playSound} from './sound.ts';
 import {showConfetti} from './ui.ts';
@@ -86,6 +86,15 @@ export function endGame(winner: Player | undefined): void {
 	playSound('victory');
 	const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
 	logMessage(announcement);
+
+	if (state.gameMode === 'challenger' && winner && !winner.isComputer) {
+		const opponent = state.players.find((p) => p.isComputer);
+		if (opponent) {
+			unlockAnimal(opponent.animal);
+			logMessage(`You unlocked the ${opponent.animal}!`, 1);
+		}
+	}
+
 	getElement('winner-announcement').textContent = announcement;
 	getElement('game-over-screen').style.display = 'flex';
 }

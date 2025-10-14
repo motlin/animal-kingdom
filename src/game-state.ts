@@ -1,5 +1,5 @@
-import type {GameState, Player} from './types.ts';
-import {INITIAL_HP} from './constants.ts';
+import type {GameState, Player, AnimalType, GameMode} from './types.ts';
+import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from './constants.ts';
 import {saveUnlockedAnimals} from './storage.ts';
 
 export let state: GameState;
@@ -10,13 +10,14 @@ export function setUnlockedAnimals(animals: Set<string>): void {
 	unlockedAnimals = animals;
 }
 
-export function initializeState(players: Player[]): void {
+export function initializeState(players: Player[], gameMode: GameMode = 'standard'): void {
 	const randomFirstPlayerIndex = Math.floor(Math.random() * players.length);
 
 	state = {
 		players,
 		currentPlayerIndex: randomFirstPlayerIndex,
 		gameState: 'playing',
+		gameMode,
 		turn: 1,
 		actionInProgress: null,
 		turnSkipped: false,
@@ -47,6 +48,15 @@ export function unlockAnimal(animalName: string): void {
 		unlockedAnimals.add(animalName);
 		saveUnlockedAnimals(unlockedAnimals as Set<never>);
 	}
+}
+
+export function getNextLockedAnimal(): AnimalType | null {
+	for (const animal of ANIMAL_UNLOCK_ORDER) {
+		if (!unlockedAnimals.has(animal)) {
+			return animal;
+		}
+	}
+	return null;
 }
 
 export function createPlayer(id: number, name: string, animal: string, isComputer: boolean): Player {

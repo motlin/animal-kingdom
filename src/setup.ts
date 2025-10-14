@@ -1,6 +1,6 @@
 import type {AnimalType, GameMode, Player} from './types.ts';
 import {ANIMAL_ROSTER, ANIMAL_EMOJIS} from './constants.ts';
-import {unlockedAnimals, initializeState, logMessage, createPlayer} from './game-state.ts';
+import {unlockedAnimals, initializeState, logMessage, createPlayer, getNextLockedAnimal} from './game-state.ts';
 import {getElement, querySelector, querySelectorAll} from './dom.ts';
 import {startTurn} from './game-flow.ts';
 
@@ -98,7 +98,10 @@ export function updateChallengerMode(): void {
 
 	if (lockedAnimals.length > 0) {
 		if (!selectedOpponentAnimal || unlockedAnimals.has(selectedOpponentAnimal)) {
-			selectedOpponentAnimal = lockedAnimals[Math.floor(Math.random() * lockedAnimals.length)]!;
+			const nextAnimal = getNextLockedAnimal();
+			if (nextAnimal) {
+				selectedOpponentAnimal = nextAnimal;
+			}
 		}
 		challengerOpponentDisplay.innerHTML = `
 			<div class="challenger-opponent-card">
@@ -245,7 +248,7 @@ export function startGame(): void {
 		});
 	}
 
-	initializeState(players);
+	initializeState(players, currentMode);
 
 	logMessage('The battle for the Animal Kingdom begins!');
 	players.forEach((player) => {
