@@ -29,10 +29,7 @@ export function AnimalAbilities({unlockedCount, className = '', defaultExpanded 
 		<div className={sectionClasses}>
 			<div className="abilities-header">
 				<h3>Animal Abilities</h3>
-				<Button
-					variant="toggle"
-					onClick={toggleExpanded}
-				>
+				<Button onClick={toggleExpanded}>
 					<Icon name={isExpanded ? 'chevron-up' : 'chevron-down'} />
 					<span>{isExpanded ? 'Hide' : 'Show'} Abilities</span>
 				</Button>
