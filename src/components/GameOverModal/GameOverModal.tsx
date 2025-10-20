@@ -36,13 +36,15 @@ export function GameOverModal({
 						<Icon name="refresh-cw" />
 						Play Again
 					</Button>
-					<Button
-						variant="primary"
-						{...(onViewLog && {onClick: onViewLog})}
-					>
-						<Icon name="eye" />
-						View Log
-					</Button>
+					{onViewLog && (
+						<Button
+							variant="primary"
+							onClick={onViewLog}
+						>
+							<Icon name="eye" />
+							View Log
+						</Button>
+					)}
 					<Button
 						variant="primary"
 						{...(onCopyLog && {onClick: onCopyLog})}

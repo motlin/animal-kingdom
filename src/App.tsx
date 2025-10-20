@@ -356,7 +356,6 @@ function App() {
 				onCopyToClipboard={handleCopyToClipboard}
 				onSaveLog={handleSaveLog}
 				onPlayAgain={handlePlayAgain}
-				onViewLog={handleCopyToClipboard}
 				onCopyLog={handleCopyToClipboard}
 				onSaveGameLog={handleSaveLog}
 			/>

@@ -11,7 +11,7 @@ export interface UseGameFlowCallbacks {
 }
 
 export interface UseGameFlowReturn {
-	startTurn: () => void;
+	startTurn: (playerIndex?: number) => void;
 	endTurn: () => void;
 	playComputerTurn: (player: Player) => void;
 	handleUndo: () => void;
@@ -40,7 +40,7 @@ export function useGameFlow(
 	const {handleAttack, handleHowl, handleSpitball, handleStrike, handleRampage, handleMischief} = gameActions;
 	const {onRender, onShowConfetti, onEndGame} = callbacks;
 
-	const startTurnRef = useRef<(() => void) | null>(null);
+	const startTurnRef = useRef<((playerIndex?: number) => void) | null>(null);
 	const endTurnRef = useRef<(() => void) | null>(null);
 	const playComputerTurnRef = useRef<((player: Player) => void) | null>(null);
 
@@ -114,7 +114,7 @@ export function useGameFlow(
 			newState.turn++;
 		});
 
-		setTimeout(() => startTurnRef.current?.(), 0);
+		setTimeout(() => startTurnRef.current?.(nextIndex), 0);
 	}, [updateState, onRender, onShowConfetti, endGame]);
 
 	const playComputerTurn = useCallback(
@@ -148,61 +148,64 @@ export function useGameFlow(
 		[updateState, handleAttack, unlockAnimal],
 	);
 
-	const startTurn = useCallback((): void => {
-		saveStateToHistory();
+	const startTurn = useCallback(
+		(playerIndex?: number): void => {
+			saveStateToHistory();
 
-		const state = gameStateRef.current.state;
-		const currentPlayerIndex = state.currentPlayerIndex;
-		const currentPlayer = state.players[currentPlayerIndex];
-		if (!currentPlayer) return;
+			const state = gameStateRef.current.state;
+			const currentPlayerIndex = playerIndex !== undefined ? playerIndex : state.currentPlayerIndex;
+			const currentPlayer = state.players[currentPlayerIndex];
+			if (!currentPlayer) return;
 
-		const wasShielded = currentPlayer.status.isShielded;
-		const wasSleeping = currentPlayer.status.isSleeping;
+			const wasShielded = currentPlayer.status.isShielded;
+			const wasSleeping = currentPlayer.status.isSleeping;
 
-		updateState((newState) => {
-			const player = newState.players[currentPlayerIndex];
-			if (!player) return;
+			updateState((newState) => {
+				const player = newState.players[currentPlayerIndex];
+				if (!player) return;
 
-			newState.turnSkipped = false;
-			newState.log.push({message: `It's ${player.name}'s (${player.animal}) turn!`, indent: 0});
+				newState.turnSkipped = false;
+				newState.log.push({message: `It's ${player.name}'s (${player.animal}) turn!`, indent: 0});
 
-			if (wasShielded) {
-				player.status.isShielded = false;
-				newState.log.push({
-					message: `${player.name}'s (${player.animal}) shield has worn off.`,
-					indent: 1,
-				});
-			}
+				if (wasShielded) {
+					player.status.isShielded = false;
+					newState.log.push({
+						message: `${player.name}'s (${player.animal}) shield has worn off.`,
+						indent: 1,
+					});
+				}
+
+				if (wasSleeping) {
+					player.status.isSleeping = false;
+					newState.log.push({
+						message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
+						indent: 1,
+					});
+					newState.actionInProgress = null;
+					newState.turnSkipped = true;
+				}
+			});
 
 			if (wasSleeping) {
-				player.status.isSleeping = false;
-				newState.log.push({
-					message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
-					indent: 1,
-				});
-				newState.actionInProgress = null;
-				newState.turnSkipped = true;
+				if (onRender) {
+					onRender();
+				}
+				setTimeout(() => endTurnRef.current?.(), 1500);
+				return;
 			}
-		});
 
-		if (wasSleeping) {
 			if (onRender) {
 				onRender();
 			}
-			setTimeout(() => endTurnRef.current?.(), 1500);
-			return;
-		}
 
-		if (onRender) {
-			onRender();
-		}
-
-		if (currentPlayer.isComputer) {
-			setTimeout(() => {
-				playComputerTurnRef.current?.(currentPlayer);
-			}, 1000);
-		}
-	}, [saveStateToHistory, updateState, onRender]);
+			if (currentPlayer.isComputer) {
+				setTimeout(() => {
+					playComputerTurnRef.current?.(currentPlayer);
+				}, 1000);
+			}
+		},
+		[saveStateToHistory, updateState, onRender],
+	);
 
 	const handleUndo = useCallback((): void => {
 		restorePreviousState();
