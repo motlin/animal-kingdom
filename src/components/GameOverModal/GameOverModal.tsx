@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
 import type {LogEntry} from '../../lib/types';
@@ -22,6 +22,25 @@ export function GameOverModal({
 	onSaveLog,
 }: GameOverModalProperties) {
 	const [viewingLog, setViewingLog] = useState(false);
+
+	useEffect(() => {
+		if (!isOpen || !viewingLog) {
+			return;
+		}
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				setViewingLog(false);
+				event.preventDefault();
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [isOpen, viewingLog]);
 
 	if (!isOpen) {
 		return null;
