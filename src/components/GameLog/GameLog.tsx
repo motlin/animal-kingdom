@@ -8,9 +8,10 @@ export interface GameLogProperties {
 	entries: LogEntry[];
 	onCopyToClipboard?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	onSaveLog?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	onBackToResults?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperties) {
+export function GameLog({entries, onCopyToClipboard, onSaveLog, onBackToResults}: GameLogProperties) {
 	const logContainerReference = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -79,6 +80,15 @@ export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperti
 				))}
 			</div>
 			<div className="log-buttons">
+				{onBackToResults && (
+					<Button
+						variant="log"
+						onClick={onBackToResults}
+					>
+						<Icon name="undo" />
+						Back to Results
+					</Button>
+				)}
 				<Button
 					variant="log"
 					onClick={handleCopyToClipboard}

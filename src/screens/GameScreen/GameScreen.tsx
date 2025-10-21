@@ -31,6 +31,7 @@ export interface GameScreenProperties {
 	onUndo?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	onCopyToClipboard?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	onSaveLog?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	onBackToResults?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	onPlayAgain?: () => void;
 	onViewLog?: () => void;
 	onCopyLog?: () => void;
@@ -63,6 +64,7 @@ export function GameScreen({
 	onUndo,
 	onCopyToClipboard,
 	onSaveLog,
+	onBackToResults,
 	onPlayAgain,
 	onViewLog,
 	onCopyLog,
@@ -122,6 +124,7 @@ export function GameScreen({
 						entries={logEntries}
 						{...(onCopyToClipboard && {onCopyToClipboard})}
 						{...(onSaveLog && {onSaveLog})}
+						{...(onBackToResults && {onBackToResults})}
 					/>
 				</div>
 			</div>
