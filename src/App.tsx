@@ -29,7 +29,6 @@ function App() {
 	const [selectedAnimal, setSelectedAnimal] = useState<AnimalType | null>(null);
 	const [opponentAnimal, setOpponentAnimal] = useState<AnimalType | null>(null);
 	const [confettiVisible, setConfettiVisible] = useState(false);
-	const [viewingLog, setViewingLog] = useState(false);
 	const [, forceUpdate] = useState({});
 
 	const storage = useStorage();
@@ -137,15 +136,6 @@ function App() {
 	const handlePlayAgain = useCallback(() => {
 		setScreen('setup');
 		setConfettiVisible(false);
-		setViewingLog(false);
-	}, []);
-
-	const handleViewLog = useCallback(() => {
-		setViewingLog(true);
-	}, []);
-
-	const handleBackToResults = useCallback(() => {
-		setViewingLog(false);
 	}, []);
 
 	const handleAttack = useCallback(() => {
@@ -284,7 +274,7 @@ function App() {
 	const canUndo = Boolean(gameState.stateHistory.length > 0 && currentPlayer && !currentPlayer.isComputer);
 
 	useKeyboard({
-		enabled: screen === 'game' && gameState.state.gameState !== 'gameOver' && !viewingLog,
+		enabled: screen === 'game' && gameState.state.gameState !== 'gameOver',
 		...(canAttack && {onAttack: handleAttack}),
 		...(canUseAbility && {onUseAbility: handleUseAbility}),
 		...(canHeal && {onHeal: handleHeal}),
@@ -363,7 +353,7 @@ function App() {
 				healsRemaining={healsRemaining}
 				shieldsRemaining={shieldsRemaining}
 				logEntries={gameState.state.log}
-				isGameOver={gameState.state.gameState === 'gameOver' && !viewingLog}
+				isGameOver={gameState.state.gameState === 'gameOver'}
 				winnerAnnouncement={
 					gameState.state.log.length > 0 ? gameState.state.log[gameState.state.log.length - 1]!.message : ''
 				}
@@ -377,9 +367,7 @@ function App() {
 				onUndo={handleUndo}
 				onCopyToClipboard={handleCopyToClipboard}
 				onSaveLog={handleSaveLog}
-				{...(viewingLog && {onBackToResults: handleBackToResults})}
 				onPlayAgain={handlePlayAgain}
-				onViewLog={handleViewLog}
 				onCopyLog={handleCopyToClipboard}
 				onSaveGameLog={handleSaveLog}
 			/>

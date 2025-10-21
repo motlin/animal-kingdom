@@ -19,6 +19,31 @@
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
+.game-over-modal-log {
+	max-width: 800px;
+	max-height: 90vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-log-content {
+	flex: 1;
+	overflow-y: auto;
+	text-align: left;
+	font-family: monospace;
+	background-color: var(--color-background);
+	padding: 20px;
+	border-radius: 5px;
+	margin: 20px 0;
+	max-height: 60vh;
+}
+
+.modal-log-entry {
+	white-space: pre-wrap;
+	line-height: 1.6;
+}
+
 .game-over-modal h2 {
 	font-size: 2.5em;
 	margin-bottom: 20px;
