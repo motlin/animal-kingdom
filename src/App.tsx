@@ -11,6 +11,7 @@ import {useGameActions} from './hooks/useGameActions';
 import {useGameFlow} from './hooks/useGameFlow';
 import {useStorage} from './hooks/useStorage';
 import {useSound} from './hooks/useSound';
+import {useKeyboard} from './hooks/useKeyboard';
 
 type Screen = 'setup' | 'game';
 
@@ -244,42 +245,7 @@ function App() {
 		sound.setIsMuted(newMutedState);
 	}, [storage, sound]);
 
-	if (screen === 'setup') {
-		return (
-			<div className="app">
-				<ThemeToggle
-					theme={storage.theme}
-					onToggle={handleThemeToggle}
-				/>
-				<MuteToggle
-					isMuted={storage.isMuted}
-					onToggle={handleMuteToggle}
-				/>
-				<Header isGameActive={false} />
-				<SetupScreen
-					mode={mode}
-					unlockedAnimals={gameState.unlockedAnimals as Set<AnimalType>}
-					playerCount={playerCount}
-					players={players}
-					selectedAnimal={selectedAnimal}
-					opponentAnimal={opponentAnimal}
-					onModeChange={handleModeChange}
-					onPlayerCountChange={handlePlayerCountChange}
-					onPlayerChange={handlePlayerChange}
-					onAnimalSelect={handleAnimalSelect}
-					onStartGame={handleStartGame}
-					canStartGame={canStartGame()}
-				/>
-			</div>
-		);
-	}
-
 	const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
-	const turnIndicator = gameState.state.actionInProgress
-		? gameState.state.actionInProgress.prompt
-		: currentPlayer
-			? `${currentPlayer.name}'s Turn`
-			: '';
 
 	const canAttack = Boolean(
 		!gameState.state.turnSkipped && !gameState.state.actionInProgress && currentPlayer && !currentPlayer.isComputer,
@@ -316,6 +282,52 @@ function App() {
 	);
 
 	const canUndo = Boolean(gameState.stateHistory.length > 0 && currentPlayer && !currentPlayer.isComputer);
+
+	useKeyboard({
+		enabled: screen === 'game' && gameState.state.gameState !== 'gameOver' && !viewingLog,
+		...(canAttack && {onAttack: handleAttack}),
+		...(canUseAbility && {onUseAbility: handleUseAbility}),
+		...(canHeal && {onHeal: handleHeal}),
+		...(canShield && {onShield: handleShield}),
+		...(canDoNothing && {onDoNothing: handleDoNothing}),
+		...(canUndo && {onUndo: handleUndo}),
+	});
+
+	if (screen === 'setup') {
+		return (
+			<div className="app">
+				<ThemeToggle
+					theme={storage.theme}
+					onToggle={handleThemeToggle}
+				/>
+				<MuteToggle
+					isMuted={storage.isMuted}
+					onToggle={handleMuteToggle}
+				/>
+				<Header isGameActive={false} />
+				<SetupScreen
+					mode={mode}
+					unlockedAnimals={gameState.unlockedAnimals as Set<AnimalType>}
+					playerCount={playerCount}
+					players={players}
+					selectedAnimal={selectedAnimal}
+					opponentAnimal={opponentAnimal}
+					onModeChange={handleModeChange}
+					onPlayerCountChange={handlePlayerCountChange}
+					onPlayerChange={handlePlayerChange}
+					onAnimalSelect={handleAnimalSelect}
+					onStartGame={handleStartGame}
+					canStartGame={canStartGame()}
+				/>
+			</div>
+		);
+	}
+
+	const turnIndicator = gameState.state.actionInProgress
+		? gameState.state.actionInProgress.prompt
+		: currentPlayer
+			? `${currentPlayer.name}'s Turn`
+			: '';
 
 	const healsRemaining = currentPlayer && !currentPlayer.oneTimeActions.hasHealed ? 1 : 0;
 	const shieldsRemaining = currentPlayer && !currentPlayer.oneTimeActions.hasShielded ? 1 : 0;
