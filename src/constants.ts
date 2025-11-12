@@ -7,7 +7,7 @@ export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
 	},
 	Llama: {name: 'Llama', abilityDesc: 'Spitball: An attack with random damage (0-2).'},
 	Tiger: {name: 'Tiger', abilityDesc: 'Strike: Hits two different opponents for 1 damage each.'},
-	Gorilla: {name: 'Gorilla', abilityDesc: 'Rampage: A one-time attack that deals 4x damage.'},
+	Gorilla: {name: 'Gorilla', abilityDesc: 'Rampage: A one-time attack that deals 4x damage. Can only be used on turn 5.'},
 	Monkey: {
 		name: 'Monkey',
 		abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently.",

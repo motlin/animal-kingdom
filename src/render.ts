@@ -113,7 +113,11 @@ export function renderControls(): void {
 		}
 	}
 
-	if (currentPlayer.animal === 'Gorilla' || currentPlayer.animal === 'Monkey') {
+	if (currentPlayer.animal === 'Gorilla') {
+		if (currentPlayer.oneTimeActions.hasUsedAbility || state.turn !== 5) {
+			abilityButton.disabled = true;
+		}
+	} else if (currentPlayer.animal === 'Monkey') {
 		if (currentPlayer.oneTimeActions.hasUsedAbility) {
 			abilityButton.disabled = true;
 		}
