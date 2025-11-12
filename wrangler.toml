@@ -1,0 +1,9 @@
+name = "animal-kingdom"
+compatibility_date = "2025-01-12"
+pages_build_output_dir = "dist"
+
+[vars]
+ENVIRONMENT = "development"
+
+[env.production.vars]
+ENVIRONMENT = "production"
