@@ -44,6 +44,11 @@ button u {
 	cursor: not-allowed;
 }
 
+body.dark-mode .button-primary:disabled {
+	background-color: #555;
+	color: #888;
+}
+
 .button-mode {
 	flex: 1;
 	max-width: 250px;
@@ -81,6 +86,11 @@ button u {
 .button-undo:disabled {
 	background-color: #ccc;
 	cursor: not-allowed;
+}
+
+body.dark-mode .button-undo:disabled {
+	background-color: #555;
+	color: #888;
 }
 
 .button-toggle {
