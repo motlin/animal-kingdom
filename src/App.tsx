@@ -40,6 +40,12 @@ function App() {
 	}, [storage.unlockedAnimals, gameState]);
 
 	useEffect(() => {
+		if (gameState.unlockedAnimals.size !== storage.unlockedAnimals.size) {
+			storage.setUnlockedAnimals(gameState.unlockedAnimals as Set<AnimalType>);
+		}
+	}, [gameState.unlockedAnimals, storage]);
+
+	useEffect(() => {
 		document.body.classList.toggle('dark-mode', storage.theme === 'dark');
 	}, [storage.theme]);
 

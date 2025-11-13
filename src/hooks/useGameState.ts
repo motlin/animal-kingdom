@@ -1,7 +1,6 @@
 import {useState, useCallback} from 'react';
 import type {GameState, Player, AnimalType, GameMode} from '../lib/types.ts';
 import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../lib/constants.ts';
-import {saveUnlockedAnimals} from '../storage.ts';
 
 export interface UseGameStateReturn {
 	state: GameState;
@@ -105,7 +104,6 @@ export function useGameState(): UseGameStateReturn {
 			if (!current.has(animalName)) {
 				const updated = new Set(current);
 				updated.add(animalName);
-				saveUnlockedAnimals(updated as Set<never>);
 				return updated;
 			}
 			return current;
