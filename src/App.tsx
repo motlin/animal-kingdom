@@ -248,6 +248,8 @@ function App() {
 		!gameState.state.turnSkipped && !gameState.state.actionInProgress && currentPlayer && !currentPlayer.isComputer,
 	);
 
+	const aliveOpponents = gameState.state.players.filter((p) => p.isAlive && p.id !== currentPlayer?.id);
+
 	const canUseAbility = Boolean(
 		!gameState.state.turnSkipped &&
 			!gameState.state.actionInProgress &&
@@ -255,7 +257,8 @@ function App() {
 			!currentPlayer.isComputer &&
 			!currentPlayer.abilityDisabled &&
 			currentPlayer.abilityCooldown === 0 &&
-			!currentPlayer.oneTimeActions.hasUsedAbility,
+			!currentPlayer.oneTimeActions.hasUsedAbility &&
+			(currentPlayer.animal !== 'Tiger' || aliveOpponents.length >= 2),
 	);
 
 	const canHeal = Boolean(
