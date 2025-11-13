@@ -40,7 +40,7 @@ function App() {
 	}, [storage.unlockedAnimals, gameState]);
 
 	useEffect(() => {
-		if (gameState.unlockedAnimals.size !== storage.unlockedAnimals.size) {
+		if (gameState.unlockedAnimals.size > 0 && gameState.unlockedAnimals.size > storage.unlockedAnimals.size) {
 			storage.setUnlockedAnimals(gameState.unlockedAnimals as Set<AnimalType>);
 		}
 	}, [gameState.unlockedAnimals, storage]);
