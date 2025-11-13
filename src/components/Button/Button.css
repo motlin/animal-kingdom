@@ -35,6 +35,11 @@ button u {
 	border: none;
 }
 
+body.dark-mode .button-primary {
+	background-color: var(--color-primary);
+	color: white;
+}
+
 .button-primary:hover:not(:disabled) {
 	background-color: var(--color-secondary);
 }
@@ -77,6 +82,11 @@ body.dark-mode .button-primary:disabled {
 	background-color: #9b59b6;
 	color: white;
 	border: none;
+}
+
+body.dark-mode .button-undo {
+	background-color: #9b59b6;
+	color: white;
 }
 
 .button-undo:hover:not(:disabled) {
@@ -126,6 +136,11 @@ body.dark-mode .button-undo:disabled {
 	background-color: var(--color-primary);
 	color: white;
 	border: none;
+}
+
+body.dark-mode .button-log {
+	background-color: var(--color-primary);
+	color: white;
 }
 
 .button-log:hover:not(:disabled) {
