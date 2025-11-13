@@ -97,7 +97,7 @@ export function GameControls({
 				{...(onUndo && {onClick: onUndo})}
 			>
 				<Icon name="undo" />
-				<u>U</u>ndo Last Action
+				<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Last Action'}} />
 			</Button>
 		</div>
 	);
