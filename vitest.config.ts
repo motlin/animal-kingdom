@@ -12,6 +12,7 @@ export default mergeConfig(
 						name: 'unit',
 						globals: true,
 						environment: 'jsdom',
+						setupFiles: ['./vitest.setup.ts'],
 					},
 				}),
 				defineProject({
