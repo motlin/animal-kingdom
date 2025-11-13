@@ -30,7 +30,7 @@
 		"inlineSources": true,
 		"outDir": "./dist",
 		"newLine": "lf",
-		"types": ["node", "vitest/globals"]
+		"types": ["node", "vite/client", "vitest/globals"]
 	},
 	"include": ["src/**/*", "vite.config.ts", "vitest.config.ts", "eslint.config.ts"],
 	"exclude": ["node_modules", "dist", "build", "coverage"]
