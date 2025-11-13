@@ -23,14 +23,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
       - uses: actions/configure-pages@v4
 
-      - name: Build
-        run: |
-          mkdir -p dist
-          cp index.html dist/
-          cp styles.css dist/
-          cp logo.png dist/
+      - run: npm ci
+
+      - run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {useState} from 'react';
-import {expect, userEvent, within, fn} from '@storybook/test';
+import {expect, userEvent, within, fn} from 'storybook/test';
 import {SetupScreen} from './SetupScreen';
 import type {PlayerConfiguration} from './StandardSetup';
 import type {AnimalType} from '../../lib/types';
