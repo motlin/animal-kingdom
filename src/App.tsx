@@ -258,7 +258,8 @@ function App() {
 			!currentPlayer.abilityDisabled &&
 			currentPlayer.abilityCooldown === 0 &&
 			!currentPlayer.oneTimeActions.hasUsedAbility &&
-			(currentPlayer.animal !== 'Tiger' || aliveOpponents.length >= 2),
+			(currentPlayer.animal !== 'Tiger' || aliveOpponents.length >= 2) &&
+			currentPlayer.animal !== 'Bird',
 	);
 
 	const canHeal = Boolean(

@@ -48,7 +48,7 @@ export interface AnimalRoster {
 	abilityDesc: string;
 }
 
-export type AnimalType = 'Coyote' | 'Llama' | 'Tiger' | 'Gorilla' | 'Monkey';
+export type AnimalType = 'Coyote' | 'Llama' | 'Tiger' | 'Gorilla' | 'Monkey' | 'Bird';
 
 export type ActionType = 'attack' | 'spitball' | 'strike' | 'rampage' | 'mischief';
 
