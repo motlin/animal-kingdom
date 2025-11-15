@@ -365,6 +365,9 @@ export function useGameFlow(
 				case 'Monkey':
 					initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
 					break;
+				case 'Bird':
+					// Bird's Evasion is passive, no active ability to use
+					break;
 			}
 		},
 		[updateState, handleHowl, onRender, initiateTargetSelection],

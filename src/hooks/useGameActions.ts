@@ -56,6 +56,16 @@ export function useGameActions(): UseGameActionsReturn {
 				return 0;
 			}
 
+			// Bird evasion: 2/3 chance to evade incoming damage
+			if (target.animal === 'Bird' && damage > 0) {
+				const evasionRoll = Math.random();
+				if (evasionRoll > 1/3) {
+					playSound('nothing');
+					logMessage(`${target.name} the Bird evaded the attack!`, 2);
+					return 0;
+				}
+			}
+
 			playSound('damage');
 			const actualDamage = Math.min(target.hp, damage);
 			target.hp -= actualDamage;
@@ -80,6 +90,17 @@ export function useGameActions(): UseGameActionsReturn {
 		): void => {
 			playSound('attack');
 			logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
+
+			// Bird miss chance: 2/3 chance to miss when attacking
+			if (source.animal === 'Bird') {
+				const accuracyRoll = Math.random();
+				if (accuracyRoll > 1/3) {
+					playSound('nothing');
+					logMessage(`${source.name} the Bird's attack missed!`, 2);
+					return;
+				}
+			}
+
 			applyDamage(target, 1, source, logMessage, unlockAnimal);
 		},
 		[applyDamage],

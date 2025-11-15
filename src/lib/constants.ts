@@ -15,6 +15,10 @@ export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
 		name: 'Monkey',
 		abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently.",
 	},
+	Bird: {
+		name: 'Bird',
+		abilityDesc: 'Evasion: Passive ability. Bird only has a 1/3 chance to hit with attacks, and enemies only have a 1/3 chance to hit Bird.',
+	},
 };
 
 export const INITIAL_HP = 3;
@@ -25,6 +29,7 @@ export const ANIMAL_EMOJIS: Record<AnimalType, string> = {
 	Tiger: '🐯',
 	Gorilla: '🦍',
 	Monkey: '🐒',
+	Bird: '🐦',
 };
 
 export const ABILITY_NAMES: Record<AnimalType, string> = {
@@ -33,6 +38,7 @@ export const ABILITY_NAMES: Record<AnimalType, string> = {
 	Tiger: 'Strike',
 	Gorilla: 'Rampage',
 	Monkey: 'Mischief',
+	Bird: 'Evasion',
 };
 
-export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
+export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey', 'Bird'];
