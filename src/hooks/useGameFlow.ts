@@ -274,7 +274,6 @@ export function useGameFlow(
 			handleStrike,
 			handleRampage,
 			handleMischief,
-			logMessage,
 			unlockAnimal,
 			endTurn,
 			onRender,

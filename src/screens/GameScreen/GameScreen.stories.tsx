@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import {expect, userEvent, within, fn} from 'storybook/test';
 import {GameScreen} from './GameScreen';
 import type {Player, LogEntry} from '../../lib/types';
