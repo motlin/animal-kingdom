@@ -12,6 +12,7 @@ import {useGameFlow} from './hooks/useGameFlow';
 import {useStorage} from './hooks/useStorage';
 import {useSound} from './hooks/useSound';
 import {useKeyboard} from './hooks/useKeyboard';
+import {ANIMAL_UNLOCK_ORDER} from './lib/constants';
 
 type Screen = 'setup' | 'game';
 
@@ -48,6 +49,19 @@ function App() {
 	useEffect(() => {
 		document.body.classList.toggle('dark-mode', storage.theme === 'dark');
 	}, [storage.theme]);
+
+	// Check for unlock-all query parameter on mount
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		for (const [key, value] of params) {
+			if (value === 'NiLtOmIvEl') {
+				// Unlock all animals
+				const allAnimals = new Set(ANIMAL_UNLOCK_ORDER);
+				storage.setUnlockedAnimals(allAnimals);
+				break;
+			}
+		}
+	}, [storage]);
 
 	const triggerRender = useCallback(() => {
 		forceUpdate({});
