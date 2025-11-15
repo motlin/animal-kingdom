@@ -168,6 +168,7 @@ describe('useGameState', () => {
 			result.current.unlockAnimal('Tiger');
 			result.current.unlockAnimal('Gorilla');
 			result.current.unlockAnimal('Monkey');
+			result.current.unlockAnimal('Bird');
 		});
 
 		expect(result.current.getNextLockedAnimal()).toBe(null);
