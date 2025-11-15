@@ -1,6 +1,10 @@
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -106,3 +110,108 @@ jobs:
     steps:
       - name: All checks passed
         run: echo "All checks passed!"
+
+  auto-fix-eslint:
+    name: Auto-fix ESLint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint auto-fix
+        run: npm run lint
+
+      - name: Check for modifications
+        id: git-check
+        run: |
+          git diff --exit-code || echo "modified=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push fixes
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Auto-fix ESLint issues"
+          git push
+
+  auto-fix-prettier:
+    name: Auto-fix Prettier
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Prettier auto-fix
+        run: prettier --write "src/**/*.{js,ts,css,md,json}"
+
+      - name: Check for modifications
+        id: git-check
+        run: |
+          git diff --exit-code || echo "modified=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push fixes
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Auto-fix Prettier formatting"
+          git push
+
+  auto-fix-biome:
+    name: Auto-fix Biome
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Biome auto-fix
+        run: biome format --write .
+
+      - name: Check for modifications
+        id: git-check
+        run: |
+          git diff --exit-code || echo "modified=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push fixes
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Auto-fix Biome formatting"
+          git push
