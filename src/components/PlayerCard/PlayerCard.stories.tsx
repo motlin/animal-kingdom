@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import {PlayerCard} from './PlayerCard';
 import type {Player} from '../../lib/types';
 
