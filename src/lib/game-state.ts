@@ -76,6 +76,7 @@ export function createPlayer(id: number, name: string, animal: string, isCompute
 		status: {
 			isShielded: false,
 			isSleeping: false,
+			sleepTurnsRemaining: 0,
 		},
 		oneTimeActions: {
 			hasHealed: false,

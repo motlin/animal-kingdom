@@ -32,6 +32,7 @@ const basePlayer: Player = {
 	status: {
 		isShielded: false,
 		isSleeping: false,
+		sleepTurnsRemaining: 0,
 	},
 	oneTimeActions: {
 		hasHealed: false,
@@ -98,6 +99,7 @@ export const Shielded: Story = {
 			status: {
 				isShielded: true,
 				isSleeping: false,
+				sleepTurnsRemaining: 0,
 			},
 		},
 	},
@@ -110,6 +112,7 @@ export const Sleeping: Story = {
 			status: {
 				isShielded: false,
 				isSleeping: true,
+				sleepTurnsRemaining: 2,
 			},
 		},
 	},
@@ -132,6 +135,7 @@ export const MultipleStatuses: Story = {
 			status: {
 				isShielded: true,
 				isSleeping: false,
+				sleepTurnsRemaining: 0,
 			},
 			abilityCooldown: 3,
 		},
@@ -147,6 +151,7 @@ export const CriticalShieldedActive: Story = {
 			status: {
 				isShielded: true,
 				isSleeping: false,
+				sleepTurnsRemaining: 0,
 			},
 		},
 		isActive: true,

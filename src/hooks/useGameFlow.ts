@@ -77,6 +77,7 @@ export function useGameFlow(
 		const currentPlayerIndex = state.currentPlayerIndex;
 		const lastPlayer = state.players[currentPlayerIndex];
 		const lastPlayerCooldown = lastPlayer?.abilityCooldown ?? 0;
+		const lastPlayerWasSleeping = lastPlayer?.status.isSleeping ?? false;
 
 		const alivePlayers = state.players.filter((p) => p.isAlive);
 		if (alivePlayers.length <= 1) {
@@ -108,6 +109,23 @@ export function useGameFlow(
 				const player = newState.players[currentPlayerIndex];
 				if (player) {
 					player.abilityCooldown = lastPlayerCooldown - 1;
+				}
+			}
+			// Decrement sleep counter at the end of the sleeping player's turn
+			if (lastPlayerWasSleeping) {
+				const player = newState.players[currentPlayerIndex];
+				if (player) {
+					if (player.status.sleepTurnsRemaining > 0) {
+						player.status.sleepTurnsRemaining -= 1;
+						// Clear sleep status when counter reaches 0
+						if (player.status.sleepTurnsRemaining === 0) {
+							player.status.isSleeping = false;
+						}
+					} else {
+						// If isSleeping is true but counter is 0, clear it immediately
+						// (handles edge cases and backward compatibility)
+						player.status.isSleeping = false;
+					}
 				}
 			}
 			newState.currentPlayerIndex = nextIndex;
@@ -176,7 +194,7 @@ export function useGameFlow(
 				}
 
 				if (wasSleeping) {
-					player.status.isSleeping = false;
+					// Don't clear sleep status yet - clear it in endTurn instead
 					newState.log.push({
 						message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
 						indent: 1,

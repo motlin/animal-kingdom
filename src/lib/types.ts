@@ -9,6 +9,7 @@ export interface Player {
 	status: {
 		isShielded: boolean;
 		isSleeping: boolean;
+		sleepTurnsRemaining: number;
 	};
 	oneTimeActions: {
 		hasHealed: boolean;
