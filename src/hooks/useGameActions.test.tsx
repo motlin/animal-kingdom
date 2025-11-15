@@ -25,6 +25,7 @@ function createTestPlayer(
 		status: {
 			isShielded: false,
 			isSleeping: false,
+			sleepTurnsRemaining: 0,
 		},
 		oneTimeActions: {
 			hasHealed: false,
