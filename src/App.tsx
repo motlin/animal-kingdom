@@ -53,7 +53,7 @@ function App() {
 	// Check for unlock-all query parameter on mount
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
-		for (const [key, value] of params) {
+		for (const [, value] of params) {
 			if (value === 'NiLtOmIvEl') {
 				// Unlock all animals
 				const allAnimals = new Set(ANIMAL_UNLOCK_ORDER);
