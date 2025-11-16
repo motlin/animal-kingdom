@@ -76,7 +76,7 @@ export function handleHowl(source: Player): void {
 	state.players.forEach((p) => {
 		if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
 			p.status.isSleeping = true;
-			p.status.sleepTurnsRemaining = 2; // Sleep for 2 turns
+			p.status.sleepTurnsRemaining = 1; // Sleep for 1 turn
 			playSound('sleep');
 		}
 	});
