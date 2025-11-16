@@ -365,11 +365,13 @@ export function useGameFlow(
 						if (coyote) {
 							handleHowl(coyote, newState, localLog);
 						}
+					// Clear action so coyote can take another action immediately
+					newState.actionInProgress = null;
 					});
 					if (onRender) {
 						onRender();
 					}
-					setTimeout(() => endTurnRef.current?.(), 0);
+					// Don't end turn - coyote gets to act again immediately!
 					break;
 				case 'Llama':
 					initiateTargetSelection('spitball', source.id, 1, `Select a target for Spitball.`);

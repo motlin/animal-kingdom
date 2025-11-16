@@ -112,7 +112,7 @@ export const Sleeping: Story = {
 			status: {
 				isShielded: false,
 				isSleeping: true,
-				sleepTurnsRemaining: 2,
+				sleepTurnsRemaining: 1,
 			},
 		},
 	},
