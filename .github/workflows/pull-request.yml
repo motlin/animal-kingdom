@@ -200,7 +200,7 @@ jobs:
         run: npm ci
 
       - name: Run Biome auto-fix
-        run: biome format --write .
+        run: npx biome format --write .
 
       - name: Check for modifications
         id: git-check

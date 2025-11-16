@@ -5,7 +5,7 @@ const config: TestRunnerConfig = {
   async postVisit(page, context) {
     const storyContext = await getStoryContext(page, context);
 
-    if (storyContext.parameters?.snapshot === false) {
+    if (storyContext.parameters?.['snapshot'] === false) {
       return;
     }
 

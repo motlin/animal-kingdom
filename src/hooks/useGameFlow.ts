@@ -365,8 +365,8 @@ export function useGameFlow(
 						if (coyote) {
 							handleHowl(coyote, newState, localLog);
 						}
-					// Clear action so coyote can take another action immediately
-					newState.actionInProgress = null;
+						// Clear action so coyote can take another action immediately
+						newState.actionInProgress = null;
 					});
 					if (onRender) {
 						onRender();

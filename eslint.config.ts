@@ -53,7 +53,7 @@ const config: Linter.Config[] = [
 		},
 	},
 	{
-		files: ['**/*.ts'],
+		files: ['**/*.ts', '**/*.tsx'],
 		languageOptions: {
 			ecmaVersion: 2020,
 			globals: {
