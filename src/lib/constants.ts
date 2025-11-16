@@ -17,7 +17,8 @@ export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
 	},
 	Bird: {
 		name: 'Bird',
-		abilityDesc: 'Evasion: Passive ability. Bird only has a 1/3 chance to hit with attacks, and enemies only have a 1/3 chance to hit Bird.',
+		abilityDesc:
+			'Evasion: Passive ability. Bird only has a 1/3 chance to hit with attacks, and enemies only have a 1/3 chance to hit Bird.',
 	},
 };
 

@@ -12,7 +12,7 @@ export function applyDamage(target: Player, damage: number, source: Player): num
 	// Bird evasion: 2/3 chance to evade incoming damage
 	if (target.animal === 'Bird' && damage > 0) {
 		const evasionRoll = Math.random();
-		if (evasionRoll > 1/3) {
+		if (evasionRoll > 1 / 3) {
 			playSound('nothing');
 			logMessage(`${target.name} the Bird evaded the attack!`, 2);
 			return 0;
@@ -39,7 +39,7 @@ export function handleAttack(source: Player, target: Player): void {
 	// Bird miss chance: 2/3 chance to miss when attacking
 	if (source.animal === 'Bird') {
 		const accuracyRoll = Math.random();
-		if (accuracyRoll > 1/3) {
+		if (accuracyRoll > 1 / 3) {
 			playSound('nothing');
 			logMessage(`${source.name} the Bird's attack missed!`, 2);
 			return;

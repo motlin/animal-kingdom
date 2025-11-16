@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import {expect, userEvent, within, fn} from 'storybook/test';
 import {GameScreen} from './GameScreen';
 import type {Player, LogEntry} from '../../lib/types';
@@ -168,9 +168,26 @@ export const WithStatusEffects: Story = {
 	args: {
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 60, 100),
-			createPlayer(2, 'Bob', 'Llama', 75, 100, false, {isShielded: true, isSleeping: false, sleepTurnsRemaining: 0}),
-			createPlayer(3, 'Charlie', 'Tiger', 40, 100, false, {isShielded: false, isSleeping: true, sleepTurnsRemaining: 1}),
-			createPlayer(4, 'Dave', 'Gorilla', 100, 100, false, {isShielded: false, isSleeping: false, sleepTurnsRemaining: 0}, 2),
+			createPlayer(2, 'Bob', 'Llama', 75, 100, false, {
+				isShielded: true,
+				isSleeping: false,
+				sleepTurnsRemaining: 0,
+			}),
+			createPlayer(3, 'Charlie', 'Tiger', 40, 100, false, {
+				isShielded: false,
+				isSleeping: true,
+				sleepTurnsRemaining: 1,
+			}),
+			createPlayer(
+				4,
+				'Dave',
+				'Gorilla',
+				100,
+				100,
+				false,
+				{isShielded: false, isSleeping: false, sleepTurnsRemaining: 0},
+				2,
+			),
 		],
 		currentPlayerIndex: 1,
 		turnIndicator: "Bob's Turn",
