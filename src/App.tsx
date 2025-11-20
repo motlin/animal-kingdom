@@ -28,7 +28,6 @@ function App() {
 		})),
 	);
 	const [selectedAnimal, setSelectedAnimal] = useState<AnimalType | null>(null);
-	const [opponentAnimal, setOpponentAnimal] = useState<AnimalType | null>(null);
 	const [confettiVisible, setConfettiVisible] = useState(false);
 	const [, forceUpdate] = useState({});
 
@@ -84,28 +83,14 @@ function App() {
 		sound.setIsMuted(storage.isMuted);
 	}, [storage.isMuted, sound]);
 
-	useEffect(() => {
-		if (gameState.unlockedAnimals.size > 0) {
-			const nextLocked = gameState.getNextLockedAnimal();
-			if (nextLocked) {
-				setOpponentAnimal(nextLocked);
-			}
-		}
-	}, [gameState]);
+	const opponentAnimal = gameState.unlockedAnimals.size > 0 ? gameState.getNextLockedAnimal() : null;
 
-	const handleModeChange = useCallback(
-		(newMode: GameMode) => {
-			setMode(newMode);
-			if (newMode === 'challenger') {
-				setSelectedAnimal(null);
-				const nextLocked = gameState.getNextLockedAnimal();
-				if (nextLocked) {
-					setOpponentAnimal(nextLocked);
-				}
-			}
-		},
-		[gameState],
-	);
+	const handleModeChange = useCallback((newMode: GameMode) => {
+		setMode(newMode);
+		if (newMode === 'challenger') {
+			setSelectedAnimal(null);
+		}
+	}, []);
 
 	const handlePlayerCountChange = useCallback((count: number) => {
 		setPlayerCount(count);
