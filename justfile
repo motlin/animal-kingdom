@@ -3,49 +3,71 @@
 default:
     @just --list --unsorted
 
-[group('dev')]
-dev:
+# `npm install`
+[group('setup')]
+install:
+    npm install
+
+# `npm ci`
+install-ci:
+    npm ci
+
+# `npm run dev`
+dev: install
     npm run dev
 
-[group('dev')]
-preview:
-    npm run preview
-
-[group('dev')]
-test:
-    npm run test
-
-[group('build')]
-build:
-    npm run build
-
-[group('ci')]
-typecheck:
-    npm run ci:typecheck
-
-[group('ci')]
-lint:
+# `npm run lint`
+lint: install
     npm run lint
 
-[group('ci')]
-format:
+# `npm run ci:eslint`
+eslint-ci: install-ci
+    npm run ci:eslint
+
+# `npm run format`
+format: install
     npm run format
 
-[group('ci')]
-format-check:
+# `npm run ci:biome`
+biome-ci: install-ci
     npm run ci:biome
+
+# `npm run ci:prettier`
+prettier-ci: install-ci
     npm run ci:prettier
 
-[group('ci')]
-test-once:
+# `npm run test:run`
+test: install
     npm run test:run
 
-[group('ci')]
-ci: format-check typecheck test-once build
+# `npm run test:run`
+test-ci: install-ci
+    npm run test:run
 
-[group('build')]
-precommit:
-    npm run format
+# `npm run ci:typecheck`
+typecheck: install
     npm run ci:typecheck
-    npm run test:run
+
+# `npm run ci:typecheck`
+typecheck-ci: install-ci
+    npm run ci:typecheck
+
+# `npm run build`
+build: install
     npm run build
+
+# `npm run build`
+build-ci: install-ci
+    npm run build
+
+# `npm run storybook`
+storybook: install
+    npm run storybook
+
+# `npm run build-storybook`
+build-storybook: install
+    npm run build-storybook
+
+# Run all pre-commit checks
+precommit: format lint typecheck build test
+    @echo "✅ All pre-commit checks passed!"

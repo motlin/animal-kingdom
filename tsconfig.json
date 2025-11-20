@@ -34,12 +34,12 @@
 	},
 	"include": [
 		"src/**/*",
+		"tests/**/*",
 		"vite.config.ts",
 		"vitest.config.ts",
-		"eslint.config.ts",
-		".storybook/**/*",
 		"vitest.setup.ts",
-		"vitest.shims.d.ts"
+		"eslint.config.ts",
+		".storybook/**/*"
 	],
 	"exclude": ["node_modules", "dist", "build", "coverage"]
 }
