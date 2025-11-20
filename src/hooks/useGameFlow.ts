@@ -1,4 +1,4 @@
-import {useCallback, useRef} from 'react';
+import {useCallback, useRef, useEffect} from 'react';
 import type {Player, ActionInProgress} from '../lib/types.ts';
 import type {UseGameStateReturn} from './useGameState.ts';
 import type {UseGameActionsReturn} from './useGameActions.ts';
@@ -33,8 +33,10 @@ export function useGameFlow(
 	const gameStateRef = useRef(gameState);
 	const gameActionsRef = useRef(gameActions);
 
-	gameStateRef.current = gameState;
-	gameActionsRef.current = gameActions;
+	useEffect(() => {
+		gameStateRef.current = gameState;
+		gameActionsRef.current = gameActions;
+	});
 
 	const {saveStateToHistory, restorePreviousState, logMessage, unlockAnimal, updateState} = gameState;
 	const {handleAttack, handleHowl, handleSpitball, handleStrike, handleRampage, handleMischief} = gameActions;
@@ -292,7 +294,6 @@ export function useGameFlow(
 			handleStrike,
 			handleRampage,
 			handleMischief,
-			logMessage,
 			unlockAnimal,
 			endTurn,
 			onRender,
@@ -393,9 +394,11 @@ export function useGameFlow(
 		[updateState, handleHowl, onRender, initiateTargetSelection],
 	);
 
-	startTurnRef.current = startTurn;
-	endTurnRef.current = endTurn;
-	playComputerTurnRef.current = playComputerTurn;
+	useEffect(() => {
+		startTurnRef.current = startTurn;
+		endTurnRef.current = endTurn;
+		playComputerTurnRef.current = playComputerTurn;
+	});
 
 	return {
 		startTurn,
