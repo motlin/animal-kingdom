@@ -20,6 +20,11 @@ export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
 		abilityDesc:
 			'Evasion: Passive ability. Bird only has a 1/3 chance to hit with attacks, and enemies only have a 1/3 chance to hit Bird.',
 	},
+	Crocodile: {
+		name: 'Crocodile',
+		abilityDesc:
+			'Snap Back: Appears to do nothing, but counters the first attacker for double damage. If unused by next turn, takes 1 damage, loses next turn, and ability is permanently disabled.',
+	},
 };
 
 export const INITIAL_HP = 3;
@@ -31,6 +36,7 @@ export const ANIMAL_EMOJIS: Record<AnimalType, string> = {
 	Gorilla: '🦍',
 	Monkey: '🐒',
 	Bird: '🐦',
+	Crocodile: '🐊',
 };
 
 export const ABILITY_NAMES: Record<AnimalType, string> = {
@@ -40,6 +46,7 @@ export const ABILITY_NAMES: Record<AnimalType, string> = {
 	Gorilla: 'Rampage',
 	Monkey: 'Mischief',
 	Bird: 'Evasion',
+	Crocodile: 'Snap Back',
 };
 
-export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey', 'Bird'];
+export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey', 'Bird', 'Crocodile'];

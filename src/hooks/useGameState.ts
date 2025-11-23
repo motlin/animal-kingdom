@@ -137,6 +137,7 @@ export function useGameState(): UseGameStateReturn {
 				isShielded: false,
 				isSleeping: false,
 				sleepTurnsRemaining: 0,
+				snapBackActive: false,
 			},
 			oneTimeActions: {
 				hasHealed: false,

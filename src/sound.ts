@@ -159,6 +159,16 @@ export function playSound(type: SoundType): void {
 			oscillator.stop(now + 0.25);
 			break;
 
+		case 'snapback':
+			oscillator.type = 'sawtooth';
+			oscillator.frequency.setValueAtTime(150, now);
+			oscillator.frequency.exponentialRampToValueAtTime(400, now + 0.15);
+			gainNode.gain.setValueAtTime(0.3, now);
+			gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+			oscillator.start(now);
+			oscillator.stop(now + 0.15);
+			break;
+
 		case 'defeat':
 			oscillator.type = 'sine';
 			oscillator.frequency.setValueAtTime(300, now);

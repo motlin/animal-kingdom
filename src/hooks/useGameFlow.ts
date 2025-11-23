@@ -39,7 +39,8 @@ export function useGameFlow(
 	});
 
 	const {saveStateToHistory, restorePreviousState, logMessage, unlockAnimal, updateState} = gameState;
-	const {handleAttack, handleHowl, handleSpitball, handleStrike, handleRampage, handleMischief} = gameActions;
+	const {handleAttack, handleHowl, handleSpitball, handleStrike, handleRampage, handleMischief, handleSnapBack} =
+		gameActions;
 	const {onRender, onShowConfetti, onEndGame} = callbacks;
 
 	const startTurnRef = useRef<((playerIndex?: number) => void) | null>(null);
@@ -179,6 +180,7 @@ export function useGameFlow(
 
 			const wasShielded = currentPlayer.status.isShielded;
 			const wasSleeping = currentPlayer.status.isSleeping;
+			const hadSnapBackActive = currentPlayer.status.snapBackActive;
 
 			updateState((newState) => {
 				const player = newState.players[currentPlayerIndex];
@@ -186,6 +188,33 @@ export function useGameFlow(
 
 				newState.turnSkipped = false;
 				newState.log.push({message: `It's ${player.name}'s (${player.animal}) turn!`, indent: 0});
+
+				// Check for failed Snap Back
+				if (hadSnapBackActive) {
+					player.status.snapBackActive = false;
+					player.abilityDisabled = true;
+					player.status.isSleeping = true;
+					player.status.sleepTurnsRemaining = 1;
+					const snapBackDamage = 1;
+					player.hp -= snapBackDamage;
+					playSound('damage');
+					newState.log.push({
+						message: `${player.name}'s Snap Back failed! No one attacked during the counter window.`,
+						indent: 1,
+					});
+					newState.log.push({message: `${player.name} takes ${snapBackDamage} damage!`, indent: 2});
+					newState.log.push({message: `${player.name} (${player.animal}) now has ${player.hp}/${player.maxHp} HP.`, indent: 2});
+					newState.log.push({message: `${player.name}'s ability is permanently disabled!`, indent: 2});
+					newState.log.push({message: `${player.name} loses their next turn!`, indent: 2});
+
+					if (player.hp <= 0) {
+						player.isAlive = false;
+						playSound('defeat');
+						newState.log.push({message: `${player.name}'s (${player.animal}) has been defeated!`, indent: 3});
+					}
+					newState.actionInProgress = null;
+					newState.turnSkipped = true;
+				}
 
 				if (wasShielded) {
 					player.status.isShielded = false;
@@ -206,7 +235,7 @@ export function useGameFlow(
 				}
 			});
 
-			if (wasSleeping) {
+			if (wasSleeping || hadSnapBackActive) {
 				if (onRender) {
 					onRender();
 				}
@@ -386,12 +415,29 @@ export function useGameFlow(
 				case 'Monkey':
 					initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
 					break;
+				case 'Crocodile':
+					updateState((newState) => {
+						const localLog = (message: string, indent = 0) => {
+							newState.log.push({message, indent});
+						};
+						const crocodile = newState.players.find((p) => p.id === source.id);
+						if (crocodile) {
+							handleSnapBack(crocodile, localLog);
+						}
+						// Clear action so crocodile can take another action immediately
+						newState.actionInProgress = null;
+					});
+					if (onRender) {
+						onRender();
+					}
+					// Don't end turn - crocodile gets to act again immediately!
+					break;
 				case 'Bird':
 					// Bird's Evasion is passive, no active ability to use
 					break;
 			}
 		},
-		[updateState, handleHowl, onRender, initiateTargetSelection],
+		[updateState, handleHowl, handleSnapBack, onRender, initiateTargetSelection],
 	);
 
 	useEffect(() => {
