@@ -22,7 +22,7 @@ const createPlayer = (
 	hp: number,
 	maxHp: number,
 	isComputer = false,
-	status = {isShielded: false, isSleeping: false, sleepTurnsRemaining: 0},
+	status = {isShielded: false, isSleeping: false, sleepTurnsRemaining: 0, snapBackActive: false},
 	abilityCooldown = 0,
 ): Player => ({
 	id,
@@ -172,11 +172,13 @@ export const WithStatusEffects: Story = {
 				isShielded: true,
 				isSleeping: false,
 				sleepTurnsRemaining: 0,
+				snapBackActive: false,
 			}),
 			createPlayer(3, 'Charlie', 'Tiger', 40, 100, false, {
 				isShielded: false,
 				isSleeping: true,
 				sleepTurnsRemaining: 1,
+				snapBackActive: false,
 			}),
 			createPlayer(
 				4,
@@ -185,7 +187,7 @@ export const WithStatusEffects: Story = {
 				100,
 				100,
 				false,
-				{isShielded: false, isSleeping: false, sleepTurnsRemaining: 0},
+				{isShielded: false, isSleeping: false, sleepTurnsRemaining: 0, snapBackActive: false},
 				2,
 			),
 		],

@@ -10,6 +10,7 @@ export interface Player {
 		isShielded: boolean;
 		isSleeping: boolean;
 		sleepTurnsRemaining: number;
+		snapBackActive: boolean;
 	};
 	oneTimeActions: {
 		hasHealed: boolean;
@@ -49,9 +50,9 @@ export interface AnimalRoster {
 	abilityDesc: string;
 }
 
-export type AnimalType = 'Coyote' | 'Llama' | 'Tiger' | 'Gorilla' | 'Monkey' | 'Bird';
+export type AnimalType = 'Coyote' | 'Llama' | 'Tiger' | 'Gorilla' | 'Monkey' | 'Bird' | 'Crocodile';
 
-export type ActionType = 'attack' | 'spitball' | 'strike' | 'rampage' | 'mischief';
+export type ActionType = 'attack' | 'spitball' | 'strike' | 'rampage' | 'mischief' | 'snapback';
 
 export type SoundType =
 	| 'attack'
@@ -63,6 +64,7 @@ export type SoundType =
 	| 'strike'
 	| 'rampage'
 	| 'mischief'
+	| 'snapback'
 	| 'defeat'
 	| 'victory'
 	| 'nothing'

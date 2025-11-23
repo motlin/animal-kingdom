@@ -39,6 +39,7 @@ export interface UseGameActionsReturn {
 		unlockAnimal: (animalName: string) => void,
 	) => void;
 	handleMischief: (source: Player, target: Player, logMessage: (message: string, indent?: number) => void) => void;
+	handleSnapBack: (source: Player, logMessage: (message: string, indent?: number) => void) => void;
 }
 
 export function useGameActions(): UseGameActionsReturn {
@@ -50,6 +51,30 @@ export function useGameActions(): UseGameActionsReturn {
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: string) => void,
 		): number => {
+			// Crocodile Snap Back counter-attack
+			if (target.status.snapBackActive && damage > 0) {
+				target.status.snapBackActive = false;
+				playSound('snapback');
+				logMessage(`${target.name} the Crocodile snaps back at ${source.name}!`, 2);
+				const counterDamage = damage * 2;
+				logMessage(
+					`${source.name} (${source.animal}) takes ${counterDamage} damage from the counter-attack!`,
+					3,
+				);
+				// Apply counter-attack damage to the source
+				const actualCounterDamage = Math.min(source.hp, counterDamage);
+				source.hp -= actualCounterDamage;
+				playSound('damage');
+				logMessage(`${source.name} (${source.animal}) now has ${source.hp}/${source.maxHp} HP.`, 3);
+				if (source.hp <= 0) {
+					source.isAlive = false;
+					playSound('defeat');
+					logMessage(`${source.name}'s (${source.animal}) has been defeated!`, 4);
+					unlockAnimal(source.animal);
+				}
+				return 0; // Target (Crocodile) takes no damage
+			}
+
 			if (target.status.isShielded) {
 				playSound('shield');
 				logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 2);
@@ -214,6 +239,16 @@ export function useGameActions(): UseGameActionsReturn {
 		[],
 	);
 
+	const handleSnapBack = useCallback(
+		(source: Player, logMessage: (message: string, indent?: number) => void): void => {
+			playSound('snapback');
+			source.status.snapBackActive = true;
+			logMessage(`${source.name} the Crocodile uses Snap Back...`, 1);
+			logMessage('Nothing happens... or does it?', 2);
+		},
+		[],
+	);
+
 	return {
 		applyDamage,
 		handleAttack,
@@ -224,5 +259,6 @@ export function useGameActions(): UseGameActionsReturn {
 		handleStrike,
 		handleRampage,
 		handleMischief,
+		handleSnapBack,
 	};
 }
