@@ -203,14 +203,20 @@ export function useGameFlow(
 						indent: 1,
 					});
 					newState.log.push({message: `${player.name} takes ${snapBackDamage} damage!`, indent: 2});
-					newState.log.push({message: `${player.name} (${player.animal}) now has ${player.hp}/${player.maxHp} HP.`, indent: 2});
+					newState.log.push({
+						message: `${player.name} (${player.animal}) now has ${player.hp}/${player.maxHp} HP.`,
+						indent: 2,
+					});
 					newState.log.push({message: `${player.name}'s ability is permanently disabled!`, indent: 2});
 					newState.log.push({message: `${player.name} loses their next turn!`, indent: 2});
 
 					if (player.hp <= 0) {
 						player.isAlive = false;
 						playSound('defeat');
-						newState.log.push({message: `${player.name}'s (${player.animal}) has been defeated!`, indent: 3});
+						newState.log.push({
+							message: `${player.name}'s (${player.animal}) has been defeated!`,
+							indent: 3,
+						});
 					}
 					newState.actionInProgress = null;
 					newState.turnSkipped = true;

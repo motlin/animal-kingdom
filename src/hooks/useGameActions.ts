@@ -57,7 +57,10 @@ export function useGameActions(): UseGameActionsReturn {
 				playSound('snapback');
 				logMessage(`${target.name} the Crocodile snaps back at ${source.name}!`, 2);
 				const counterDamage = damage * 2;
-				logMessage(`${source.name} (${source.animal}) takes ${counterDamage} damage from the counter-attack!`, 3);
+				logMessage(
+					`${source.name} (${source.animal}) takes ${counterDamage} damage from the counter-attack!`,
+					3,
+				);
 				// Apply counter-attack damage to the source
 				const actualCounterDamage = Math.min(source.hp, counterDamage);
 				source.hp -= actualCounterDamage;
