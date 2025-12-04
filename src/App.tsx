@@ -353,7 +353,7 @@ function App() {
 				players={gameState.state.players}
 				currentPlayerIndex={gameState.state.currentPlayerIndex}
 				turnIndicator={turnIndicator}
-				currentAnimal={humanPlayer?.animal || 'Coyote'}
+				currentAnimal={currentPlayer?.animal || 'Coyote'}
 				canAttack={canAttack}
 				canUseAbility={canUseAbility}
 				canHeal={canHeal}
