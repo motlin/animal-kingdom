@@ -241,7 +241,6 @@ function App() {
 	}, [storage, sound]);
 
 	const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
-	const humanPlayer = gameState.state.players.find((p) => !p.isComputer);
 
 	const canAttack = Boolean(
 		!gameState.state.turnSkipped && !gameState.state.actionInProgress && currentPlayer && !currentPlayer.isComputer,

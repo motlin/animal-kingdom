@@ -294,9 +294,9 @@ export function useGameFlow(
 						newState.log.push({message, indent});
 					};
 
-					const source = newState.players[sourceId];
+					const source = newState.players.find((p) => p.id === sourceId);
 					const targetPlayers = currentTargets
-						.map((id) => newState.players[id])
+						.map((id) => newState.players.find((p) => p.id === id))
 						.filter((p): p is Player => !!p);
 
 					if (source) {
@@ -355,8 +355,8 @@ export function useGameFlow(
 							newState.log.push({message, indent});
 						};
 
-						const source = newState.players[sourceId];
-						const target = newState.players[targetId];
+						const source = newState.players.find((p) => p.id === sourceId);
+						const target = newState.players.find((p) => p.id === targetId);
 
 						if (source && target) {
 							if (type === 'attack') handleAttack(source, target, localLog, unlockAnimal);
