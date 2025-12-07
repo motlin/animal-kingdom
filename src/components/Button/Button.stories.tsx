@@ -43,11 +43,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryWithUnderline: Story = {
 	args: {
 		variant: 'primary',
-		children: (
-			<>
-				<u>S</u>tart Game
-			</>
-		),
+		children: <span dangerouslySetInnerHTML={{__html: '<u>S</u>tart Game'}} />,
 	},
 };
 
@@ -77,22 +73,14 @@ export const ModeDisabled: Story = {
 export const Undo: Story = {
 	args: {
 		variant: 'undo',
-		children: (
-			<>
-				<u>U</u>ndo Turn
-			</>
-		),
+		children: <span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn'}} />,
 	},
 };
 
 export const UndoDisabled: Story = {
 	args: {
 		variant: 'undo',
-		children: (
-			<>
-				<u>U</u>ndo Turn
-			</>
-		),
+		children: <span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn'}} />,
 		disabled: true,
 	},
 };
@@ -133,7 +121,7 @@ export const AllVariants = {
 						Primary Disabled
 					</Button>
 					<Button variant="primary">
-						<u>S</u>tart Game
+						<span dangerouslySetInnerHTML={{__html: '<u>S</u>tart Game'}} />
 					</Button>
 				</div>
 			</div>
@@ -161,13 +149,13 @@ export const AllVariants = {
 				<h3>Undo Button</h3>
 				<div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
 					<Button variant="undo">
-						<u>U</u>ndo Turn
+						<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn'}} />
 					</Button>
 					<Button
 						variant="undo"
 						disabled
 					>
-						<u>U</u>ndo Turn (Disabled)
+						<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn (Disabled)'}} />
 					</Button>
 				</div>
 			</div>
