@@ -60,6 +60,6 @@ export const TEAM_COLORS: string[] = [
 	'#1abc9c', // Teal
 	'#e91e63', // Pink
 	'#795548', // Brown
-	'#607d8b', // Blue Grey
+	'#d2b48c', // Tan
 	'#ffeb3b', // Yellow
 ];
