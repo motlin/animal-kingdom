@@ -3,8 +3,10 @@ import {useState} from 'react';
 import {expect, userEvent, within, fn} from 'storybook/test';
 import {SetupScreen} from './SetupScreen';
 import type {PlayerConfiguration} from './StandardSetup';
+import type {TeamConfiguration, TeamPlayerConfiguration} from './TeamSetup';
 import type {AnimalType} from '../../lib/types';
 import type {GameMode} from '../../components/ModeSelector/ModeSelector';
+import {TEAM_COLORS} from '../../lib/constants';
 
 const meta = {
 	title: 'Screens/SetupScreen',
@@ -27,6 +29,34 @@ const createDefaultPlayers = (): PlayerConfiguration[] => {
 	}));
 };
 
+const createDefaultTeams = (): TeamConfiguration[] => {
+	return Array.from({length: 6}, (_, i) => ({
+		id: i,
+		name: `Team ${i + 1}`,
+		color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
+	}));
+};
+
+const createDefaultTeamPlayers = (): TeamPlayerConfiguration[] => {
+	return Array.from({length: 24}, (_, i) => ({
+		name: `Player ${i + 1}`,
+		animalType: 'Coyote' as AnimalType,
+		playerType: 'human' as const,
+		teamId: Math.floor(i / 4),
+	}));
+};
+
+const defaultTeamProps = {
+	teamCount: 2,
+	playersPerTeam: 2,
+	teams: createDefaultTeams(),
+	teamPlayers: createDefaultTeamPlayers(),
+	onTeamCountChange: fn(),
+	onPlayersPerTeamChange: fn(),
+	onTeamChange: fn(),
+	onTeamPlayerChange: fn(),
+};
+
 export const StandardModeInitial: Story = {
 	args: {
 		mode: 'standard',
@@ -35,6 +65,7 @@ export const StandardModeInitial: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: fn(),
 		onPlayerCountChange: fn(),
 		onPlayerChange: fn(),
@@ -70,6 +101,7 @@ export const StandardModeConfigured: Story = {
 		],
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: () => {},
 		onPlayerCountChange: () => {},
 		onPlayerChange: () => {},
@@ -87,6 +119,7 @@ export const StandardModeTenPlayers: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: () => {},
 		onPlayerCountChange: () => {},
 		onPlayerChange: () => {},
@@ -104,6 +137,7 @@ export const ChallengerModeInitial: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: 'Llama',
+		...defaultTeamProps,
 		onModeChange: fn(),
 		onPlayerCountChange: fn(),
 		onPlayerChange: fn(),
@@ -133,6 +167,7 @@ export const ChallengerModeSelected: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: 'Coyote',
 		opponentAnimal: 'Tiger',
+		...defaultTeamProps,
 		onModeChange: fn(),
 		onPlayerCountChange: fn(),
 		onPlayerChange: fn(),
@@ -159,6 +194,7 @@ export const ChallengerModeAllUnlocked: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: 'Tiger',
 		opponentAnimal: 'Monkey',
+		...defaultTeamProps,
 		onModeChange: () => {},
 		onPlayerCountChange: () => {},
 		onPlayerChange: () => {},
@@ -176,6 +212,7 @@ export const ChallengerModeNoOpponent: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: () => {},
 		onPlayerCountChange: () => {},
 		onPlayerChange: () => {},
@@ -193,6 +230,7 @@ export const StandardModeCannotStart: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: fn(),
 		onPlayerCountChange: fn(),
 		onPlayerChange: fn(),
@@ -253,10 +291,18 @@ export const Interactive = {
 						players={players}
 						selectedAnimal={selectedAnimal}
 						opponentAnimal={opponentAnimal}
+						teamCount={2}
+						playersPerTeam={2}
+						teams={createDefaultTeams()}
+						teamPlayers={createDefaultTeamPlayers()}
 						onModeChange={handleModeChange}
 						onPlayerCountChange={setPlayerCount}
 						onPlayerChange={handlePlayerChange}
 						onAnimalSelect={setSelectedAnimal}
+						onTeamCountChange={() => {}}
+						onPlayersPerTeamChange={() => {}}
+						onTeamChange={() => {}}
+						onTeamPlayerChange={() => {}}
 						onStartGame={handleStartGame}
 						canStartGame={canStartGame}
 					/>
@@ -313,6 +359,7 @@ export const ModeSwitching: Story = {
 		players: createDefaultPlayers(),
 		selectedAnimal: null,
 		opponentAnimal: null,
+		...defaultTeamProps,
 		onModeChange: fn(),
 		onPlayerCountChange: fn(),
 		onPlayerChange: fn(),
@@ -376,10 +423,18 @@ export const ModeSwitchingDemo = {
 						players={players}
 						selectedAnimal={selectedAnimal}
 						opponentAnimal={opponentAnimal}
+						teamCount={2}
+						playersPerTeam={2}
+						teams={createDefaultTeams()}
+						teamPlayers={createDefaultTeamPlayers()}
 						onModeChange={handleModeChange}
 						onPlayerCountChange={setPlayerCount}
 						onPlayerChange={handlePlayerChange}
 						onAnimalSelect={setSelectedAnimal}
+						onTeamCountChange={() => {}}
+						onPlayersPerTeamChange={() => {}}
+						onTeamChange={() => {}}
+						onTeamPlayerChange={() => {}}
 						onStartGame={() => console.log('Start game')}
 						canStartGame={canStartGame}
 					/>
@@ -389,6 +444,17 @@ export const ModeSwitchingDemo = {
 
 		return <ModeSwitchingDemo />;
 	},
+};
+
+const inlineTeamProps = {
+	teamCount: 2,
+	playersPerTeam: 2,
+	teams: createDefaultTeams(),
+	teamPlayers: createDefaultTeamPlayers(),
+	onTeamCountChange: () => {},
+	onPlayersPerTeamChange: () => {},
+	onTeamChange: () => {},
+	onTeamPlayerChange: () => {},
 };
 
 export const AllVariants = {
@@ -405,6 +471,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal={null}
 							opponentAnimal={null}
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -429,6 +496,7 @@ export const AllVariants = {
 							]}
 							selectedAnimal={null}
 							opponentAnimal={null}
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -447,6 +515,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal={null}
 							opponentAnimal="Tiger"
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -465,6 +534,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal="Coyote"
 							opponentAnimal="Tiger"
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -483,6 +553,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal="Gorilla"
 							opponentAnimal="Monkey"
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -501,6 +572,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal={null}
 							opponentAnimal={null}
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
@@ -519,6 +591,7 @@ export const AllVariants = {
 							players={createDefaultPlayers()}
 							selectedAnimal={null}
 							opponentAnimal={null}
+							{...inlineTeamProps}
 							onModeChange={() => {}}
 							onPlayerCountChange={() => {}}
 							onPlayerChange={() => {}}
