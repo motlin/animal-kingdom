@@ -50,3 +50,12 @@ export const ABILITY_NAMES: Record<AnimalType, string> = {
 };
 
 export const ANIMAL_UNLOCK_ORDER: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey', 'Bird', 'Crocodile'];
+
+export const TEAM_COLORS: string[] = [
+	'#e74c3c', // Red
+	'#3498db', // Blue
+	'#2ecc71', // Green
+	'#f39c12', // Orange
+	'#9b59b6', // Purple
+	'#1abc9c', // Teal
+];

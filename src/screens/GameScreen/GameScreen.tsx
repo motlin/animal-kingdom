@@ -2,11 +2,12 @@ import {PlayerCard} from '../../components/PlayerCard/PlayerCard';
 import {GameControls} from '../../components/GameControls/GameControls';
 import {GameLog} from '../../components/GameLog/GameLog';
 import {GameOverModal} from '../../components/GameOverModal/GameOverModal';
-import type {Player, LogEntry, AnimalType} from '../../lib/types';
+import type {Player, LogEntry, AnimalType, Team} from '../../lib/types';
 import './GameScreen.css';
 
 export interface GameScreenProperties {
 	players: Player[];
+	teams?: Team[];
 	currentPlayerIndex: number;
 	turnIndicator: string;
 	currentAnimal: AnimalType;
@@ -38,6 +39,7 @@ export interface GameScreenProperties {
 
 export function GameScreen({
 	players,
+	teams = [],
 	currentPlayerIndex,
 	turnIndicator,
 	currentAnimal,
@@ -74,12 +76,19 @@ export function GameScreen({
 
 	const currentPlayer = players[currentPlayerIndex];
 
+	const getTeamColor = (teamId: number | undefined): string | undefined => {
+		if (teamId === undefined) return undefined;
+		const team = teams.find((t) => t.id === teamId);
+		return team?.color;
+	};
+
 	return (
 		<div className="game-screen">
 			<div className="players-container">
 				{players.map((player) => {
 					const isActive = Boolean(currentPlayer && player.id === currentPlayer.id);
 					const isSelectable = selectablePlayerIds.includes(player.id);
+					const teamColor = getTeamColor(player.teamId);
 
 					return (
 						<PlayerCard
@@ -87,6 +96,7 @@ export function GameScreen({
 							player={player}
 							isActive={isActive}
 							isSelectable={isSelectable}
+							{...(teamColor ? {teamColor} : {})}
 							onClick={handlePlayerClick}
 						/>
 					);

@@ -1,8 +1,9 @@
 import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
+import type {GameMode} from '../../lib/types';
 import './ModeSelector.css';
 
-export type GameMode = 'standard' | 'challenger';
+export type {GameMode};
 
 export interface ModeSelectorProperties {
 	selectedMode: GameMode;
@@ -21,6 +22,15 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 			>
 				<Icon name="users" />
 				<span>Standard Battle</span>
+			</Button>
+			<Button
+				variant="mode"
+				active={selectedMode === 'team'}
+				disabled={disabled}
+				onClick={() => onModeChange('team')}
+			>
+				<Icon name="users" />
+				<span>Team Battle</span>
 			</Button>
 			<Button
 				variant="mode"

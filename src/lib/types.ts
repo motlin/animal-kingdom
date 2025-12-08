@@ -1,3 +1,9 @@
+export interface Team {
+	id: number;
+	name: string;
+	color: string;
+}
+
 export interface Player {
 	id: number;
 	name: string;
@@ -6,6 +12,7 @@ export interface Player {
 	maxHp: number;
 	isAlive: boolean;
 	isComputer: boolean;
+	teamId?: number;
 	status: {
 		isShielded: boolean;
 		isSleeping: boolean;
@@ -23,6 +30,7 @@ export interface Player {
 
 export interface GameState {
 	players: Player[];
+	teams: Team[];
 	currentPlayerIndex: number;
 	gameState: 'playing' | 'gameEnding' | 'gameOver';
 	gameMode: GameMode;
@@ -70,4 +78,4 @@ export type SoundType =
 	| 'nothing'
 	| 'sleep';
 
-export type GameMode = 'standard' | 'challenger';
+export type GameMode = 'standard' | 'challenger' | 'team';

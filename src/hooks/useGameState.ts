@@ -1,5 +1,5 @@
 import {useState, useCallback} from 'react';
-import type {GameState, Player, AnimalType, GameMode} from '../lib/types.ts';
+import type {GameState, Player, AnimalType, GameMode, Team} from '../lib/types.ts';
 import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../lib/constants.ts';
 
 export interface UseGameStateReturn {
@@ -7,13 +7,13 @@ export interface UseGameStateReturn {
 	stateHistory: GameState[];
 	unlockedAnimals: Set<string>;
 	setUnlockedAnimals: (animals: Set<string>) => void;
-	initializeState: (players: Player[], gameMode?: GameMode) => void;
+	initializeState: (players: Player[], gameMode?: GameMode, teams?: Team[]) => void;
 	saveStateToHistory: () => void;
 	restorePreviousState: () => void;
 	logMessage: (message: string, indent?: number) => void;
 	unlockAnimal: (animalName: string) => void;
 	getNextLockedAnimal: () => AnimalType | null;
-	createPlayer: (id: number, name: string, animal: string, isComputer: boolean) => Player;
+	createPlayer: (id: number, name: string, animal: string, isComputer: boolean, teamId?: number) => Player;
 	updateState: (updater: (state: GameState) => void) => void;
 }
 
@@ -26,6 +26,7 @@ export function useGameState(): UseGameStateReturn {
 	const [stateWithHistory, setStateWithHistory] = useState<StateWithHistory>({
 		current: {
 			players: [],
+			teams: [],
 			currentPlayerIndex: 0,
 			gameState: 'playing',
 			gameMode: 'standard',
@@ -43,12 +44,13 @@ export function useGameState(): UseGameStateReturn {
 		setUnlockedAnimalsState(animals);
 	}, []);
 
-	const initializeState = useCallback((players: Player[], gameMode: GameMode = 'standard') => {
+	const initializeState = useCallback((players: Player[], gameMode: GameMode = 'standard', teams: Team[] = []) => {
 		const randomFirstPlayerIndex = Math.floor(Math.random() * players.length);
 
 		setStateWithHistory({
 			current: {
 				players,
+				teams,
 				currentPlayerIndex: randomFirstPlayerIndex,
 				gameState: 'playing',
 				gameMode,
@@ -119,35 +121,44 @@ export function useGameState(): UseGameStateReturn {
 		return null;
 	}, [unlockedAnimals]);
 
-	const createPlayer = useCallback((id: number, name: string, animal: string, isComputer: boolean): Player => {
-		let initialHP = INITIAL_HP;
-		if (animal === 'Gorilla') {
-			initialHP = 4;
-		}
+	const createPlayer = useCallback(
+		(id: number, name: string, animal: string, isComputer: boolean, teamId?: number): Player => {
+			let initialHP = INITIAL_HP;
+			if (animal === 'Gorilla') {
+				initialHP = 4;
+			}
 
-		return {
-			id,
-			name,
-			animal: animal as never,
-			hp: initialHP,
-			maxHp: initialHP,
-			isAlive: true,
-			isComputer,
-			status: {
-				isShielded: false,
-				isSleeping: false,
-				sleepTurnsRemaining: 0,
-				snapBackActive: false,
-			},
-			oneTimeActions: {
-				hasHealed: false,
-				hasShielded: false,
-				hasUsedAbility: false,
-			},
-			abilityCooldown: 0,
-			abilityDisabled: false,
-		};
-	}, []);
+			const player: Player = {
+				id,
+				name,
+				animal: animal as never,
+				hp: initialHP,
+				maxHp: initialHP,
+				isAlive: true,
+				isComputer,
+				status: {
+					isShielded: false,
+					isSleeping: false,
+					sleepTurnsRemaining: 0,
+					snapBackActive: false,
+				},
+				oneTimeActions: {
+					hasHealed: false,
+					hasShielded: false,
+					hasUsedAbility: false,
+				},
+				abilityCooldown: 0,
+				abilityDisabled: false,
+			};
+
+			if (teamId !== undefined) {
+				player.teamId = teamId;
+			}
+
+			return player;
+		},
+		[],
+	);
 
 	const updateState = useCallback((updater: (state: GameState) => void) => {
 		setStateWithHistory((prev) => {

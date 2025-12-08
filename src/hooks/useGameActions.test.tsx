@@ -184,6 +184,7 @@ describe('useGameActions', () => {
 			const tiger = createTestPlayer(4, 'Tiger', 'Tiger');
 			const state: GameState = {
 				players: [source, otherCoyote, llama, tiger],
+				teams: [],
 				currentPlayerIndex: 0,
 				gameState: 'playing',
 				gameMode: 'standard',
@@ -213,6 +214,7 @@ describe('useGameActions', () => {
 			llama.isAlive = false;
 			const state: GameState = {
 				players: [source, llama],
+				teams: [],
 				currentPlayerIndex: 0,
 				gameState: 'playing',
 				gameMode: 'standard',

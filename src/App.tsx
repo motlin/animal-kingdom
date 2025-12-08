@@ -5,14 +5,15 @@ import {GameScreen} from './screens/GameScreen/GameScreen';
 import {ThemeToggle} from './components/ThemeToggle/ThemeToggle';
 import {MuteToggle} from './components/MuteToggle/MuteToggle';
 import type {PlayerConfiguration} from './screens/SetupScreen/StandardSetup';
-import type {GameMode, AnimalType} from './lib/types';
+import type {TeamConfiguration, TeamPlayerConfiguration} from './screens/SetupScreen/TeamSetup';
+import type {GameMode, AnimalType, Team} from './lib/types';
 import {useGameState} from './hooks/useGameState';
 import {useGameActions} from './hooks/useGameActions';
 import {useGameFlow} from './hooks/useGameFlow';
 import {useStorage} from './hooks/useStorage';
 import {useSound} from './hooks/useSound';
 import {useKeyboard} from './hooks/useKeyboard';
-import {ANIMAL_UNLOCK_ORDER} from './lib/constants';
+import {ANIMAL_UNLOCK_ORDER, TEAM_COLORS} from './lib/constants';
 
 type Screen = 'setup' | 'game';
 
@@ -30,6 +31,25 @@ function App() {
 	const [selectedAnimal, setSelectedAnimal] = useState<AnimalType | null>(null);
 	const [confettiVisible, setConfettiVisible] = useState(false);
 	const [, forceUpdate] = useState({});
+
+	// Team mode state
+	const [teamCount, setTeamCount] = useState(2);
+	const [playersPerTeam, setPlayersPerTeam] = useState(2);
+	const [teams, setTeams] = useState<TeamConfiguration[]>(
+		Array.from({length: 6}, (_, i) => ({
+			id: i,
+			name: `Team ${i + 1}`,
+			color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
+		})),
+	);
+	const [teamPlayers, setTeamPlayers] = useState<TeamPlayerConfiguration[]>(
+		Array.from({length: 24}, (_, i) => ({
+			name: `Player ${i + 1}`,
+			animalType: 'Coyote' as AnimalType,
+			playerType: 'human' as const,
+			teamId: Math.floor(i / 4),
+		})),
+	);
 
 	const storage = useStorage();
 	const gameState = useGameState();
@@ -108,13 +128,39 @@ function App() {
 		setSelectedAnimal(animal);
 	}, []);
 
+	const handleTeamCountChange = useCallback((count: number) => {
+		setTeamCount(count);
+	}, []);
+
+	const handlePlayersPerTeamChange = useCallback((count: number) => {
+		setPlayersPerTeam(count);
+	}, []);
+
+	const handleTeamChange = useCallback((index: number, team: TeamConfiguration) => {
+		setTeams((current) => {
+			const updated = [...current];
+			updated[index] = team;
+			return updated;
+		});
+	}, []);
+
+	const handleTeamPlayerChange = useCallback((index: number, player: TeamPlayerConfiguration) => {
+		setTeamPlayers((current) => {
+			const updated = [...current];
+			updated[index] = player;
+			return updated;
+		});
+	}, []);
+
 	const canStartGame = useCallback(() => {
 		if (mode === 'standard') {
 			return playerCount >= 2;
+		} else if (mode === 'team') {
+			return teamCount >= 2 && playersPerTeam >= 1;
 		} else {
 			return selectedAnimal !== null && opponentAnimal !== null;
 		}
-	}, [mode, playerCount, selectedAnimal, opponentAnimal]);
+	}, [mode, playerCount, teamCount, playersPerTeam, selectedAnimal, opponentAnimal]);
 
 	const handleStartGame = useCallback(() => {
 		if (mode === 'standard') {
@@ -124,6 +170,26 @@ function App() {
 					gameState.createPlayer(index, player.name, player.animalType, player.playerType === 'computer'),
 				);
 			gameState.initializeState(gamePlayers, 'standard');
+		} else if (mode === 'team') {
+			const totalPlayers = teamCount * playersPerTeam;
+			const gameTeams: Team[] = teams.slice(0, teamCount).map((team, index) => ({
+				id: index,
+				name: team.name,
+				color: team.color,
+			}));
+
+			const gamePlayers = teamPlayers.slice(0, totalPlayers).map((player, index) => {
+				const teamIndex = Math.floor(index / playersPerTeam);
+				return gameState.createPlayer(
+					index,
+					player.name,
+					player.animalType,
+					player.playerType === 'computer',
+					teamIndex,
+				);
+			});
+
+			gameState.initializeState(gamePlayers, 'team', gameTeams);
 		} else {
 			if (!selectedAnimal || !opponentAnimal) return;
 
@@ -136,7 +202,7 @@ function App() {
 		setTimeout(() => {
 			gameFlow.startTurn();
 		}, 100);
-	}, [mode, players, playerCount, selectedAnimal, opponentAnimal, gameState, gameFlow]);
+	}, [mode, players, playerCount, teamCount, playersPerTeam, teams, teamPlayers, selectedAnimal, opponentAnimal, gameState, gameFlow]);
 
 	const handlePlayAgain = useCallback(() => {
 		setScreen('setup');
@@ -246,7 +312,15 @@ function App() {
 		!gameState.state.turnSkipped && !gameState.state.actionInProgress && currentPlayer && !currentPlayer.isComputer,
 	);
 
-	const aliveOpponents = gameState.state.players.filter((p) => p.isAlive && p.id !== currentPlayer?.id);
+	const aliveOpponents = gameState.state.players.filter((p) => {
+		if (!p.isAlive) return false;
+		if (p.id === currentPlayer?.id) return false;
+		// In team mode, teammates are not opponents
+		if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined) {
+			if (p.teamId === currentPlayer.teamId) return false;
+		}
+		return true;
+	});
 
 	const canUseAbility = Boolean(
 		!gameState.state.turnSkipped &&
@@ -311,10 +385,18 @@ function App() {
 					players={players}
 					selectedAnimal={selectedAnimal}
 					opponentAnimal={opponentAnimal}
+					teamCount={teamCount}
+					playersPerTeam={playersPerTeam}
+					teams={teams}
+					teamPlayers={teamPlayers}
 					onModeChange={handleModeChange}
 					onPlayerCountChange={handlePlayerCountChange}
 					onPlayerChange={handlePlayerChange}
 					onAnimalSelect={handleAnimalSelect}
+					onTeamCountChange={handleTeamCountChange}
+					onPlayersPerTeamChange={handlePlayersPerTeamChange}
+					onTeamChange={handleTeamChange}
+					onTeamPlayerChange={handleTeamPlayerChange}
 					onStartGame={handleStartGame}
 					canStartGame={canStartGame()}
 				/>
@@ -333,7 +415,15 @@ function App() {
 
 	const selectablePlayerIds = gameState.state.actionInProgress
 		? gameState.state.players
-				.filter((p) => p.isAlive && p.id !== gameState.state.actionInProgress?.sourceId)
+				.filter((p) => {
+					if (!p.isAlive) return false;
+					if (p.id === gameState.state.actionInProgress?.sourceId) return false;
+					// In team mode, can't target teammates
+					if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined) {
+						if (p.teamId === currentPlayer.teamId) return false;
+					}
+					return true;
+				})
 				.map((p) => p.id)
 		: [];
 
@@ -350,6 +440,7 @@ function App() {
 			<Header isGameActive={true} />
 			<GameScreen
 				players={gameState.state.players}
+				teams={gameState.state.teams}
 				currentPlayerIndex={gameState.state.currentPlayerIndex}
 				turnIndicator={turnIndicator}
 				currentAnimal={currentPlayer?.animal || 'Coyote'}
