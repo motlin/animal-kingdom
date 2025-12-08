@@ -15,6 +15,7 @@ export function initializeState(players: Player[], gameMode: GameMode = 'standar
 
 	state = {
 		players,
+		teams: [],
 		currentPlayerIndex: randomFirstPlayerIndex,
 		gameState: 'playing',
 		gameMode,

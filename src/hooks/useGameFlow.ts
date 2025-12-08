@@ -48,10 +48,21 @@ export function useGameFlow(
 	const playComputerTurnRef = useRef<((player: Player) => void) | null>(null);
 
 	const endGame = useCallback(
-		(winner: Player | undefined): void => {
+		(winner: Player | undefined, winningTeamId?: number): void => {
 			const state = gameStateRef.current.state;
 			playSound('victory');
-			const announcement = winner ? `${winner.name} the ${winner.animal} is the new ruler!` : "It's a draw!";
+
+			let announcement: string;
+			if (state.gameMode === 'team' && winningTeamId !== undefined) {
+				const winningTeam = state.teams.find((t) => t.id === winningTeamId);
+				const teamName = winningTeam?.name || `Team ${winningTeamId + 1}`;
+				announcement = `${teamName} wins!`;
+			} else if (winner) {
+				announcement = `${winner.name} the ${winner.animal} is the new ruler!`;
+			} else {
+				announcement = "It's a draw!";
+			}
+
 			const gameMode = state.gameMode;
 			const opponent = state.players.find((p) => p.isComputer);
 
@@ -61,6 +72,13 @@ export function useGameFlow(
 
 				if (gameMode === 'challenger' && winner && !winner.isComputer && opponent) {
 					newState.log.push({message: `You unlocked the ${opponent.animal}!`, indent: 1});
+				}
+
+				if (gameMode === 'team' && winningTeamId !== undefined) {
+					const winningPlayers = newState.players.filter((p) => p.teamId === winningTeamId && p.isAlive);
+					for (const player of winningPlayers) {
+						newState.log.push({message: `${player.name} the ${player.animal} is victorious!`, indent: 1});
+					}
 				}
 			});
 
@@ -83,7 +101,31 @@ export function useGameFlow(
 		const lastPlayerWasSleeping = lastPlayer?.status.isSleeping ?? false;
 
 		const alivePlayers = state.players.filter((p) => p.isAlive);
-		if (alivePlayers.length <= 1) {
+
+		// Check for game end conditions
+		let gameEnded = false;
+		let winner: Player | undefined;
+		let winningTeamId: number | undefined;
+
+		if (state.gameMode === 'team') {
+			// In team mode, check if only one team has alive players
+			const aliveTeamIds = new Set(alivePlayers.map((p) => p.teamId).filter((id) => id !== undefined));
+			if (aliveTeamIds.size <= 1) {
+				gameEnded = true;
+				if (aliveTeamIds.size === 1) {
+					winningTeamId = Array.from(aliveTeamIds)[0];
+					winner = alivePlayers[0];
+				}
+			}
+		} else {
+			// Standard/Challenger mode: game ends when 1 or fewer players alive
+			if (alivePlayers.length <= 1) {
+				gameEnded = true;
+				winner = alivePlayers[0];
+			}
+		}
+
+		if (gameEnded) {
 			updateState((newState) => {
 				newState.gameState = 'gameEnding';
 			});
@@ -92,13 +134,15 @@ export function useGameFlow(
 				onRender();
 			}
 
-			const winner = alivePlayers[0];
-			const shouldShowConfetti = state.gameMode === 'standard' || (winner && !winner.isComputer);
+			const shouldShowConfetti =
+				state.gameMode === 'standard' ||
+				state.gameMode === 'team' ||
+				(winner && !winner.isComputer);
 			if (shouldShowConfetti && onShowConfetti) {
 				onShowConfetti();
 			}
 
-			setTimeout(() => endGame(winner), 2000);
+			setTimeout(() => endGame(winner, winningTeamId), 2000);
 			return;
 		}
 
@@ -141,7 +185,16 @@ export function useGameFlow(
 	const playComputerTurn = useCallback(
 		(player: Player): void => {
 			const state = gameStateRef.current.state;
-			const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== player.id);
+			// In team mode, only target opponents (not teammates)
+			const aliveOpponents = state.players.filter((p) => {
+				if (!p.isAlive) return false;
+				if (p.id === player.id) return false;
+				// In team mode, can't attack teammates
+				if (state.gameMode === 'team' && player.teamId !== undefined) {
+					if (p.teamId === player.teamId) return false;
+				}
+				return true;
+			});
 			if (aliveOpponents.length === 0) {
 				endTurnRef.current?.();
 				return;

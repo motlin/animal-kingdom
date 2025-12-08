@@ -7,6 +7,7 @@ export interface PlayerCardProperties {
 	player: Player;
 	isActive?: boolean;
 	isSelectable?: boolean;
+	teamColor?: string;
 	onClick?: (playerId: number) => void;
 	className?: string;
 }
@@ -15,6 +16,7 @@ export function PlayerCard({
 	player,
 	isActive = false,
 	isSelectable = false,
+	teamColor,
 	onClick,
 	className = '',
 }: PlayerCardProperties) {
@@ -34,16 +36,27 @@ export function PlayerCard({
 	const activeClass = isActive ? 'active' : '';
 	const selectableClass = isSelectable ? 'selectable' : '';
 	const deadClass = !player.isAlive ? 'dead' : '';
-	const classes = ['player-card', activeClass, selectableClass, deadClass, className].filter(Boolean).join(' ');
+	const teamClass = teamColor ? 'has-team' : '';
+	const classes = ['player-card', activeClass, selectableClass, deadClass, teamClass, className]
+		.filter(Boolean)
+		.join(' ');
+
+	const cardStyle = teamColor
+		? ({
+				'--team-color': teamColor,
+			} as React.CSSProperties)
+		: undefined;
 
 	return (
 		<div
 			className={classes}
+			style={cardStyle}
 			onClick={handleClick}
 			onKeyDown={handleKeyDown}
 			role={isSelectable ? 'button' : undefined}
 			tabIndex={isSelectable ? 0 : undefined}
 		>
+			{teamColor && <div className="team-indicator" />}
 			<div className="player-info">
 				<div>
 					<div className="player-name">{player.name}</div>
