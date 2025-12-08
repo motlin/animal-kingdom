@@ -135,9 +135,7 @@ export function useGameFlow(
 			}
 
 			const shouldShowConfetti =
-				state.gameMode === 'standard' ||
-				state.gameMode === 'team' ||
-				(winner && !winner.isComputer);
+				state.gameMode === 'standard' || state.gameMode === 'team' || (winner && !winner.isComputer);
 			if (shouldShowConfetti && onShowConfetti) {
 				onShowConfetti();
 			}

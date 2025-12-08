@@ -140,9 +140,7 @@ export function TeamSetup({
 										animalType={player.animalType}
 										playerType={player.playerType}
 										unlockedAnimals={unlockedAnimals}
-										onPlayerNameChange={(name) =>
-											onPlayerChange(globalIndex, {...player, name})
-										}
+										onPlayerNameChange={(name) => onPlayerChange(globalIndex, {...player, name})}
 										onAnimalTypeChange={(animalType) =>
 											onPlayerChange(globalIndex, {...player, animalType})
 										}

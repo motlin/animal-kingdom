@@ -202,7 +202,19 @@ function App() {
 		setTimeout(() => {
 			gameFlow.startTurn();
 		}, 100);
-	}, [mode, players, playerCount, teamCount, playersPerTeam, teams, teamPlayers, selectedAnimal, opponentAnimal, gameState, gameFlow]);
+	}, [
+		mode,
+		players,
+		playerCount,
+		teamCount,
+		playersPerTeam,
+		teams,
+		teamPlayers,
+		selectedAnimal,
+		opponentAnimal,
+		gameState,
+		gameFlow,
+	]);
 
 	const handlePlayAgain = useCallback(() => {
 		setScreen('setup');
