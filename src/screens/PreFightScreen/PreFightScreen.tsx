@@ -5,19 +5,13 @@ import './PreFightScreen.css';
 
 // Realistic animal images - using high quality stock photo URLs
 const ANIMAL_IMAGES: Record<AnimalType, string> = {
-	Coyote:
-		'https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=400&h=400&fit=crop&crop=faces',
-	Llama:
-		'https://images.unsplash.com/photo-1518288774672-b94e808873ff?w=400&h=400&fit=crop&crop=faces',
-	Tiger:
-		'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=400&h=400&fit=crop&crop=faces',
-	Gorilla:
-		'https://images.unsplash.com/photo-1544020877-89b5bda8ea5a?w=400&h=400&fit=crop&crop=faces',
-	Monkey:
-		'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=400&h=400&fit=crop&crop=faces',
+	Coyote: 'https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=400&h=400&fit=crop&crop=faces',
+	Llama: 'https://images.unsplash.com/photo-1518288774672-b94e808873ff?w=400&h=400&fit=crop&crop=faces',
+	Tiger: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=400&h=400&fit=crop&crop=faces',
+	Gorilla: 'https://images.unsplash.com/photo-1544020877-89b5bda8ea5a?w=400&h=400&fit=crop&crop=faces',
+	Monkey: 'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=400&h=400&fit=crop&crop=faces',
 	Bird: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=400&h=400&fit=crop&crop=faces',
-	Crocodile:
-		'https://images.unsplash.com/photo-1518831107511-a2bbc0a3b88f?w=400&h=400&fit=crop&crop=faces',
+	Crocodile: 'https://images.unsplash.com/photo-1518831107511-a2bbc0a3b88f?w=400&h=400&fit=crop&crop=faces',
 };
 
 export interface PreFightScreenProps {
