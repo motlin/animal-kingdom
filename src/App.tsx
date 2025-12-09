@@ -201,7 +201,18 @@ function App() {
 
 		// Show pre-fight screen first
 		setScreen('prefight');
-	}, [mode, players, playerCount, teamCount, playersPerTeam, teams, teamPlayers, selectedAnimal, opponentAnimal, gameState]);
+	}, [
+		mode,
+		players,
+		playerCount,
+		teamCount,
+		playersPerTeam,
+		teams,
+		teamPlayers,
+		selectedAnimal,
+		opponentAnimal,
+		gameState,
+	]);
 
 	const handleFightStart = useCallback(() => {
 		// Play the battle start sound
