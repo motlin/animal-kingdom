@@ -85,7 +85,7 @@ jobs:
 
       - name: Run Biome Format
         run: |
-          npx @biomejs/biome format --write
+          npx @biomejs/biome format --write .
 
           if [[ -n $(git status --porcelain) ]]; then
             FIX_BRANCH="fix-${{ github.event.pull_request.number }}-biome-format"
