@@ -55,7 +55,7 @@ jobs:
             git switch --create $FIX_BRANCH
 
             git add --all
-            git commit --message "Auto-fix: Apply ESLint fixes"
+            git commit --message "Apply ESLint fixes."
             git push --force origin $FIX_BRANCH
 
             echo "ESLint fixes have been pushed to the $FIX_BRANCH branch."
@@ -92,7 +92,7 @@ jobs:
             git switch --create $FIX_BRANCH
 
             git add --all
-            git commit --message "Auto-fix: Apply Biome formatting"
+            git commit --message "Apply Biome formatting."
             git push --force origin $FIX_BRANCH
 
             echo "Biome formatting fixes have been pushed to the $FIX_BRANCH branch."
@@ -130,7 +130,7 @@ jobs:
             git switch --create $FIX_BRANCH
 
             git add --all
-            git commit --message "Auto-fix: Apply Prettier formatting"
+            git commit --message "Apply Prettier formatting."
             git push --force origin $FIX_BRANCH
 
             echo "Prettier fixes have been pushed to the $FIX_BRANCH branch."
