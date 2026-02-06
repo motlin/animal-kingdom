@@ -24,7 +24,7 @@
 		"@biomejs/biome": "2.3.14",
 		"@chromatic-com/storybook": "^5.0.0",
 		"@eslint/js": "^9.39.2",
-		"@storybook/addon-a11y": "^10.2.6",
+		"@storybook/addon-a11y": "^10.2.7",
 		"@storybook/addon-docs": "^10.2.6",
 		"@storybook/addon-onboarding": "^10.2.6",
 		"@storybook/addon-vitest": "^10.2.6",
