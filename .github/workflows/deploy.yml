@@ -28,7 +28,7 @@ jobs:
           node-version: '22.x'
           cache: 'npm'
 
-      - uses: actions/configure-pages@v4
+      - uses: actions/configure-pages@v5
 
       - run: npm ci
 
