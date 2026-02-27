@@ -2,6 +2,7 @@ import {useState, useCallback, useEffect} from 'react';
 import {Header} from './components/Header/Header';
 import {SetupScreen} from './screens/SetupScreen/SetupScreen';
 import {GameScreen} from './screens/GameScreen/GameScreen';
+import {PreFightScreen} from './screens/PreFightScreen/PreFightScreen';
 import {ThemeToggle} from './components/ThemeToggle/ThemeToggle';
 import {MuteToggle} from './components/MuteToggle/MuteToggle';
 import type {PlayerConfiguration} from './screens/SetupScreen/StandardSetup';
@@ -15,7 +16,7 @@ import {useSound} from './hooks/useSound';
 import {useKeyboard} from './hooks/useKeyboard';
 import {ANIMAL_UNLOCK_ORDER, TEAM_COLORS} from './lib/constants';
 
-type Screen = 'setup' | 'game';
+type Screen = 'setup' | 'prefight' | 'game';
 
 function App() {
 	const [screen, setScreen] = useState<Screen>('setup');
@@ -198,10 +199,8 @@ function App() {
 			gameState.initializeState([humanPlayer, computerPlayer], 'challenger');
 		}
 
-		setScreen('game');
-		setTimeout(() => {
-			gameFlow.startTurn();
-		}, 100);
+		// Show pre-fight screen first
+		setScreen('prefight');
 	}, [
 		mode,
 		players,
@@ -213,8 +212,18 @@ function App() {
 		selectedAnimal,
 		opponentAnimal,
 		gameState,
-		gameFlow,
 	]);
+
+	const handleFightStart = useCallback(() => {
+		// Play the battle start sound
+		sound.playSound('battle_start');
+
+		// Transition to game screen
+		setScreen('game');
+		setTimeout(() => {
+			gameFlow.startTurn();
+		}, 500);
+	}, [gameFlow, sound]);
 
 	const handlePlayAgain = useCallback(() => {
 		setScreen('setup');
@@ -413,6 +422,22 @@ function App() {
 					canStartGame={canStartGame()}
 				/>
 			</div>
+		);
+	}
+
+	// Get the first two players for the pre-fight screen
+	const player1 = gameState.state.players[0];
+	const player2 = gameState.state.players[1];
+
+	if (screen === 'prefight' && player1 && player2) {
+		return (
+			<PreFightScreen
+				player1Name={player1.name}
+				player1Animal={player1.animal}
+				player2Name={player2.name}
+				player2Animal={player2.animal}
+				onFightStart={handleFightStart}
+			/>
 		);
 	}
 

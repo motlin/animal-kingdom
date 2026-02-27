@@ -1,25 +1,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 :root {
-	--color-primary: #a0522d;
-	--color-secondary: #6b4423;
-	--color-background: #f5f5dc;
-	--color-accent: #deb887;
-	--color-light: #fff8e7;
-	--color-text: #6b4423;
+	--color-primary: #8b0000;
+	--color-secondary: #2a1a1a;
+	--color-background: #1a1010;
+	--color-accent: #ff4400;
+	--color-light: #2a1a1a;
+	--color-text: #e8d4c4;
+	--color-danger: #ff2200;
+	--color-fire: #ff6600;
 	--font-main: "Merriweather", serif;
-	--hp-full: #2ecc71;
-	--hp-medium: #f1c40f;
-	--hp-low: #e74c3c;
+	--font-display: "Bebas Neue", sans-serif;
+	--hp-full: #00cc44;
+	--hp-medium: #ffaa00;
+	--hp-low: #ff2200;
 }
 
 body.dark-mode {
-	--color-primary: #d2691e;
-	--color-secondary: #8b6f47;
-	--color-background: #1a1a1a;
-	--color-accent: #5d4e37;
-	--color-light: #2a2a2a;
-	--color-text: #d2b48c;
+	--color-primary: #cc0000;
+	--color-secondary: #1a0a0a;
+	--color-background: #0a0505;
+	--color-accent: #ff5500;
+	--color-light: #1a0a0a;
+	--color-text: #f0e0d0;
 }
 
 * {

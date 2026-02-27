@@ -76,6 +76,9 @@ export type SoundType =
 	| 'defeat'
 	| 'victory'
 	| 'nothing'
-	| 'sleep';
+	| 'sleep'
+	| 'battle_start'
+	| 'dramatic_hit'
+	| 'war_cry';
 
 export type GameMode = 'standard' | 'challenger' | 'team';
