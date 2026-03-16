@@ -20,7 +20,7 @@
 		"build-storybook": "storybook build"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6",
+		"@biomejs/biome": "2.4.7",
 		"@chromatic-com/storybook": "^5.0.1",
 		"@eslint/js": "^10.0.1",
 		"@storybook/addon-a11y": "^10.2.18",
