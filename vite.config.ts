@@ -17,5 +17,6 @@ export default defineConfig({
 	},
 	server: {
 		port: 3000,
+		allowedHosts: process.env['VITE_ALLOWED_HOSTS']?.split(',').filter(Boolean) ?? [],
 	},
 });
