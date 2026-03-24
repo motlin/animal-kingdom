@@ -52,7 +52,7 @@ web_modules/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
+# Optional linter cache
 .eslintcache
 
 # Optional stylelint cache
@@ -165,5 +165,3 @@ dist/
 
 *storybook.log
 storybook-static
-
-eslint_report.json

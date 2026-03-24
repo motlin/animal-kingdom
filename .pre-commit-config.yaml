@@ -37,9 +37,8 @@ repos:
             language: system
             types_or: [yaml, markdown, html]
 
-          - id: eslint
-            name: eslint
-            entry: npx eslint --fix
+          - id: oxlint
+            name: oxlint
+            entry: npx oxlint --fix
             language: system
-            files: \.(js|jsx|ts|tsx|mjs|cjs)$
             types: [file]
