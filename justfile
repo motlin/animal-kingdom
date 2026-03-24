@@ -16,13 +16,13 @@ install-ci:
 dev: install
     npm run dev
 
-# `npm run lint`
-lint: install
-    npm run lint
+# `npm run oxlint`
+oxlint: install
+    npm run oxlint
 
-# `npm run ci:eslint`
-eslint-ci: install-ci
-    npm run ci:eslint
+# `npm run oxlint:ci`
+oxlint-ci: install-ci
+    npm run oxlint:ci
 
 # `npm run format`
 format: install
@@ -69,5 +69,5 @@ build-storybook: install
     npm run build-storybook
 
 # Run all pre-commit checks
-precommit: format lint typecheck build test
+precommit: format oxlint typecheck build test
     @echo "✅ All pre-commit checks passed!"
