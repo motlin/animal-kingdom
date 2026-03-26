@@ -20,7 +20,7 @@
 		"build-storybook": "storybook build"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.8",
+		"@biomejs/biome": "2.4.9",
 		"@chromatic-com/storybook": "^5.1.1",
 		"@sentry/vite-plugin": "^5.1.1",
 		"@storybook/addon-a11y": "^10.3.2",
