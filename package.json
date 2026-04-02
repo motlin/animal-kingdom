@@ -38,7 +38,7 @@
 		"@vitest/browser": "^4.1.2",
 		"@vitest/coverage-v8": "^4.1.2",
 		"eslint": "^10.1.0",
-		"eslint-plugin-storybook": "^10.3.2",
+		"eslint-plugin-storybook": "^10.3.4",
 		"jiti": "^2.5.0",
 		"jsdom": "^29.0.1",
 		"oxlint": "^1.58.0",
