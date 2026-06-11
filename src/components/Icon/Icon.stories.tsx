@@ -210,17 +210,11 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="moon"
-						size={32}
-					/>
+					<Icon name="moon" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>moon</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="sun"
-						size={32}
-					/>
+					<Icon name="sun" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>sun</div>
 				</div>
 			</div>
@@ -235,17 +229,11 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="volume-2"
-						size={32}
-					/>
+					<Icon name="volume-2" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>volume-2</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="volume-x"
-						size={32}
-					/>
+					<Icon name="volume-x" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>volume-x</div>
 				</div>
 			</div>
@@ -260,17 +248,11 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="users"
-						size={32}
-					/>
+					<Icon name="users" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>users</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="trophy"
-						size={32}
-					/>
+					<Icon name="trophy" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>trophy</div>
 				</div>
 			</div>
@@ -285,31 +267,19 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="chevron-down"
-						size={32}
-					/>
+					<Icon name="chevron-down" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>chevron-down</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="chevron-up"
-						size={32}
-					/>
+					<Icon name="chevron-up" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>chevron-up</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="eye"
-						size={32}
-					/>
+					<Icon name="eye" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>eye</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="x"
-						size={32}
-					/>
+					<Icon name="x" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>x</div>
 				</div>
 			</div>
@@ -324,59 +294,35 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="play"
-						size={32}
-					/>
+					<Icon name="play" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>play</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="crosshair"
-						size={32}
-					/>
+					<Icon name="crosshair" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>crosshair</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="sparkles"
-						size={32}
-					/>
+					<Icon name="sparkles" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>sparkles</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-					/>
+					<Icon name="heart" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>heart</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="shield-check"
-						size={32}
-					/>
+					<Icon name="shield-check" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>shield-check</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="pause"
-						size={32}
-					/>
+					<Icon name="pause" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>pause</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="undo"
-						size={32}
-					/>
+					<Icon name="undo" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>undo</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="refresh-cw"
-						size={32}
-					/>
+					<Icon name="refresh-cw" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>refresh-cw</div>
 				</div>
 			</div>
@@ -390,17 +336,11 @@ export const AllIcons = {
 				}}
 			>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="clipboard-copy"
-						size={32}
-					/>
+					<Icon name="clipboard-copy" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>clipboard-copy</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="download"
-						size={32}
-					/>
+					<Icon name="download" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>download</div>
 				</div>
 			</div>
@@ -408,38 +348,23 @@ export const AllIcons = {
 			<h2 style={{marginTop: '40px', marginBottom: '20px'}}>Size Variations</h2>
 			<div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={12}
-					/>
+					<Icon name="heart" size={12} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>12px</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={18}
-					/>
+					<Icon name="heart" size={18} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>18px (default)</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={24}
-					/>
+					<Icon name="heart" size={24} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>24px</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-					/>
+					<Icon name="heart" size={32} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>32px</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={48}
-					/>
+					<Icon name="heart" size={48} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>48px</div>
 				</div>
 			</div>
@@ -447,43 +372,23 @@ export const AllIcons = {
 			<h2 style={{marginTop: '40px', marginBottom: '20px'}}>Color Variations</h2>
 			<div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						color="#e74c3c"
-					/>
+					<Icon name="heart" size={32} color="#e74c3c" />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>Red</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						color="#3498db"
-					/>
+					<Icon name="heart" size={32} color="#3498db" />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>Blue</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						color="#2ecc71"
-					/>
+					<Icon name="heart" size={32} color="#2ecc71" />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>Green</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						color="#f39c12"
-					/>
+					<Icon name="heart" size={32} color="#f39c12" />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>Orange</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						color="#9b59b6"
-					/>
+					<Icon name="heart" size={32} color="#9b59b6" />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>Purple</div>
 				</div>
 			</div>
@@ -491,43 +396,23 @@ export const AllIcons = {
 			<h2 style={{marginTop: '40px', marginBottom: '20px'}}>Stroke Width Variations</h2>
 			<div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						strokeWidth={1}
-					/>
+					<Icon name="heart" size={32} strokeWidth={1} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>1</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						strokeWidth={1.5}
-					/>
+					<Icon name="heart" size={32} strokeWidth={1.5} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>1.5</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						strokeWidth={2}
-					/>
+					<Icon name="heart" size={32} strokeWidth={2} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>2 (default)</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						strokeWidth={2.5}
-					/>
+					<Icon name="heart" size={32} strokeWidth={2.5} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>2.5</div>
 				</div>
 				<div style={{textAlign: 'center'}}>
-					<Icon
-						name="heart"
-						size={32}
-						strokeWidth={3}
-					/>
+					<Icon name="heart" size={32} strokeWidth={3} />
 					<div style={{marginTop: '8px', fontSize: '12px'}}>3</div>
 				</div>
 			</div>

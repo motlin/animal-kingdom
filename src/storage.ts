@@ -1,15 +1,24 @@
 import type {AnimalType} from './lib/types.ts';
 
+const ALL_ANIMALS: readonly AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey', 'Bird', 'Crocodile'];
+
+export function isAnimalType(value: unknown): value is AnimalType {
+	return typeof value === 'string' && (ALL_ANIMALS as readonly string[]).includes(value);
+}
+
 const UNLOCKED_ANIMALS_KEY = 'animalKingdomUnlockedAnimals';
 const THEME_KEY = 'animalKingdomTheme';
 const MUTED_KEY = 'animalKingdomMuted';
 
 export function loadUnlockedAnimals(): Set<AnimalType> {
 	const saved = localStorage.getItem(UNLOCKED_ANIMALS_KEY);
-	if (saved) {
-		return new Set(JSON.parse(saved) as AnimalType[]);
+	if (saved !== null && saved !== '') {
+		const parsed: unknown = JSON.parse(saved);
+		if (Array.isArray(parsed)) {
+			return new Set<AnimalType>(parsed.filter(isAnimalType));
+		}
 	}
-	return new Set(['Coyote'] as AnimalType[]);
+	return new Set<AnimalType>(['Coyote']);
 }
 
 export function saveUnlockedAnimals(animals: Set<AnimalType>): void {

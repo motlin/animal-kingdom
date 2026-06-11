@@ -50,52 +50,28 @@ export function GameControls({
 		<div className="game-controls">
 			<div className="turn-indicator">{turnIndicator}</div>
 			<div className="action-buttons">
-				<Button
-					variant="primary"
-					disabled={!canAttack}
-					{...(onAttack && {onClick: onAttack})}
-				>
+				<Button variant="primary" disabled={!canAttack} {...(onAttack && {onClick: onAttack})}>
 					<Icon name="crosshair" />
 					<span dangerouslySetInnerHTML={{__html: '<u>A</u>ttack'}} />
 				</Button>
-				<Button
-					variant="primary"
-					disabled={!canUseAbility}
-					{...(onUseAbility && {onClick: onUseAbility})}
-				>
+				<Button variant="primary" disabled={!canUseAbility} {...(onUseAbility && {onClick: onUseAbility})}>
 					<Icon name="sparkles" />
 					<span dangerouslySetInnerHTML={{__html: `Use A<u>b</u>ility: ${abilityName}`}} />
 				</Button>
-				<Button
-					variant="primary"
-					disabled={!canHeal}
-					{...(onHeal && {onClick: onHeal})}
-				>
+				<Button variant="primary" disabled={!canHeal} {...(onHeal && {onClick: onHeal})}>
 					<Icon name="heart" />
 					<span dangerouslySetInnerHTML={{__html: healText}} />
 				</Button>
-				<Button
-					variant="primary"
-					disabled={!canShield}
-					{...(onShield && {onClick: onShield})}
-				>
+				<Button variant="primary" disabled={!canShield} {...(onShield && {onClick: onShield})}>
 					<Icon name="shield-check" />
 					<span dangerouslySetInnerHTML={{__html: shieldText}} />
 				</Button>
-				<Button
-					variant="primary"
-					disabled={!canDoNothing}
-					{...(onDoNothing && {onClick: onDoNothing})}
-				>
+				<Button variant="primary" disabled={!canDoNothing} {...(onDoNothing && {onClick: onDoNothing})}>
 					<Icon name="pause" />
 					<span dangerouslySetInnerHTML={{__html: 'Do <u>N</u>othing'}} />
 				</Button>
 			</div>
-			<Button
-				variant="undo"
-				disabled={!canUndo}
-				{...(onUndo && {onClick: onUndo})}
-			>
+			<Button variant="undo" disabled={!canUndo} {...(onUndo && {onClick: onUndo})}>
 				<Icon name="undo" />
 				<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Last Action'}} />
 			</Button>

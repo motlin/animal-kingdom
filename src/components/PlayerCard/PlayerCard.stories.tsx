@@ -61,7 +61,9 @@ export const Selectable: Story = {
 	args: {
 		player: basePlayer,
 		isSelectable: true,
-		onClick: (playerId) => console.log(`Player ${playerId} clicked`),
+		onClick: (playerId) => {
+			console.log(`Player ${playerId} clicked`);
+		},
 	},
 };
 

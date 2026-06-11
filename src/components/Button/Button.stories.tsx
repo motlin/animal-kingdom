@@ -114,10 +114,7 @@ export const AllVariants = {
 				<h3>Primary Buttons</h3>
 				<div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
 					<Button variant="primary">Primary</Button>
-					<Button
-						variant="primary"
-						disabled
-					>
+					<Button variant="primary" disabled>
 						Primary Disabled
 					</Button>
 					<Button variant="primary">
@@ -130,16 +127,10 @@ export const AllVariants = {
 				<h3>Mode Buttons</h3>
 				<div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
 					<Button variant="mode">Standard Mode</Button>
-					<Button
-						variant="mode"
-						active
-					>
+					<Button variant="mode" active>
 						Challenger Mode (Active)
 					</Button>
-					<Button
-						variant="mode"
-						disabled
-					>
+					<Button variant="mode" disabled>
 						Disabled Mode
 					</Button>
 				</div>
@@ -151,10 +142,7 @@ export const AllVariants = {
 					<Button variant="undo">
 						<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn'}} />
 					</Button>
-					<Button
-						variant="undo"
-						disabled
-					>
+					<Button variant="undo" disabled>
 						<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Turn (Disabled)'}} />
 					</Button>
 				</div>
@@ -173,10 +161,7 @@ export const AllVariants = {
 				<div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
 					<Button variant="log">Copy Log</Button>
 					<Button variant="log">Save Log</Button>
-					<Button
-						variant="log"
-						disabled
-					>
+					<Button variant="log" disabled>
 						Disabled Log
 					</Button>
 				</div>

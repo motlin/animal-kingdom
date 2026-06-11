@@ -1,0 +1,17 @@
+{
+	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+	// src/**/*.mdx mirrors the Storybook stories glob in .storybook/main.ts;
+	// fallow's storybook plugin only detects *.stories.* files, not docs pages.
+	"entry": ["src/index.{ts,tsx,js,jsx}", "src/main.{ts,tsx,js,jsx}", "src/**/*.mdx"],
+	"ignorePatterns": [".storybook/**"],
+	// eslint-plugin-storybook is consumed by the oxlint `jsPlugins` config in
+	// vite.config.ts, which fallow cannot detect statically. Without this entry
+	// fallow strips it from package.json and the Storybook lint rules fail to load.
+	"ignoreDependencies": ["eslint-plugin-storybook"],
+	"duplicates": {
+		"minOccurrences": 3
+	},
+	"rules": {
+		"unused-dependencies": "warn"
+	}
+}

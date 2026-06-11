@@ -106,12 +106,7 @@ export const Interactive = {
 					/>
 					<p>Selected player count: {playerCount}</p>
 
-					<Select
-						value={animal}
-						options={animalOptions}
-						onChange={setAnimal}
-						label="Choose Animal:"
-					/>
+					<Select value={animal} options={animalOptions} onChange={setAnimal} label="Choose Animal:" />
 					<p>Selected animal: {animal}</p>
 
 					<Select
@@ -145,7 +140,9 @@ export const AllVariants = {
 						<Select
 							value={values.playerCount}
 							options={playerCountOptions}
-							onChange={(value) => setValues({...values, playerCount: value})}
+							onChange={(value) => {
+								setValues({...values, playerCount: value});
+							}}
 							label="Number of Players:"
 						/>
 					</div>
@@ -155,7 +152,9 @@ export const AllVariants = {
 						<Select
 							value={values.animal}
 							options={animalOptions}
-							onChange={(value) => setValues({...values, animal: value})}
+							onChange={(value) => {
+								setValues({...values, animal: value});
+							}}
 							label="Choose Animal:"
 						/>
 					</div>
@@ -165,7 +164,9 @@ export const AllVariants = {
 						<Select
 							value={values.playerType}
 							options={playerTypeOptions}
-							onChange={(value) => setValues({...values, playerType: value})}
+							onChange={(value) => {
+								setValues({...values, playerType: value});
+							}}
 							label="Player Type:"
 						/>
 					</div>
@@ -175,7 +176,9 @@ export const AllVariants = {
 						<Select
 							value={values.animal}
 							options={animalOptions}
-							onChange={(value) => setValues({...values, animal: value})}
+							onChange={(value) => {
+								setValues({...values, animal: value});
+							}}
 						/>
 					</div>
 
@@ -184,7 +187,9 @@ export const AllVariants = {
 						<Select
 							value={values.animal}
 							options={animalOptions}
-							onChange={(value) => setValues({...values, animal: value})}
+							onChange={(value) => {
+								setValues({...values, animal: value});
+							}}
 							label="Choose Animal:"
 							disabled
 						/>

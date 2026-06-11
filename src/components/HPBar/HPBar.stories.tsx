@@ -152,45 +152,27 @@ export const AllLevels = {
 		<div style={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px', width: '400px'}}>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>Full HP (100%)</h4>
-				<HPBar
-					currentHp={20}
-					maxHp={20}
-				/>
+				<HPBar currentHp={20} maxHp={20} />
 			</div>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>High HP (80%)</h4>
-				<HPBar
-					currentHp={16}
-					maxHp={20}
-				/>
+				<HPBar currentHp={16} maxHp={20} />
 			</div>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>Medium HP (60%)</h4>
-				<HPBar
-					currentHp={12}
-					maxHp={20}
-				/>
+				<HPBar currentHp={12} maxHp={20} />
 			</div>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>Low HP (30%)</h4>
-				<HPBar
-					currentHp={6}
-					maxHp={20}
-				/>
+				<HPBar currentHp={6} maxHp={20} />
 			</div>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>Critical HP (10%)</h4>
-				<HPBar
-					currentHp={2}
-					maxHp={20}
-				/>
+				<HPBar currentHp={2} maxHp={20} />
 			</div>
 			<div>
 				<h4 style={{marginBottom: '10px'}}>Dead (0%)</h4>
-				<HPBar
-					currentHp={0}
-					maxHp={20}
-				/>
+				<HPBar currentHp={0} maxHp={20} />
 			</div>
 		</div>
 	),

@@ -23,19 +23,10 @@ export function Select({value, options, onChange, disabled = false, className = 
 
 	return (
 		<div className={`select-container ${className}`}>
-			{label && <label htmlFor={id}>{label}</label>}
-			<select
-				id={id}
-				value={value}
-				onChange={handleChange}
-				disabled={disabled}
-				className="select"
-			>
+			{label !== undefined && label !== '' && <label htmlFor={id}>{label}</label>}
+			<select id={id} value={value} onChange={handleChange} disabled={disabled} className="select">
 				{options.map((option) => (
-					<option
-						key={option.value}
-						value={option.value}
-					>
+					<option key={option.value} value={option.value}>
 						{option.label}
 					</option>
 				))}

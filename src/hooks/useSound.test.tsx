@@ -1,13 +1,14 @@
-import {describe, it, expect, vi, beforeEach} from 'vitest';
+import {describe, it, expect, vi, beforeEach} from 'vite-plus/test';
 import {renderHook, act} from '@testing-library/react';
 import {useSound} from './useSound.ts';
 import * as sound from '../sound.ts';
+import type {SoundType} from '../lib/types.ts';
 
 vi.mock('../sound.ts', () => ({
-	initializeAudioContext: vi.fn(),
-	setMuted: vi.fn(),
-	isSoundMuted: vi.fn(() => false),
-	playSound: vi.fn(),
+	initializeAudioContext: vi.fn<() => void>(),
+	setMuted: vi.fn<(muted: boolean) => void>(),
+	isSoundMuted: vi.fn<() => boolean>(() => false),
+	playSound: vi.fn<(type: SoundType) => void>(),
 }));
 
 describe('useSound', () => {

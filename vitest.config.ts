@@ -1,4 +1,4 @@
-import {defineConfig, defineProject, mergeConfig} from 'vitest/config';
+import {defineConfig, defineProject, mergeConfig} from 'vite-plus';
 import viteConfig from './vite.config';
 
 export default mergeConfig(

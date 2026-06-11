@@ -119,9 +119,7 @@ export const StandardGameInProgress: Story = {
 		const attackButton = canvas.getByRole('button', {name: 'Attack'});
 		await expect(attackButton).toBeEnabled();
 
-		if (attackButton) {
-			await userEvent.click(attackButton);
-		}
+		await userEvent.click(attackButton);
 		await expect(args.onAttack).toHaveBeenCalledTimes(1);
 	},
 };
@@ -224,9 +222,7 @@ export const WithStatusEffects: Story = {
 		const shieldButton = canvas.getByRole('button', {name: 'Shield (0)'});
 		await expect(shieldButton).toBeDisabled();
 
-		if (healButton) {
-			await userEvent.click(healButton);
-		}
+		await userEvent.click(healButton);
 		await expect(args.onHeal).toHaveBeenCalledTimes(1);
 	},
 };
@@ -253,15 +249,33 @@ export const LowHealthPlayers: Story = {
 		logEntries: extendedLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => console.log('Player clicked:', playerId),
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: (playerId: number) => {
+			console.log('Player clicked:', playerId);
+		},
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -287,15 +301,33 @@ export const TwoPlayerGame: Story = {
 		],
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => console.log('Player clicked:', playerId),
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: (playerId: number) => {
+			console.log('Player clicked:', playerId);
+		},
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -329,15 +361,33 @@ export const ChallengerMode: Story = {
 		],
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => console.log('Player clicked:', playerId),
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayerClick: (playerId: number) => {
+			console.log('Player clicked:', playerId);
+		},
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -406,11 +456,21 @@ export const GameOverMultipleWinners: Story = {
 		isGameOver: true,
 		winnerAnnouncement: '🎉 Alice and Bob win! 🎉',
 		selectablePlayerIds: [],
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveGameLog: () => console.log('Save Game Log clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveGameLog: () => {
+			console.log('Save Game Log clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -438,11 +498,21 @@ export const ChallengerVictory: Story = {
 		isGameOver: true,
 		winnerAnnouncement: '🏆 You defeated the Tiger! 🏆',
 		selectablePlayerIds: [],
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveGameLog: () => console.log('Save Game Log clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveGameLog: () => {
+			console.log('Save Game Log clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -470,11 +540,21 @@ export const ChallengerDefeat: Story = {
 		isGameOver: true,
 		winnerAnnouncement: '💀 The Tiger defeated you! 💀',
 		selectablePlayerIds: [],
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveGameLog: () => console.log('Save Game Log clicked'),
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveGameLog: () => {
+			console.log('Save Game Log clicked');
+		},
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -495,7 +575,11 @@ export const NoActionsAvailable: Story = {
 		logEntries: basicLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onCopyToClipboard: () => console.log('Copy to Clipboard clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onCopyToClipboard: () => {
+			console.log('Copy to Clipboard clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };

@@ -1,18 +1,18 @@
-import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
+import {describe, it, expect, vi, beforeEach, afterEach} from 'vite-plus/test';
 import {renderHook, act} from '@testing-library/react';
 import {useStorage} from './useStorage.ts';
 import type {AnimalType} from '../lib/types.ts';
 
 function mockLocalStorage() {
-	const store: Record<string, string> = {};
+	const store = new Map<string, string>();
 
 	return {
-		getItem: vi.fn((key: string) => store[key] || null),
-		setItem: vi.fn((key: string, value: string) => {
-			store[key] = value;
+		getItem: vi.fn<(key: string) => string | null>((key: string) => store.get(key) ?? null),
+		setItem: vi.fn<(key: string, value: string) => void>((key: string, value: string) => {
+			store.set(key, value);
 		}),
-		clear: vi.fn(() => {
-			Object.keys(store).forEach((key) => delete store[key]);
+		clear: vi.fn<() => void>(() => {
+			store.clear();
 		}),
 	};
 }

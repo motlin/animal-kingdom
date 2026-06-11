@@ -33,19 +33,17 @@ export function PlayerCard({
 		}
 	};
 
+	const hasTeamColor = teamColor !== undefined && teamColor !== '';
 	const activeClass = isActive ? 'active' : '';
 	const selectableClass = isSelectable ? 'selectable' : '';
-	const deadClass = !player.isAlive ? 'dead' : '';
-	const teamClass = teamColor ? 'has-team' : '';
+	const deadClass = player.isAlive ? '' : 'dead';
+	const teamClass = hasTeamColor ? 'has-team' : '';
 	const classes = ['player-card', activeClass, selectableClass, deadClass, teamClass, className]
 		.filter(Boolean)
 		.join(' ');
 
-	const cardStyle = teamColor
-		? ({
-				'--team-color': teamColor,
-			} as React.CSSProperties)
-		: undefined;
+	const cardStyle: (React.CSSProperties & Record<`--${string}`, string>) | undefined =
+		teamColor !== undefined && teamColor !== '' ? {'--team-color': teamColor} : undefined;
 
 	return (
 		<div
@@ -56,7 +54,7 @@ export function PlayerCard({
 			role={isSelectable ? 'button' : undefined}
 			tabIndex={isSelectable ? 0 : undefined}
 		>
-			{teamColor && <div className="team-indicator" />}
+			{hasTeamColor && <div className="team-indicator" />}
 			<div className="player-info">
 				<div>
 					<div className="player-name">{player.name}</div>
@@ -64,44 +62,23 @@ export function PlayerCard({
 				</div>
 				<div className="status-icons">
 					{player.status.isShielded && (
-						<span
-							className="status-icon"
-							title="Shielded"
-						>
-							<Icon
-								name="shield-check"
-								size={24}
-							/>
+						<span className="status-icon" title="Shielded">
+							<Icon name="shield-check" size={24} />
 						</span>
 					)}
 					{player.status.isSleeping && (
-						<span
-							className="status-icon"
-							title="Sleeping"
-						>
-							<Icon
-								name="pause"
-								size={24}
-							/>
+						<span className="status-icon" title="Sleeping">
+							<Icon name="pause" size={24} />
 						</span>
 					)}
 					{player.abilityCooldown > 0 && (
-						<span
-							className="status-icon"
-							title={`Ability on cooldown: ${player.abilityCooldown} turns`}
-						>
-							<Icon
-								name="refresh-cw"
-								size={24}
-							/>
+						<span className="status-icon" title={`Ability on cooldown: ${player.abilityCooldown} turns`}>
+							<Icon name="refresh-cw" size={24} />
 						</span>
 					)}
 				</div>
 			</div>
-			<HPBar
-				currentHp={player.hp}
-				maxHp={player.maxHp}
-			/>
+			<HPBar currentHp={player.hp} maxHp={player.maxHp} />
 		</div>
 	);
 }

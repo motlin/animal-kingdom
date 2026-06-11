@@ -138,13 +138,7 @@ export const Interactive = {
 					/>
 					<p>Player name: {playerName || '(empty)'}</p>
 
-					<Input
-						value={email}
-						onChange={setEmail}
-						type="email"
-						placeholder="Enter email"
-						label="Email:"
-					/>
+					<Input value={email} onChange={setEmail} type="email" placeholder="Enter email" label="Email:" />
 					<p>Email: {email || '(empty)'}</p>
 
 					<Input
@@ -182,7 +176,9 @@ export const AllVariants = {
 						<h3>Player Name Input</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => setValues({...values, playerName: value})}
+							onChange={(value) => {
+								setValues({...values, playerName: value});
+							}}
 							placeholder="Enter player name"
 							label="Player Name:"
 						/>
@@ -192,7 +188,9 @@ export const AllVariants = {
 						<h3>Email Input</h3>
 						<Input
 							value={values.email}
-							onChange={(value) => setValues({...values, email: value})}
+							onChange={(value) => {
+								setValues({...values, email: value});
+							}}
 							type="email"
 							placeholder="player@example.com"
 							label="Email:"
@@ -203,7 +201,9 @@ export const AllVariants = {
 						<h3>Password Input</h3>
 						<Input
 							value={values.password}
-							onChange={(value) => setValues({...values, password: value})}
+							onChange={(value) => {
+								setValues({...values, password: value});
+							}}
 							type="password"
 							placeholder="Enter password"
 							label="Password:"
@@ -214,7 +214,9 @@ export const AllVariants = {
 						<h3>Number Input</h3>
 						<Input
 							value={values.number}
-							onChange={(value) => setValues({...values, number: value})}
+							onChange={(value) => {
+								setValues({...values, number: value});
+							}}
 							type="number"
 							placeholder="0"
 							label="Number:"
@@ -225,7 +227,9 @@ export const AllVariants = {
 						<h3>Limited Length Input (max 10)</h3>
 						<Input
 							value={values.limited}
-							onChange={(value) => setValues({...values, limited: value})}
+							onChange={(value) => {
+								setValues({...values, limited: value});
+							}}
 							placeholder="Max 10 characters"
 							label="Limited:"
 							maxLength={10}
@@ -237,26 +241,25 @@ export const AllVariants = {
 						<h3>Without Label</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => setValues({...values, playerName: value})}
+							onChange={(value) => {
+								setValues({...values, playerName: value});
+							}}
 							placeholder="No label"
 						/>
 					</div>
 
 					<div>
 						<h3>Disabled</h3>
-						<Input
-							value="Cannot edit this"
-							onChange={() => {}}
-							label="Disabled:"
-							disabled
-						/>
+						<Input value="Cannot edit this" onChange={() => {}} label="Disabled:" disabled />
 					</div>
 
 					<div>
 						<h3>Required Field</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => setValues({...values, playerName: value})}
+							onChange={(value) => {
+								setValues({...values, playerName: value});
+							}}
 							placeholder="Required field"
 							label="Required:"
 							required

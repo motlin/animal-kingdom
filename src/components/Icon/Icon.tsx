@@ -77,16 +77,5 @@ export interface IconProperties extends Omit<LucideProps, 'ref'> {
 export function Icon({name, size = 18, className = '', ...properties}: IconProperties) {
 	const IconComponent = iconMap[name];
 
-	if (!IconComponent) {
-		console.error(`Icon "${name}" not found`);
-		return null;
-	}
-
-	return (
-		<IconComponent
-			size={size}
-			className={`icon ${className}`}
-			{...properties}
-		/>
-	);
+	return <IconComponent size={size} className={`icon ${className}`} {...properties} />;
 }

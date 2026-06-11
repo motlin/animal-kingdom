@@ -30,7 +30,7 @@
 		"inlineSources": true,
 		"outDir": "./dist",
 		"newLine": "lf",
-		"types": ["node", "vite/client", "vitest/globals"]
+		"types": ["node", "vite-plus/client", "vitest/globals"]
 	},
 	"include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts", ".storybook/**/*"],
 	"exclude": ["node_modules", "dist", "build", "coverage"]

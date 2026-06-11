@@ -15,10 +15,7 @@ export function ThemeToggle({theme, onToggle}: ThemeToggleProperties) {
 			className="theme-toggle"
 			aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
 		>
-			<Icon
-				name={theme === 'light' ? 'moon' : 'sun'}
-				size={24}
-			/>
+			<Icon name={theme === 'light' ? 'moon' : 'sun'} size={24} />
 		</Button>
 	);
 }
