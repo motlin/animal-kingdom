@@ -27,12 +27,7 @@ export function Button({
 	const classes = [variantClass, activeClass, className].filter(Boolean).join(' ');
 
 	return (
-		<button
-			type={type}
-			className={classes}
-			disabled={disabled}
-			onClick={onClick}
-		>
+		<button type={type} className={classes} disabled={disabled} onClick={onClick}>
 			{children}
 		</button>
 	);

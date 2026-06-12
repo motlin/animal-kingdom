@@ -55,12 +55,15 @@ export function useGameFlow(
 			let announcement: string;
 			if (state.gameMode === 'team' && winningTeamId !== undefined) {
 				const winningTeam = state.teams.find((t) => t.id === winningTeamId);
-				const teamName = winningTeam?.name || `Team ${winningTeamId + 1}`;
+				const teamName =
+					winningTeam?.name !== undefined && winningTeam.name !== ''
+						? winningTeam.name
+						: `Team ${winningTeamId + 1}`;
 				announcement = `${teamName} wins!`;
-			} else if (winner) {
-				announcement = `${winner.name} the ${winner.animal} is the new ruler!`;
-			} else {
+			} else if (winner === undefined) {
 				announcement = "It's a draw!";
+			} else {
+				announcement = `${winner.name} the ${winner.animal} is the new ruler!`;
 			}
 
 			const gameMode = state.gameMode;
@@ -135,18 +138,24 @@ export function useGameFlow(
 			}
 
 			const shouldShowConfetti =
-				state.gameMode === 'standard' || state.gameMode === 'team' || (winner && !winner.isComputer);
-			if (shouldShowConfetti && onShowConfetti) {
+				state.gameMode === 'standard' ||
+				state.gameMode === 'team' ||
+				(winner !== undefined && !winner.isComputer);
+			if (shouldShowConfetti && onShowConfetti !== undefined) {
 				onShowConfetti();
 			}
 
-			setTimeout(() => endGame(winner, winningTeamId), 2000);
+			setTimeout(() => {
+				endGame(winner, winningTeamId);
+			}, 2000);
 			return;
 		}
 
 		let nextIndex = (currentPlayerIndex + 1) % state.players.length;
-		while (state.players[nextIndex] && !state.players[nextIndex]!.isAlive) {
+		let nextPlayer = state.players[nextIndex];
+		while (nextPlayer !== undefined && !nextPlayer.isAlive) {
 			nextIndex = (nextIndex + 1) % state.players.length;
+			nextPlayer = state.players[nextIndex];
 		}
 
 		updateState((newState) => {
@@ -225,7 +234,7 @@ export function useGameFlow(
 			saveStateToHistory();
 
 			const state = gameStateRef.current.state;
-			const currentPlayerIndex = playerIndex !== undefined ? playerIndex : state.currentPlayerIndex;
+			const currentPlayerIndex = playerIndex ?? state.currentPlayerIndex;
 			const currentPlayer = state.players[currentPlayerIndex];
 			if (!currentPlayer) return;
 
@@ -348,15 +357,17 @@ export function useGameFlow(
 					const source = newState.players.find((p) => p.id === sourceId);
 					const targetPlayers = currentTargets
 						.map((id) => newState.players.find((p) => p.id === id))
-						.filter((p): p is Player => !!p);
+						.filter((p): p is Player => p !== undefined);
 
-					if (source) {
-						if (type === 'attack') handleAttack(source, targetPlayers[0]!, localLog, unlockAnimal);
-						if (type === 'spitball') handleSpitball(source, targetPlayers[0]!, localLog, unlockAnimal);
-						if (type === 'strike')
-							handleStrike(source, targetPlayers[0]!, targetPlayers[1]!, localLog, unlockAnimal);
-						if (type === 'rampage') handleRampage(source, targetPlayers[0]!, localLog, unlockAnimal);
-						if (type === 'mischief') handleMischief(source, targetPlayers[0]!, localLog);
+					const [firstTarget, secondTarget] = targetPlayers;
+
+					if (source !== undefined && firstTarget !== undefined) {
+						if (type === 'attack') handleAttack(source, firstTarget, localLog, unlockAnimal);
+						if (type === 'spitball') handleSpitball(source, firstTarget, localLog, unlockAnimal);
+						if (type === 'strike' && secondTarget !== undefined)
+							handleStrike(source, firstTarget, secondTarget, localLog, unlockAnimal);
+						if (type === 'rampage') handleRampage(source, firstTarget, localLog, unlockAnimal);
+						if (type === 'mischief') handleMischief(source, firstTarget, localLog);
 					}
 
 					newState.actionInProgress = null;
@@ -391,8 +402,9 @@ export function useGameFlow(
 			const state = gameStateRef.current.state;
 			if (state.gameMode === 'challenger' && requiredTargets === 1) {
 				const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== sourceId);
-				if (aliveOpponents.length === 1) {
-					const targetId = aliveOpponents[0]!.id;
+				const soleOpponent = aliveOpponents[0];
+				if (aliveOpponents.length === 1 && soleOpponent !== undefined) {
+					const targetId = soleOpponent.id;
 					updateState((newState) => {
 						newState.actionInProgress = {
 							type,

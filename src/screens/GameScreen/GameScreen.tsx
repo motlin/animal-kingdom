@@ -96,7 +96,7 @@ export function GameScreen({
 							player={player}
 							isActive={isActive}
 							isSelectable={isSelectable}
-							{...(teamColor ? {teamColor} : {})}
+							{...(teamColor !== undefined && teamColor !== '' ? {teamColor} : {})}
 							onClick={handlePlayerClick}
 						/>
 					);

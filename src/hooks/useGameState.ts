@@ -5,15 +5,15 @@ import {INITIAL_HP, ANIMAL_UNLOCK_ORDER} from '../lib/constants.ts';
 export interface UseGameStateReturn {
 	state: GameState;
 	stateHistory: GameState[];
-	unlockedAnimals: Set<string>;
-	setUnlockedAnimals: (animals: Set<string>) => void;
+	unlockedAnimals: Set<AnimalType>;
+	setUnlockedAnimals: (animals: Set<AnimalType>) => void;
 	initializeState: (players: Player[], gameMode?: GameMode, teams?: Team[]) => void;
 	saveStateToHistory: () => void;
 	restorePreviousState: () => void;
 	logMessage: (message: string, indent?: number) => void;
-	unlockAnimal: (animalName: string) => void;
+	unlockAnimal: (animalName: AnimalType) => void;
 	getNextLockedAnimal: () => AnimalType | null;
-	createPlayer: (id: number, name: string, animal: string, isComputer: boolean, teamId?: number) => Player;
+	createPlayer: (id: number, name: string, animal: AnimalType, isComputer: boolean, teamId?: number) => Player;
 	updateState: (updater: (state: GameState) => void) => void;
 }
 
@@ -38,9 +38,9 @@ export function useGameState(): UseGameStateReturn {
 		history: [],
 	});
 
-	const [unlockedAnimals, setUnlockedAnimalsState] = useState<Set<string>>(new Set());
+	const [unlockedAnimals, setUnlockedAnimalsState] = useState<Set<AnimalType>>(new Set());
 
-	const setUnlockedAnimals = useCallback((animals: Set<string>) => {
+	const setUnlockedAnimals = useCallback((animals: Set<AnimalType>) => {
 		setUnlockedAnimalsState(animals);
 	}, []);
 
@@ -65,7 +65,7 @@ export function useGameState(): UseGameStateReturn {
 
 	const saveStateToHistory = useCallback(() => {
 		setStateWithHistory((prev) => {
-			const stateCopy = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			const stateCopy = structuredClone(prev.current);
 			return {
 				current: prev.current,
 				history: [...prev.history, stateCopy],
@@ -82,7 +82,7 @@ export function useGameState(): UseGameStateReturn {
 			const previousState = newHistory.pop();
 			if (previousState) {
 				return {
-					current: JSON.parse(JSON.stringify(previousState)) as GameState,
+					current: structuredClone(previousState),
 					history: newHistory,
 				};
 			}
@@ -92,7 +92,7 @@ export function useGameState(): UseGameStateReturn {
 
 	const logMessage = useCallback((message: string, indent = 0) => {
 		setStateWithHistory((prev) => {
-			const clonedState = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			const clonedState = structuredClone(prev.current);
 			clonedState.log.push({message, indent});
 			return {
 				...prev,
@@ -101,7 +101,7 @@ export function useGameState(): UseGameStateReturn {
 		});
 	}, []);
 
-	const unlockAnimal = useCallback((animalName: string) => {
+	const unlockAnimal = useCallback((animalName: AnimalType) => {
 		setUnlockedAnimalsState((current) => {
 			if (!current.has(animalName)) {
 				const updated = new Set(current);
@@ -122,7 +122,7 @@ export function useGameState(): UseGameStateReturn {
 	}, [unlockedAnimals]);
 
 	const createPlayer = useCallback(
-		(id: number, name: string, animal: string, isComputer: boolean, teamId?: number): Player => {
+		(id: number, name: string, animal: AnimalType, isComputer: boolean, teamId?: number): Player => {
 			let initialHP = INITIAL_HP;
 			if (animal === 'Gorilla') {
 				initialHP = 4;
@@ -131,7 +131,7 @@ export function useGameState(): UseGameStateReturn {
 			const player: Player = {
 				id,
 				name,
-				animal: animal as never,
+				animal,
 				hp: initialHP,
 				maxHp: initialHP,
 				isAlive: true,
@@ -162,7 +162,7 @@ export function useGameState(): UseGameStateReturn {
 
 	const updateState = useCallback((updater: (state: GameState) => void) => {
 		setStateWithHistory((prev) => {
-			const clonedState = JSON.parse(JSON.stringify(prev.current)) as GameState;
+			const clonedState = structuredClone(prev.current);
 			updater(clonedState);
 			return {
 				...prev,

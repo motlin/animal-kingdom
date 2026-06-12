@@ -21,10 +21,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const createDefaultPlayers = (): PlayerConfiguration[] => {
-	const animals: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
+	const animals: readonly [AnimalType, ...AnimalType[]] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
 	return Array.from({length: 10}, (_, i) => ({
 		name: '',
-		animalType: animals[i % animals.length]!,
+		animalType: animals[i % animals.length] ?? animals[0],
 		playerType: 'human' as const,
 	}));
 };
@@ -332,10 +332,10 @@ export const Interactive = {
 						) : (
 							<div>
 								<p>
-									<strong>Selected Animal:</strong> {selectedAnimal || 'None'}
+									<strong>Selected Animal:</strong> {selectedAnimal ?? 'None'}
 								</p>
 								<p>
-									<strong>Opponent:</strong> {opponentAnimal || 'None'}
+									<strong>Opponent:</strong> {opponentAnimal ?? 'None'}
 								</p>
 							</div>
 						)}
@@ -435,7 +435,9 @@ export const ModeSwitchingDemo = {
 						onPlayersPerTeamChange={() => {}}
 						onTeamChange={() => {}}
 						onTeamPlayerChange={() => {}}
-						onStartGame={() => console.log('Start game')}
+						onStartGame={() => {
+							console.log('Start game');
+						}}
 						canStartGame={canStartGame}
 					/>
 				</div>

@@ -61,7 +61,7 @@ function App() {
 
 	useEffect(() => {
 		if (gameState.unlockedAnimals.size > 0 && gameState.unlockedAnimals.size > storage.unlockedAnimals.size) {
-			storage.setUnlockedAnimals(gameState.unlockedAnimals as Set<AnimalType>);
+			storage.setUnlockedAnimals(gameState.unlockedAnimals);
 		}
 	}, [gameState.unlockedAnimals, storage]);
 
@@ -88,7 +88,9 @@ function App() {
 
 	const showConfetti = useCallback(() => {
 		setConfettiVisible(true);
-		setTimeout(() => setConfettiVisible(false), 3000);
+		setTimeout(() => {
+			setConfettiVisible(false);
+		}, 3000);
 	}, []);
 
 	const gameFlow = useGameFlow(gameState, gameActions, {
@@ -288,7 +290,7 @@ function App() {
 			})
 			.join('\n');
 
-		navigator.clipboard.writeText(logText);
+		void navigator.clipboard.writeText(logText);
 	}, [gameState]);
 
 	const handleSaveLog = useCallback(() => {
@@ -336,30 +338,30 @@ function App() {
 
 	const canUseAbility = Boolean(
 		!gameState.state.turnSkipped &&
-			!gameState.state.actionInProgress &&
-			currentPlayer &&
-			!currentPlayer.isComputer &&
-			!currentPlayer.abilityDisabled &&
-			currentPlayer.abilityCooldown === 0 &&
-			!currentPlayer.oneTimeActions.hasUsedAbility &&
-			(currentPlayer.animal !== 'Tiger' || aliveOpponents.length >= 2) &&
-			currentPlayer.animal !== 'Bird',
+		!gameState.state.actionInProgress &&
+		currentPlayer &&
+		!currentPlayer.isComputer &&
+		!currentPlayer.abilityDisabled &&
+		currentPlayer.abilityCooldown === 0 &&
+		!currentPlayer.oneTimeActions.hasUsedAbility &&
+		(currentPlayer.animal !== 'Tiger' || aliveOpponents.length >= 2) &&
+		currentPlayer.animal !== 'Bird',
 	);
 
 	const canHeal = Boolean(
 		!gameState.state.turnSkipped &&
-			!gameState.state.actionInProgress &&
-			currentPlayer &&
-			!currentPlayer.isComputer &&
-			!currentPlayer.oneTimeActions.hasHealed,
+		!gameState.state.actionInProgress &&
+		currentPlayer &&
+		!currentPlayer.isComputer &&
+		!currentPlayer.oneTimeActions.hasHealed,
 	);
 
 	const canShield = Boolean(
 		!gameState.state.turnSkipped &&
-			!gameState.state.actionInProgress &&
-			currentPlayer &&
-			!currentPlayer.isComputer &&
-			!currentPlayer.oneTimeActions.hasShielded,
+		!gameState.state.actionInProgress &&
+		currentPlayer &&
+		!currentPlayer.isComputer &&
+		!currentPlayer.oneTimeActions.hasShielded,
 	);
 
 	const canDoNothing = Boolean(
@@ -381,18 +383,12 @@ function App() {
 	if (screen === 'setup') {
 		return (
 			<div className="app">
-				<ThemeToggle
-					theme={storage.theme}
-					onToggle={handleThemeToggle}
-				/>
-				<MuteToggle
-					isMuted={storage.isMuted}
-					onToggle={handleMuteToggle}
-				/>
+				<ThemeToggle theme={storage.theme} onToggle={handleThemeToggle} />
+				<MuteToggle isMuted={storage.isMuted} onToggle={handleMuteToggle} />
 				<Header isGameActive={false} />
 				<SetupScreen
 					mode={mode}
-					unlockedAnimals={gameState.unlockedAnimals as Set<AnimalType>}
+					unlockedAnimals={gameState.unlockedAnimals}
 					playerCount={playerCount}
 					players={players}
 					selectedAnimal={selectedAnimal}
@@ -441,21 +437,15 @@ function App() {
 
 	return (
 		<div className="app">
-			<ThemeToggle
-				theme={storage.theme}
-				onToggle={handleThemeToggle}
-			/>
-			<MuteToggle
-				isMuted={storage.isMuted}
-				onToggle={handleMuteToggle}
-			/>
+			<ThemeToggle theme={storage.theme} onToggle={handleThemeToggle} />
+			<MuteToggle isMuted={storage.isMuted} onToggle={handleMuteToggle} />
 			<Header isGameActive={true} />
 			<GameScreen
 				players={gameState.state.players}
 				teams={gameState.state.teams}
 				currentPlayerIndex={gameState.state.currentPlayerIndex}
 				turnIndicator={turnIndicator}
-				currentAnimal={currentPlayer?.animal || 'Coyote'}
+				currentAnimal={currentPlayer?.animal ?? 'Coyote'}
 				canAttack={canAttack}
 				canUseAbility={canUseAbility}
 				canHeal={canHeal}
@@ -466,9 +456,7 @@ function App() {
 				shieldsRemaining={shieldsRemaining}
 				logEntries={gameState.state.log}
 				isGameOver={gameState.state.gameState === 'gameOver'}
-				winnerAnnouncement={
-					gameState.state.log.length > 0 ? gameState.state.log[gameState.state.log.length - 1]!.message : ''
-				}
+				winnerAnnouncement={gameState.state.log.at(-1)?.message ?? ''}
 				selectablePlayerIds={selectablePlayerIds}
 				onPlayerClick={handlePlayerClick}
 				onAttack={handleAttack}

@@ -87,6 +87,8 @@ export function SetupScreen({
 						onAnimalSelect={onAnimalSelect}
 					/>
 				);
+			default:
+				return null;
 		}
 	};
 
@@ -94,21 +96,14 @@ export function SetupScreen({
 		<div className="setup-screen">
 			<h2>Game Setup</h2>
 
-			<ModeSelector
-				selectedMode={mode}
-				onModeChange={onModeChange}
-			/>
+			<ModeSelector selectedMode={mode} onModeChange={onModeChange} />
 
 			<AnimalAbilities unlockedCount={unlockedAnimals.size} />
 
 			{renderSetupContent()}
 
 			<div className="start-game-container">
-				<Button
-					variant="primary"
-					disabled={!canStartGame}
-					onClick={onStartGame}
-				>
+				<Button variant="primary" disabled={!canStartGame} onClick={onStartGame}>
 					Start Game
 				</Button>
 			</div>

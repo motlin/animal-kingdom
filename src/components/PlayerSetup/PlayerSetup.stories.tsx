@@ -177,20 +177,31 @@ export const MultiplePlayersSetup = {
 				{name: '', animal: 'Coyote' as AnimalType, type: 'computer' as 'human' | 'computer'},
 			]);
 
-			const updatePlayer = (
-				index: number,
-				field: 'name' | 'animal' | 'type',
-				value: string | AnimalType | 'human' | 'computer',
-			) => {
+			const updatePlayerName = (index: number, name: string) => {
 				const newPlayers = [...players];
-				if (field === 'name') {
-					newPlayers[index]!.name = value as string;
-				} else if (field === 'animal') {
-					newPlayers[index]!.animal = value as AnimalType;
-				} else if (field === 'type') {
-					newPlayers[index]!.type = value as 'human' | 'computer';
+				const target = newPlayers[index];
+				if (target !== undefined) {
+					target.name = name;
+					setPlayers(newPlayers);
 				}
-				setPlayers(newPlayers);
+			};
+
+			const updatePlayerAnimal = (index: number, animal: AnimalType) => {
+				const newPlayers = [...players];
+				const target = newPlayers[index];
+				if (target !== undefined) {
+					target.animal = animal;
+					setPlayers(newPlayers);
+				}
+			};
+
+			const updatePlayerType = (index: number, type: 'human' | 'computer') => {
+				const newPlayers = [...players];
+				const target = newPlayers[index];
+				if (target !== undefined) {
+					target.type = type;
+					setPlayers(newPlayers);
+				}
 			};
 
 			return (
@@ -204,9 +215,15 @@ export const MultiplePlayersSetup = {
 							animalType={player.animal}
 							playerType={player.type}
 							unlockedAnimals={defaultUnlockedAnimals}
-							onPlayerNameChange={(name) => updatePlayer(index, 'name', name)}
-							onAnimalTypeChange={(animal) => updatePlayer(index, 'animal', animal)}
-							onPlayerTypeChange={(type) => updatePlayer(index, 'type', type)}
+							onPlayerNameChange={(name) => {
+								updatePlayerName(index, name);
+							}}
+							onAnimalTypeChange={(animal) => {
+								updatePlayerAnimal(index, animal);
+							}}
+							onPlayerTypeChange={(type) => {
+								updatePlayerType(index, type);
+							}}
 						/>
 					))}
 				</div>

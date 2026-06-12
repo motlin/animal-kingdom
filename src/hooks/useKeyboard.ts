@@ -15,7 +15,7 @@ export function useKeyboard(options: UseKeyboardOptions) {
 
 	useEffect(() => {
 		if (!enabled) {
-			return;
+			return undefined;
 		}
 
 		const handleKeyDown = (event: KeyboardEvent) => {

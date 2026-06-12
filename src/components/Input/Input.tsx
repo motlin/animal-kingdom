@@ -34,7 +34,7 @@ export function Input({
 
 	return (
 		<div className={`input-container ${className}`}>
-			{label && <label htmlFor={id}>{label}</label>}
+			{label !== undefined && label !== '' && <label htmlFor={id}>{label}</label>}
 			<input
 				id={id}
 				type={type}

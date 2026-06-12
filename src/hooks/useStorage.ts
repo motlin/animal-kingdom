@@ -7,6 +7,7 @@ import {
 	saveTheme as saveThemeToStorage,
 	loadMutePreference as loadMutePreferenceFromStorage,
 	saveMutePreference as saveMutePreferenceToStorage,
+	isAnimalType,
 } from '../storage.ts';
 
 export interface UseStorageReturn {
@@ -42,17 +43,26 @@ export function useStorage(): UseStorageReturn {
 
 	useEffect(() => {
 		const handleStorageChange = (event: StorageEvent) => {
-			if (event.key === 'animalKingdomUnlockedAnimals' && event.newValue) {
-				setUnlockedAnimalsState(new Set(JSON.parse(event.newValue) as AnimalType[]));
-			} else if (event.key === 'animalKingdomTheme' && event.newValue) {
-				setThemeState(event.newValue === 'dark' ? 'dark' : 'light');
-			} else if (event.key === 'animalKingdomMuted' && event.newValue) {
-				setIsMutedState(event.newValue === 'true');
+			const newValue = event.newValue;
+			if (newValue === null || newValue === '') {
+				return;
+			}
+			if (event.key === 'animalKingdomUnlockedAnimals') {
+				const parsed: unknown = JSON.parse(newValue);
+				if (Array.isArray(parsed)) {
+					setUnlockedAnimalsState(new Set<AnimalType>(parsed.filter(isAnimalType)));
+				}
+			} else if (event.key === 'animalKingdomTheme') {
+				setThemeState(newValue === 'dark' ? 'dark' : 'light');
+			} else if (event.key === 'animalKingdomMuted') {
+				setIsMutedState(newValue === 'true');
 			}
 		};
 
 		window.addEventListener('storage', handleStorageChange);
-		return () => window.removeEventListener('storage', handleStorageChange);
+		return () => {
+			window.removeEventListener('storage', handleStorageChange);
+		};
 	}, []);
 
 	return {

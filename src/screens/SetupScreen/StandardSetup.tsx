@@ -57,9 +57,15 @@ export function StandardSetup({
 						animalType={player.animalType}
 						playerType={player.playerType}
 						unlockedAnimals={unlockedAnimals}
-						onPlayerNameChange={(name) => onPlayerChange(index, {...player, name})}
-						onAnimalTypeChange={(animalType) => onPlayerChange(index, {...player, animalType})}
-						onPlayerTypeChange={(playerType) => onPlayerChange(index, {...player, playerType})}
+						onPlayerNameChange={(name) => {
+							onPlayerChange(index, {...player, name});
+						}}
+						onAnimalTypeChange={(animalType) => {
+							onPlayerChange(index, {...player, animalType});
+						}}
+						onPlayerTypeChange={(playerType) => {
+							onPlayerChange(index, {...player, playerType});
+						}}
 						disabled={disabled}
 					/>
 				))}

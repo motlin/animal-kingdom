@@ -9,16 +9,8 @@ export interface MuteToggleProperties {
 
 export function MuteToggle({isMuted, onToggle}: MuteToggleProperties) {
 	return (
-		<Button
-			variant="toggle"
-			onClick={onToggle}
-			className="mute-toggle"
-			aria-label={isMuted ? 'Unmute' : 'Mute'}
-		>
-			<Icon
-				name={isMuted ? 'volume-x' : 'volume-2'}
-				size={24}
-			/>
+		<Button variant="toggle" onClick={onToggle} className="mute-toggle" aria-label={isMuted ? 'Unmute' : 'Mute'}>
+			<Icon name={isMuted ? 'volume-x' : 'volume-2'} size={24} />
 		</Button>
 	);
 }

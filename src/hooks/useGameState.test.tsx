@@ -1,7 +1,7 @@
-import {describe, it, expect} from 'vitest';
+import {describe, it, expect} from 'vite-plus/test';
 import {renderHook, act} from '@testing-library/react';
 import {useGameState} from './useGameState.ts';
-import type {Player} from '../lib/types.ts';
+import type {Player, AnimalType} from '../lib/types.ts';
 
 describe('useGameState', () => {
 	it('initializes with default state', () => {
@@ -178,7 +178,7 @@ describe('useGameState', () => {
 	it('sets unlocked animals', () => {
 		const {result} = renderHook(() => useGameState());
 
-		const animals = new Set(['Coyote', 'Tiger', 'Monkey']);
+		const animals = new Set<AnimalType>(['Coyote', 'Tiger', 'Monkey']);
 
 		act(() => {
 			result.current.setUnlockedAnimals(animals);

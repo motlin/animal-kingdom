@@ -115,26 +115,11 @@ export const AllAnimals = {
 			}}
 		>
 			<h3>All Animals (Unselected)</h3>
-			<AnimalCard
-				animal="Coyote"
-				abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Llama"
-				abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Tiger"
-				abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Gorilla"
-				abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Monkey"
-				abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc}
-			/>
+			<AnimalCard animal="Coyote" abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc} />
+			<AnimalCard animal="Llama" abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc} />
+			<AnimalCard animal="Tiger" abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc} />
+			<AnimalCard animal="Gorilla" abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc} />
+			<AnimalCard animal="Monkey" abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc} />
 		</div>
 	),
 };
@@ -151,31 +136,11 @@ export const AllAnimalsSelected = {
 			}}
 		>
 			<h3>All Animals (Selected)</h3>
-			<AnimalCard
-				animal="Coyote"
-				abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc}
-				selected
-			/>
-			<AnimalCard
-				animal="Llama"
-				abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc}
-				selected
-			/>
-			<AnimalCard
-				animal="Tiger"
-				abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc}
-				selected
-			/>
-			<AnimalCard
-				animal="Gorilla"
-				abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc}
-				selected
-			/>
-			<AnimalCard
-				animal="Monkey"
-				abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc}
-				selected
-			/>
+			<AnimalCard animal="Coyote" abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc} selected />
+			<AnimalCard animal="Llama" abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc} selected />
+			<AnimalCard animal="Tiger" abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc} selected />
+			<AnimalCard animal="Gorilla" abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc} selected />
+			<AnimalCard animal="Monkey" abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc} selected />
 		</div>
 	),
 };
@@ -192,27 +157,11 @@ export const MixedStates = {
 			}}
 		>
 			<h3>Mixed States</h3>
-			<AnimalCard
-				animal="Coyote"
-				abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Llama"
-				abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc}
-				selected
-			/>
-			<AnimalCard
-				animal="Tiger"
-				abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Gorilla"
-				abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc}
-			/>
-			<AnimalCard
-				animal="Monkey"
-				abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc}
-			/>
+			<AnimalCard animal="Coyote" abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc} />
+			<AnimalCard animal="Llama" abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc} selected />
+			<AnimalCard animal="Tiger" abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc} />
+			<AnimalCard animal="Gorilla" abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc} />
+			<AnimalCard animal="Monkey" abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc} />
 		</div>
 	),
 };

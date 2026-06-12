@@ -4,9 +4,13 @@ let audioContext: AudioContext;
 let isMuted = false;
 
 export function initializeAudioContext(): void {
-	audioContext = new (
-		window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext
-	)();
+	// Fall back to the webkit-prefixed constructor for older Safari, which the DOM lib types omit.
+	const windowWithWebkit: {AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext} = window;
+	const audioContextConstructor = windowWithWebkit.AudioContext ?? windowWithWebkit.webkitAudioContext;
+	if (audioContextConstructor === undefined) {
+		return;
+	}
+	audioContext = new audioContextConstructor();
 }
 
 export function setMuted(muted: boolean): void {

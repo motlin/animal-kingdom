@@ -1,27 +1,33 @@
-import {beforeEach} from 'vitest';
+import {beforeEach} from 'vite-plus/test';
+
+function createLocalStorageMock(): Storage {
+	const store = new Map<string, string>();
+
+	return {
+		get length(): number {
+			return store.size;
+		},
+		getItem: (key: string): string | null => {
+			return store.get(key) ?? null;
+		},
+		setItem: (key: string, value: string): void => {
+			store.set(key, value);
+		},
+		removeItem: (key: string): void => {
+			store.delete(key);
+		},
+		clear: (): void => {
+			store.clear();
+		},
+		key: (index: number): string | null => {
+			return [...store.keys()][index] ?? null;
+		},
+	};
+}
 
 beforeEach(() => {
-	const localStorageMock = (() => {
-		let store: Record<string, string> = {};
-
-		return {
-			getItem: (key: string): string | null => {
-				return store[key] ?? null;
-			},
-			setItem: (key: string, value: string): void => {
-				store[key] = value.toString();
-			},
-			removeItem: (key: string): void => {
-				delete store[key];
-			},
-			clear: (): void => {
-				store = {};
-			},
-		};
-	})();
-
 	Object.defineProperty(globalThis, 'localStorage', {
-		value: localStorageMock,
+		value: createLocalStorageMock(),
 		writable: true,
 	});
 });
