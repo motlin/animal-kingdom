@@ -1,11 +1,11 @@
-import {describe, it, expect, vi, beforeEach} from 'vitest';
+import {describe, it, expect, vi, beforeEach} from 'vite-plus/test';
 import {renderHook} from '@testing-library/react';
 import {useGameActions} from './useGameActions.ts';
-import type {Player, GameState} from '../lib/types.ts';
+import type {Player, GameState, SoundType} from '../lib/types.ts';
 import * as sound from '../sound.ts';
 
 vi.mock('../sound.ts', () => ({
-	playSound: vi.fn(),
+	playSound: vi.fn<(type: SoundType) => void>(),
 }));
 
 function createTestPlayer(
@@ -48,8 +48,8 @@ describe('useGameActions', () => {
 			const {result} = renderHook(() => useGameActions());
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			const source = createTestPlayer(2, 'Source', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			const actualDamage = result.current.applyDamage(target, 2, source, logMessage, unlockAnimal);
 
@@ -65,8 +65,8 @@ describe('useGameActions', () => {
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			target.status.isShielded = true;
 			const source = createTestPlayer(2, 'Source', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			const actualDamage = result.current.applyDamage(target, 2, source, logMessage, unlockAnimal);
 
@@ -82,8 +82,8 @@ describe('useGameActions', () => {
 			const target = createTestPlayer(1, 'Target', 'Tiger');
 			target.hp = 1;
 			const source = createTestPlayer(2, 'Source', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			const actualDamage = result.current.applyDamage(target, 2, source, logMessage, unlockAnimal);
 
@@ -102,8 +102,8 @@ describe('useGameActions', () => {
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			target.hp = 1;
 			const source = createTestPlayer(2, 'Source', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			const actualDamage = result.current.applyDamage(target, 5, source, logMessage, unlockAnimal);
 
@@ -117,8 +117,8 @@ describe('useGameActions', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Attacker', 'Coyote');
 			const target = createTestPlayer(2, 'Target', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleAttack(source, target, logMessage, unlockAnimal);
 
@@ -133,7 +133,7 @@ describe('useGameActions', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Healer', 'Coyote');
 			source.hp = 1;
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleHeal(source, logMessage);
 
@@ -146,7 +146,7 @@ describe('useGameActions', () => {
 		it('overheals player at max hp', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Healer', 'Coyote');
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleHeal(source, logMessage);
 
@@ -161,7 +161,7 @@ describe('useGameActions', () => {
 		it('raises shield for player', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Shielder', 'Coyote');
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleShield(source, logMessage);
 
@@ -193,7 +193,7 @@ describe('useGameActions', () => {
 				turnSkipped: false,
 				log: [],
 			};
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleHowl(source, state, logMessage);
 
@@ -223,7 +223,7 @@ describe('useGameActions', () => {
 				turnSkipped: false,
 				log: [],
 			};
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleHowl(source, state, logMessage);
 
@@ -237,8 +237,8 @@ describe('useGameActions', () => {
 			vi.spyOn(Math, 'random').mockReturnValue(0.1);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleSpitball(source, target, logMessage, unlockAnimal);
 
@@ -253,8 +253,8 @@ describe('useGameActions', () => {
 			vi.spyOn(Math, 'random').mockReturnValue(0.3);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleSpitball(source, target, logMessage, unlockAnimal);
 
@@ -267,8 +267,8 @@ describe('useGameActions', () => {
 			vi.spyOn(Math, 'random').mockReturnValue(0.8);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleSpitball(source, target, logMessage, unlockAnimal);
 
@@ -283,8 +283,8 @@ describe('useGameActions', () => {
 			const source = createTestPlayer(1, 'Striker', 'Tiger');
 			const target1 = createTestPlayer(2, 'Target1', 'Coyote');
 			const target2 = createTestPlayer(3, 'Target2', 'Llama');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleStrike(source, target1, target2, logMessage, unlockAnimal);
 
@@ -300,8 +300,8 @@ describe('useGameActions', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Rampager', 'Gorilla');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
-			const logMessage = vi.fn();
-			const unlockAnimal = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
+			const unlockAnimal = vi.fn<(animalName: string) => void>();
 
 			result.current.handleRampage(source, target, logMessage, unlockAnimal);
 
@@ -322,7 +322,7 @@ describe('useGameActions', () => {
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Prankster', 'Monkey');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
-			const logMessage = vi.fn();
+			const logMessage = vi.fn<(message: string, indent?: number) => void>();
 
 			result.current.handleMischief(source, target, logMessage);
 

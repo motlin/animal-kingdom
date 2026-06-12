@@ -18,7 +18,9 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 				variant="mode"
 				active={selectedMode === 'standard'}
 				disabled={disabled}
-				onClick={() => onModeChange('standard')}
+				onClick={() => {
+					onModeChange('standard');
+				}}
 			>
 				<Icon name="users" />
 				<span>Standard Battle</span>
@@ -27,7 +29,9 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 				variant="mode"
 				active={selectedMode === 'team'}
 				disabled={disabled}
-				onClick={() => onModeChange('team')}
+				onClick={() => {
+					onModeChange('team');
+				}}
 			>
 				<Icon name="users" />
 				<span>Team Battle</span>
@@ -36,7 +40,9 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 				variant="mode"
 				active={selectedMode === 'challenger'}
 				disabled={disabled}
-				onClick={() => onModeChange('challenger')}
+				onClick={() => {
+					onModeChange('challenger');
+				}}
 			>
 				<Icon name="trophy" />
 				<span>New Challenger</span>

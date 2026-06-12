@@ -41,7 +41,7 @@ export function PlayerSetup({
 	];
 
 	const handlePlayerTypeChange = (newType: string) => {
-		onPlayerTypeChange(newType as 'human' | 'computer');
+		onPlayerTypeChange(newType === 'computer' ? 'computer' : 'human');
 
 		if (newType === 'human' && !unlockedAnimals.has(animalType)) {
 			const firstUnlocked = Array.from(unlockedAnimals)[0];
@@ -53,10 +53,7 @@ export function PlayerSetup({
 
 	return (
 		<div className="player-setup">
-			<label
-				htmlFor={`player-${playerNumber}-name`}
-				className="player-label"
-			>
+			<label htmlFor={`player-${playerNumber}-name`} className="player-label">
 				Player {playerNumber}:
 			</label>
 			<Input
@@ -70,7 +67,12 @@ export function PlayerSetup({
 				id={`player-${playerNumber}-animal`}
 				value={animalType}
 				options={animalOptions}
-				onChange={(value) => onAnimalTypeChange(value as AnimalType)}
+				onChange={(value) => {
+					const animal = allAnimals.find((candidate) => candidate === value);
+					if (animal !== undefined) {
+						onAnimalTypeChange(animal);
+					}
+				}}
 				disabled={disabled}
 			/>
 			<Select

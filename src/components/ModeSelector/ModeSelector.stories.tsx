@@ -58,10 +58,7 @@ export const Interactive = {
 
 			return (
 				<div style={{padding: '20px'}}>
-					<ModeSelector
-						selectedMode={selectedMode}
-						onModeChange={setSelectedMode}
-					/>
+					<ModeSelector selectedMode={selectedMode} onModeChange={setSelectedMode} />
 					<p style={{marginTop: '20px', textAlign: 'center'}}>
 						Selected mode: <strong>{selectedMode}</strong>
 					</p>

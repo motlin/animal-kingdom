@@ -122,7 +122,7 @@ export const Interactive = {
 					<div style={{marginTop: '30px', padding: '15px', backgroundColor: '#f0f0f0', borderRadius: '8px'}}>
 						<h3>Current Selection:</h3>
 						<p>
-							<strong>Selected Animal:</strong> {selectedAnimal || 'None'}
+							<strong>Selected Animal:</strong> {selectedAnimal ?? 'None'}
 						</p>
 						<p>
 							<strong>Opponent:</strong> {opponentAnimal}
@@ -171,7 +171,7 @@ export const ProgressionDemo = {
 					<ChallengerSetup
 						selectedAnimal={selectedAnimal}
 						unlockedAnimals={unlockedAnimals}
-						opponentAnimal={currentOpponent || null}
+						opponentAnimal={currentOpponent ?? null}
 						onAnimalSelect={setSelectedAnimal}
 					/>
 
@@ -214,10 +214,10 @@ export const ProgressionDemo = {
 							{unlockedAnimals.size}/{allAnimals.length})
 						</p>
 						<p>
-							<strong>Current Opponent:</strong> {currentOpponent || 'None'}
+							<strong>Current Opponent:</strong> {currentOpponent ?? 'None'}
 						</p>
 						<p>
-							<strong>Selected Fighter:</strong> {selectedAnimal || 'None'}
+							<strong>Selected Fighter:</strong> {selectedAnimal ?? 'None'}
 						</p>
 					</div>
 				</div>

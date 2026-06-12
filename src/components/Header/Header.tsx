@@ -12,11 +12,7 @@ export function Header({isGameActive = false, className = ''}: HeaderProperties)
 
 	return (
 		<header className={classes}>
-			<img
-				src={`${baseUrl}logo.png`}
-				alt="Animal Kingdom Logo"
-				className="logo"
-			/>
+			<img src={`${baseUrl}logo.png`} alt="Animal Kingdom Logo" className="logo" />
 		</header>
 	);
 }

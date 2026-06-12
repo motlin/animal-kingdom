@@ -88,10 +88,7 @@ export function TeamSetup({
 				<h3>Team Names</h3>
 				<div className="team-names">
 					{teams.slice(0, teamCount).map((team, index) => (
-						<div
-							key={index}
-							className="team-name-input"
-						>
+						<div key={index} className="team-name-input">
 							<span
 								className="team-color-indicator"
 								style={{backgroundColor: TEAM_COLORS[index % TEAM_COLORS.length]}}
@@ -99,13 +96,13 @@ export function TeamSetup({
 							<Input
 								id={`team-${index}-name`}
 								value={team.name}
-								onChange={(name) =>
+								onChange={(name) => {
 									onTeamChange(index, {
 										...team,
 										name,
 										color: TEAM_COLORS[index % TEAM_COLORS.length] ?? '#888888',
-									})
-								}
+									});
+								}}
 								placeholder={`Team ${index + 1}`}
 								disabled={disabled}
 							/>
@@ -117,14 +114,8 @@ export function TeamSetup({
 			<div className="players-section">
 				<h3>Players</h3>
 				{teams.slice(0, teamCount).map((team, teamIndex) => (
-					<div
-						key={teamIndex}
-						className="team-players"
-					>
-						<div
-							className="team-header"
-							style={{borderLeftColor: team.color}}
-						>
+					<div key={teamIndex} className="team-players">
+						<div className="team-header" style={{borderLeftColor: team.color}}>
 							{team.name || `Team ${teamIndex + 1}`}
 						</div>
 						{players
@@ -140,13 +131,15 @@ export function TeamSetup({
 										animalType={player.animalType}
 										playerType={player.playerType}
 										unlockedAnimals={unlockedAnimals}
-										onPlayerNameChange={(name) => onPlayerChange(globalIndex, {...player, name})}
-										onAnimalTypeChange={(animalType) =>
-											onPlayerChange(globalIndex, {...player, animalType})
-										}
-										onPlayerTypeChange={(playerType) =>
-											onPlayerChange(globalIndex, {...player, playerType})
-										}
+										onPlayerNameChange={(name) => {
+											onPlayerChange(globalIndex, {...player, name});
+										}}
+										onAnimalTypeChange={(animalType) => {
+											onPlayerChange(globalIndex, {...player, animalType});
+										}}
+										onPlayerTypeChange={(playerType) => {
+											onPlayerChange(globalIndex, {...player, playerType});
+										}}
 										disabled={disabled}
 									/>
 								);

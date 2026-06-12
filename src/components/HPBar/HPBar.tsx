@@ -18,10 +18,7 @@ export function HPBar({currentHp, maxHp, className = ''}: HPBarProperties) {
 
 	return (
 		<div className={`hp-bar-container ${className}`}>
-			<div
-				className={`hp-bar ${colorClass}`}
-				style={{width: `${percentage}%`}}
-			/>
+			<div className={`hp-bar ${colorClass}`} style={{width: `${percentage}%`}} />
 			<div className="hp-text">
 				{currentHp}/{maxHp}
 			</div>

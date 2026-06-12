@@ -1,12 +1,13 @@
-import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
+import {describe, it, expect, vi, beforeEach, afterEach} from 'vite-plus/test';
 import {renderHook, act} from '@testing-library/react';
 import {useGameFlow, type UseGameFlowCallbacks} from './useGameFlow.ts';
 import {useGameState, type UseGameStateReturn} from './useGameState.ts';
 import {useGameActions, type UseGameActionsReturn} from './useGameActions.ts';
 import * as sound from '../sound.ts';
+import type {Player, SoundType} from '../lib/types.ts';
 
 vi.mock('../sound.ts', () => ({
-	playSound: vi.fn(),
+	playSound: vi.fn<(type: SoundType) => void>(),
 }));
 
 interface TestHookResult {
@@ -158,8 +159,8 @@ describe('useGameFlow', () => {
 		});
 
 		it('ends game when one player remains in standard mode', () => {
-			const onEndGame = vi.fn();
-			const onShowConfetti = vi.fn();
+			const onEndGame = vi.fn<(winner: Player | undefined, announcement: string) => void>();
+			const onShowConfetti = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onEndGame, onShowConfetti}));
 
 			act(() => {
@@ -187,7 +188,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('does not show confetti when computer wins in challenger mode', () => {
-			const onShowConfetti = vi.fn();
+			const onShowConfetti = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onShowConfetti}));
 
 			act(() => {
@@ -249,7 +250,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('ends turn immediately if no opponents remain', () => {
-			const onShowConfetti = vi.fn();
+			const onShowConfetti = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onShowConfetti}));
 
 			act(() => {
@@ -289,7 +290,7 @@ describe('useGameFlow', () => {
 
 	describe('initiateTargetSelection', () => {
 		it('sets action in progress', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {
@@ -426,7 +427,7 @@ describe('useGameFlow', () => {
 
 	describe('handleAbility', () => {
 		it('executes Coyote Howl immediately', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {
@@ -444,7 +445,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('initiates target selection for Llama Spitball', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {
@@ -462,7 +463,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('initiates target selection for Tiger Strike', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {
@@ -480,7 +481,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('initiates target selection for Gorilla Rampage', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {
@@ -498,7 +499,7 @@ describe('useGameFlow', () => {
 		});
 
 		it('initiates target selection for Monkey Mischief', () => {
-			const onRender = vi.fn();
+			const onRender = vi.fn<() => void>();
 			const {result} = renderHook(() => useTestHooks({onRender}));
 
 			act(() => {

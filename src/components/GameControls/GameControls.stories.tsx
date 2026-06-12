@@ -48,9 +48,7 @@ export const AllEnabled: Story = {
 		const attackButton = canvas.getByRole('button', {name: /Attack/i});
 		await expect(attackButton).toBeEnabled();
 
-		if (attackButton) {
-			await userEvent.click(attackButton);
-		}
+		await userEvent.click(attackButton);
 		await expect(args.onAttack).toHaveBeenCalledTimes(1);
 	},
 };
@@ -129,12 +127,24 @@ export const ShieldUsed: Story = {
 		canUndo: true,
 		healsRemaining: 1,
 		shieldsRemaining: 0,
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
 	},
 };
 
@@ -150,12 +160,24 @@ export const BothHealAndShieldUsed: Story = {
 		canUndo: true,
 		healsRemaining: 0,
 		shieldsRemaining: 0,
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
 	},
 };
 
@@ -244,12 +266,24 @@ export const TargetSelectionPrompt: Story = {
 		canUndo: true,
 		healsRemaining: 1,
 		shieldsRemaining: 1,
-		onAttack: () => console.log('Attack clicked'),
-		onUseAbility: () => console.log('Use Ability clicked'),
-		onHeal: () => console.log('Heal clicked'),
-		onShield: () => console.log('Shield clicked'),
-		onDoNothing: () => console.log('Do Nothing clicked'),
-		onUndo: () => console.log('Undo clicked'),
+		onAttack: () => {
+			console.log('Attack clicked');
+		},
+		onUseAbility: () => {
+			console.log('Use Ability clicked');
+		},
+		onHeal: () => {
+			console.log('Heal clicked');
+		},
+		onShield: () => {
+			console.log('Shield clicked');
+		},
+		onDoNothing: () => {
+			console.log('Do Nothing clicked');
+		},
+		onUndo: () => {
+			console.log('Undo clicked');
+		},
 	},
 };
 

@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import type {Player, GameState} from '../lib/types.ts';
+import type {Player, GameState, AnimalType} from '../lib/types.ts';
 import {playSound} from '../sound.ts';
 
 export interface UseGameActionsReturn {
@@ -8,13 +8,13 @@ export interface UseGameActionsReturn {
 		damage: number,
 		source: Player,
 		logMessage: (message: string, indent?: number) => void,
-		unlockAnimal: (animalName: string) => void,
+		unlockAnimal: (animalName: AnimalType) => void,
 	) => number;
 	handleAttack: (
 		source: Player,
 		target: Player,
 		logMessage: (message: string, indent?: number) => void,
-		unlockAnimal: (animalName: string) => void,
+		unlockAnimal: (animalName: AnimalType) => void,
 	) => void;
 	handleHeal: (source: Player, logMessage: (message: string, indent?: number) => void) => void;
 	handleShield: (source: Player, logMessage: (message: string, indent?: number) => void) => void;
@@ -23,20 +23,20 @@ export interface UseGameActionsReturn {
 		source: Player,
 		target: Player,
 		logMessage: (message: string, indent?: number) => void,
-		unlockAnimal: (animalName: string) => void,
+		unlockAnimal: (animalName: AnimalType) => void,
 	) => void;
 	handleStrike: (
 		source: Player,
 		target1: Player,
 		target2: Player,
 		logMessage: (message: string, indent?: number) => void,
-		unlockAnimal: (animalName: string) => void,
+		unlockAnimal: (animalName: AnimalType) => void,
 	) => void;
 	handleRampage: (
 		source: Player,
 		target: Player,
 		logMessage: (message: string, indent?: number) => void,
-		unlockAnimal: (animalName: string) => void,
+		unlockAnimal: (animalName: AnimalType) => void,
 	) => void;
 	handleMischief: (source: Player, target: Player, logMessage: (message: string, indent?: number) => void) => void;
 	handleSnapBack: (source: Player, logMessage: (message: string, indent?: number) => void) => void;
@@ -49,7 +49,7 @@ export function useGameActions(): UseGameActionsReturn {
 			damage: number,
 			source: Player,
 			logMessage: (message: string, indent?: number) => void,
-			unlockAnimal: (animalName: string) => void,
+			unlockAnimal: (animalName: AnimalType) => void,
 		): number => {
 			// Crocodile Snap Back counter-attack
 			if (target.status.snapBackActive && damage > 0) {
@@ -111,7 +111,7 @@ export function useGameActions(): UseGameActionsReturn {
 			source: Player,
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
-			unlockAnimal: (animalName: string) => void,
+			unlockAnimal: (animalName: AnimalType) => void,
 		): void => {
 			playSound('attack');
 			logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
@@ -172,7 +172,7 @@ export function useGameActions(): UseGameActionsReturn {
 			source: Player,
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
-			unlockAnimal: (animalName: string) => void,
+			unlockAnimal: (animalName: AnimalType) => void,
 		): void => {
 			playSound('spitball');
 			const rand = Math.random();
@@ -200,7 +200,7 @@ export function useGameActions(): UseGameActionsReturn {
 			target1: Player,
 			target2: Player,
 			logMessage: (message: string, indent?: number) => void,
-			unlockAnimal: (animalName: string) => void,
+			unlockAnimal: (animalName: AnimalType) => void,
 		): void => {
 			playSound('strike');
 			logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
@@ -215,7 +215,7 @@ export function useGameActions(): UseGameActionsReturn {
 			source: Player,
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
-			unlockAnimal: (animalName: string) => void,
+			unlockAnimal: (animalName: AnimalType) => void,
 		): void => {
 			playSound('rampage');
 			source.oneTimeActions.hasUsedAbility = true;

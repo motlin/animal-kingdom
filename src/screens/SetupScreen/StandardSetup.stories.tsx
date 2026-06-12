@@ -24,10 +24,10 @@ const defaultUnlockedAnimals: Set<AnimalType> = new Set(['Coyote', 'Llama', 'Tig
 const allAnimals: Set<AnimalType> = new Set(['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey']);
 
 const createDefaultPlayers = (): PlayerConfiguration[] => {
-	const animals: AnimalType[] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
+	const animals: readonly [AnimalType, ...AnimalType[]] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
 	return Array.from({length: 10}, (_, i) => ({
 		name: '',
-		animalType: animals[i % animals.length]!,
+		animalType: animals[i % animals.length] ?? animals[0],
 		playerType: 'human' as const,
 	}));
 };
@@ -230,7 +230,9 @@ export const PlayerCountChange = {
 						{[2, 3, 4, 5, 6, 8, 10].map((count) => (
 							<button
 								key={count}
-								onClick={() => setPlayerCount(count)}
+								onClick={() => {
+									setPlayerCount(count);
+								}}
 								style={{
 									padding: '8px 16px',
 									backgroundColor: playerCount === count ? '#A0522D' : '#DEB887',

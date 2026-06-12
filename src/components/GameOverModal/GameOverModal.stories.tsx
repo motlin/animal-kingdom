@@ -38,9 +38,15 @@ export const SingleWinner: Story = {
 		winnerAnnouncement: '🎉 Alice wins! 🎉',
 		logEntries: sampleLogEntries,
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -49,9 +55,15 @@ export const MultipleWinners: Story = {
 		winnerAnnouncement: '🎉 Alice, Bob, and Charlie win! 🎉',
 		logEntries: [],
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -60,9 +72,15 @@ export const ChallengerVictory: Story = {
 		winnerAnnouncement: '🏆 You defeated the Tiger! 🏆',
 		logEntries: [],
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -71,9 +89,15 @@ export const ChallengerDefeat: Story = {
 		winnerAnnouncement: '💀 The Tiger defeated you! 💀',
 		logEntries: [],
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -82,9 +106,15 @@ export const LastSurvivors: Story = {
 		winnerAnnouncement: '🎊 Dave survives! 🎊',
 		logEntries: [],
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -93,9 +123,15 @@ export const Closed: Story = {
 		winnerAnnouncement: '🎉 Alice wins! 🎉',
 		logEntries: [],
 		isOpen: false,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -113,9 +149,15 @@ export const LongWinnerMessage: Story = {
 			'🎉 Alice, Bob, Charlie, Dave, Eve, Frank, Grace, and Helen all win together in an epic battle royale! 🎉',
 		logEntries: [],
 		isOpen: true,
-		onPlayAgain: () => console.log('Play Again clicked'),
-		onCopyLog: () => console.log('Copy Log clicked'),
-		onSaveLog: () => console.log('Save Log clicked'),
+		onPlayAgain: () => {
+			console.log('Play Again clicked');
+		},
+		onCopyLog: () => {
+			console.log('Copy Log clicked');
+		},
+		onSaveLog: () => {
+			console.log('Save Log clicked');
+		},
 	},
 };
 
@@ -126,11 +168,7 @@ export const AllScenarios = {
 				<h3>Example Winner Announcements</h3>
 				<p>(Each modal would appear one at a time)</p>
 			</div>
-			<GameOverModal
-				winnerAnnouncement="🎉 Alice wins! 🎉"
-				logEntries={[]}
-				isOpen={true}
-			/>
+			<GameOverModal winnerAnnouncement="🎉 Alice wins! 🎉" logEntries={[]} isOpen={true} />
 		</div>
 	),
 };

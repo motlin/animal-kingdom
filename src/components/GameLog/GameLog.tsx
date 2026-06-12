@@ -25,8 +25,8 @@ export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperti
 		}
 
 		const nextEntry = entries[index + 1];
-		const hasNextSibling = nextEntry && nextEntry.indent === entry.indent;
-		const hasChildren = nextEntry && nextEntry.indent > entry.indent;
+		const hasNextSibling = nextEntry !== undefined && nextEntry.indent === entry.indent;
+		const hasChildren = nextEntry !== undefined && nextEntry.indent > entry.indent;
 
 		let prefix = '';
 		if (entry.indent === 1) {
@@ -65,31 +65,19 @@ export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperti
 	return (
 		<div className="game-log-container">
 			<h3 className="game-log-header">Game Log</h3>
-			<div
-				ref={logContainerReference}
-				className="game-log-content"
-			>
+			<div ref={logContainerReference} className="game-log-content">
 				{entries.map((entry, index) => (
-					<div
-						key={index}
-						className="log-entry"
-					>
+					<div key={index} className="log-entry">
 						{formatLogEntry(entry, index)}
 					</div>
 				))}
 			</div>
 			<div className="log-buttons">
-				<Button
-					variant="log"
-					onClick={handleCopyToClipboard}
-				>
+				<Button variant="log" onClick={handleCopyToClipboard}>
 					<Icon name="clipboard-copy" />
 					Copy to Clipboard
 				</Button>
-				<Button
-					variant="log"
-					onClick={handleSaveLog}
-				>
+				<Button variant="log" onClick={handleSaveLog}>
 					<Icon name="download" />
 					Save Log
 				</Button>

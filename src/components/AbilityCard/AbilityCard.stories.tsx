@@ -66,26 +66,11 @@ export const AllAbilities = {
 				padding: '20px',
 			}}
 		>
-			<AbilityCard
-				animal="Coyote"
-				abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc}
-			/>
-			<AbilityCard
-				animal="Llama"
-				abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc}
-			/>
-			<AbilityCard
-				animal="Tiger"
-				abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc}
-			/>
-			<AbilityCard
-				animal="Gorilla"
-				abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc}
-			/>
-			<AbilityCard
-				animal="Monkey"
-				abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc}
-			/>
+			<AbilityCard animal="Coyote" abilityDescription={ANIMAL_ROSTER.Coyote.abilityDesc} />
+			<AbilityCard animal="Llama" abilityDescription={ANIMAL_ROSTER.Llama.abilityDesc} />
+			<AbilityCard animal="Tiger" abilityDescription={ANIMAL_ROSTER.Tiger.abilityDesc} />
+			<AbilityCard animal="Gorilla" abilityDescription={ANIMAL_ROSTER.Gorilla.abilityDesc} />
+			<AbilityCard animal="Monkey" abilityDescription={ANIMAL_ROSTER.Monkey.abilityDesc} />
 		</div>
 	),
 };
