@@ -41,8 +41,8 @@ importers:
         specifier: ^5.5.1
         version: 5.5.1(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))
       '@storybook/addon-a11y':
-        specifier: ^10.6.2
-        version: 10.6.2(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))
+        specifier: ^10.6.4
+        version: 10.6.4(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))
       '@storybook/addon-docs':
         specifier: ^10.6.4
         version: 10.6.4(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))
@@ -1138,10 +1138,10 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@storybook/addon-a11y@10.6.2':
-    resolution: {integrity: sha512-zleS+btwrTRcUf3opbZntKsEt6PTqAtxsek08tx5jh5fRvd6wWmtnwW3uaBcypfIKnheTB3KGljJwFX+Mc+Umg==}
+  '@storybook/addon-a11y@10.6.4':
+    resolution: {integrity: sha512-a2SC6d7CrQOkuP6MXtBkQvi/lb3qmRE4Vp51bk88y4lVVwPBLsNFrSNrorY7RE+WoGivFBg6rDNYhzUy720GQA==}
     peerDependencies:
-      storybook: ^10.6.2
+      storybook: ^10.6.4
 
   '@storybook/addon-docs@10.6.4':
     resolution: {integrity: sha512-rRgf5evcDPo4A0i9IBNkhkubfo4BG0YsqanDdpNDODiYYWDzM8xEgLHtGZf/xs4sLbyMITUhhQJr/c3JmAPZ1A==}
@@ -3914,7 +3914,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@storybook/addon-a11y@10.6.2(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))':
+  '@storybook/addon-a11y@10.6.4(storybook@10.6.4(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.0.5(vitest@5.0.5))(esbuild@0.28.2)(jsdom@30.1.3)(playwright@1.64.1)(typescript@7.0.2)))':
     dependencies:
       '@storybook/global': 5.0.0
       axe-core: 4.14.0
