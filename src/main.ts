@@ -4,7 +4,8 @@ import './global.css';
 import App from './App.tsx';
 
 const rootElement = document.querySelector('#root');
-if (!rootElement) {
+if (!rootElement)
+{
 	throw new Error('Root element not found');
 }
 

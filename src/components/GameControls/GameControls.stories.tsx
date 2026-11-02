@@ -2,16 +2,23 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import {expect, userEvent, within, fn} from 'storybook/test';
 import {GameControls} from './GameControls';
 
-const meta = {
+const meta =
+{
 	title: 'Components/GameControls',
 	component: GameControls,
-	parameters: {
+	parameters:
+	{
 		layout: 'padded',
 	},
 	tags: ['autodocs'],
 	decorators: [
 		(Story) => (
-			<div style={{maxWidth: '600px'}}>
+			<div
+				style={
+				{
+					maxWidth: '600px',
+				}}
+			>
 				<Story />
 			</div>
 		),
@@ -21,8 +28,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const AllEnabled: Story = {
-	args: {
+export const AllEnabled: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Alice's (Tiger) turn!",
 		currentAnimal: 'Tiger',
 		canAttack: true,
@@ -40,12 +49,18 @@ export const AllEnabled: Story = {
 		onDoNothing: fn(),
 		onUndo: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText("It's Alice's (Tiger) turn!")).toBeInTheDocument();
 
-		const attackButton = canvas.getByRole('button', {name: /Attack/i});
+		const attackButton = canvas.getByRole(
+			'button',
+			{
+				name: /Attack/i,
+			},
+		);
 		await expect(attackButton).toBeEnabled();
 
 		await userEvent.click(attackButton);
@@ -53,8 +68,10 @@ export const AllEnabled: Story = {
 	},
 };
 
-export const AbilityDisabled: Story = {
-	args: {
+export const AbilityDisabled: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Alice's (Coyote) turn!",
 		currentAnimal: 'Coyote',
 		canAttack: true,
@@ -72,20 +89,33 @@ export const AbilityDisabled: Story = {
 		onDoNothing: fn(),
 		onUndo: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const abilityButton = canvas.getByRole('button', {name: /Use Ability:/i});
+		const abilityButton = canvas.getByRole(
+			'button',
+			{
+				name: /Use Ability:/i,
+			},
+		);
 		await expect(abilityButton).toBeDisabled();
 
-		const healButton = canvas.getByRole('button', {name: /Heal/i});
+		const healButton = canvas.getByRole(
+			'button',
+			{
+				name: /Heal/i,
+			},
+		);
 		await userEvent.click(healButton);
 		await expect(args.onHeal).toHaveBeenCalledTimes(1);
 	},
 };
 
-export const HealUsed: Story = {
-	args: {
+export const HealUsed: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Bob's (Llama) turn!",
 		currentAnimal: 'Llama',
 		canAttack: true,
@@ -103,20 +133,33 @@ export const HealUsed: Story = {
 		onDoNothing: fn(),
 		onUndo: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const healButton = canvas.getByRole('button', {name: 'Heal (0)'});
+		const healButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Heal (0)',
+			},
+		);
 		await expect(healButton).toBeDisabled();
 
-		const shieldButton = canvas.getByRole('button', {name: 'Shield (1)'});
+		const shieldButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Shield (1)',
+			},
+		);
 		await userEvent.click(shieldButton);
 		await expect(args.onShield).toHaveBeenCalledTimes(1);
 	},
 };
 
-export const ShieldUsed: Story = {
-	args: {
+export const ShieldUsed: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Charlie's (Gorilla) turn!",
 		currentAnimal: 'Gorilla',
 		canAttack: true,
@@ -127,29 +170,37 @@ export const ShieldUsed: Story = {
 		canUndo: true,
 		healsRemaining: 1,
 		shieldsRemaining: 0,
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
 	},
 };
 
-export const BothHealAndShieldUsed: Story = {
-	args: {
+export const BothHealAndShieldUsed: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Dave's (Monkey) turn!",
 		currentAnimal: 'Monkey',
 		canAttack: true,
@@ -160,29 +211,37 @@ export const BothHealAndShieldUsed: Story = {
 		canUndo: true,
 		healsRemaining: 0,
 		shieldsRemaining: 0,
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
 	},
 };
 
-export const UndoDisabled: Story = {
-	args: {
+export const UndoDisabled: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Alice's (Coyote) turn!",
 		currentAnimal: 'Coyote',
 		canAttack: true,
@@ -200,20 +259,33 @@ export const UndoDisabled: Story = {
 		onDoNothing: fn(),
 		onUndo: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const undoButton = canvas.getByRole('button', {name: /U ndo Last Action/i});
+		const undoButton = canvas.getByRole(
+			'button',
+			{
+				name: /U ndo Last Action/i,
+			},
+		);
 		await expect(undoButton).toBeDisabled();
 
-		const doNothingButton = canvas.getByRole('button', {name: 'Do Nothing'});
+		const doNothingButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Do Nothing',
+			},
+		);
 		await userEvent.click(doNothingButton);
 		await expect(args.onDoNothing).toHaveBeenCalledTimes(1);
 	},
 };
 
-export const GameEnding: Story = {
-	args: {
+export const GameEnding: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Bob's (Tiger) turn!",
 		currentAnimal: 'Tiger',
 		canAttack: false,
@@ -231,31 +303,64 @@ export const GameEnding: Story = {
 		onDoNothing: fn(),
 		onUndo: fn(),
 	},
-	play: async ({canvasElement}) => {
+	play: async ({canvasElement}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const attackButton = canvas.getByRole('button', {name: 'Attack'});
+		const attackButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Attack',
+			},
+		);
 		await expect(attackButton).toBeDisabled();
 
-		const abilityButton = canvas.getByRole('button', {name: /Use Ability:/i});
+		const abilityButton = canvas.getByRole(
+			'button',
+			{
+				name: /Use Ability:/i,
+			},
+		);
 		await expect(abilityButton).toBeDisabled();
 
-		const healButton = canvas.getByRole('button', {name: 'Heal (1)'});
+		const healButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Heal (1)',
+			},
+		);
 		await expect(healButton).toBeDisabled();
 
-		const shieldButton = canvas.getByRole('button', {name: 'Shield (1)'});
+		const shieldButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Shield (1)',
+			},
+		);
 		await expect(shieldButton).toBeDisabled();
 
-		const doNothingButton = canvas.getByRole('button', {name: 'Do Nothing'});
+		const doNothingButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Do Nothing',
+			},
+		);
 		await expect(doNothingButton).toBeDisabled();
 
-		const undoButton = canvas.getByRole('button', {name: /U ndo Last Action/i});
+		const undoButton = canvas.getByRole(
+			'button',
+			{
+				name: /U ndo Last Action/i,
+			},
+		);
 		await expect(undoButton).toBeDisabled();
 	},
 };
 
-export const TargetSelectionPrompt: Story = {
-	args: {
+export const TargetSelectionPrompt: Story =
+{
+	args:
+	{
 		turnIndicator: 'Select a target for your attack',
 		currentAnimal: 'Llama',
 		canAttack: true,
@@ -266,30 +371,44 @@ export const TargetSelectionPrompt: Story = {
 		canUndo: true,
 		healsRemaining: 1,
 		shieldsRemaining: 1,
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
 	},
 };
 
-export const AllAnimals = {
+export const AllAnimals =
+{
 	render: () => (
-		<div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+		<div
+			style={
+			{
+				display: 'flex',
+				flexDirection: 'column',
+				gap: '20px',
+			}}
+		>
 			<GameControls
 				turnIndicator="It's Alice's (Coyote) turn!"
 				currentAnimal="Coyote"
@@ -324,8 +443,10 @@ export const AllAnimals = {
 	),
 };
 
-export const WithoutCallbacks: Story = {
-	args: {
+export const WithoutCallbacks: Story =
+{
+	args:
+	{
 		turnIndicator: "It's Alice's (Tiger) turn!",
 		currentAnimal: 'Tiger',
 		healsRemaining: 1,

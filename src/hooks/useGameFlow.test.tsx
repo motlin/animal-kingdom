@@ -6,45 +6,59 @@ import {useGameActions, type UseGameActionsReturn} from './useGameActions.ts';
 import * as sound from '../sound.ts';
 import type {Player, SoundType} from '../lib/types.ts';
 
-vi.mock('../sound.ts', () => ({
+vi.mock('../sound.ts', () => (
+{
 	playSound: vi.fn<(type: SoundType) => void>(),
 }));
 
-interface TestHookResult {
+interface TestHookResult
+{
 	gameState: UseGameStateReturn;
 	gameActions: UseGameActionsReturn;
 	gameFlow: ReturnType<typeof useGameFlow>;
 }
 
-function useTestHooks(callbacks: UseGameFlowCallbacks = {}): TestHookResult {
+function useTestHooks(callbacks: UseGameFlowCallbacks = {}): TestHookResult
+{
 	const gameState = useGameState();
 	const gameActions = useGameActions();
 	const gameFlow = useGameFlow(gameState, gameActions, callbacks);
-	return {gameState, gameActions, gameFlow};
+	return {
+		gameState,
+		gameActions,
+		gameFlow,
+	};
 }
 
-describe('useGameFlow', () => {
-	beforeEach(() => {
+describe('useGameFlow', () =>
+{
+	beforeEach(() =>
+	{
 		vi.clearAllMocks();
 		vi.useFakeTimers();
 	});
 
-	afterEach(() => {
+	afterEach(() =>
+	{
 		vi.restoreAllMocks();
 		vi.useRealTimers();
 	});
 
-	describe('startTurn', () => {
-		it('saves state history and logs turn start', () => {
+	describe('startTurn', () =>
+	{
+		it('saves state history and logs turn start', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.startTurn();
 			});
 
@@ -52,23 +66,28 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.log.some((entry) => entry.message.includes("It's"))).toBe(true);
 		});
 
-		it('removes shield at start of turn', () => {
+		it('removes shield at start of turn', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				player1.status.isShielded = true;
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.startTurn();
 			});
 
@@ -78,23 +97,28 @@ describe('useGameFlow', () => {
 			).toBe(true);
 		});
 
-		it('skips turn if player is sleeping', () => {
+		it('skips turn if player is sleeping', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				player1.status.isSleeping = true;
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.startTurn();
 				vi.advanceTimersByTime(1500);
 			});
@@ -109,24 +133,30 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('endTurn', () => {
-		it('decrements ability cooldown at end of turn', () => {
+	describe('endTurn', () =>
+	{
+		it('decrements ability cooldown at end of turn', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				player1.abilityCooldown = 2;
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.endTurn();
 			});
 
@@ -134,10 +164,12 @@ describe('useGameFlow', () => {
 			expect(previousPlayer?.abilityCooldown).toBe(1);
 		});
 
-		it('advances to next alive player', () => {
+		it('advances to next alive player', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				player2.isAlive = false;
@@ -145,25 +177,37 @@ describe('useGameFlow', () => {
 				result.current.gameState.initializeState([player1, player2, player3], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.endTurn();
 			});
 
 			expect(result.current.gameState.state.currentPlayerIndex).toBe(2);
 		});
 
-		it('ends game when one player remains in standard mode', () => {
+		it('ends game when one player remains in standard mode', () =>
+		{
 			const onEndGame = vi.fn<(winner: Player | undefined, announcement: string) => void>();
 			const onShowConfetti = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onEndGame, onShowConfetti}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onEndGame,
+						onShowConfetti,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				player2.hp = 0;
@@ -172,14 +216,16 @@ describe('useGameFlow', () => {
 				result.current.gameState.state.currentPlayerIndex = 0;
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.endTurn();
 			});
 
 			expect(result.current.gameState.state.gameState).toBe('gameEnding');
 			expect(onShowConfetti).toHaveBeenCalled();
 
-			act(() => {
+			act(() =>
+			{
 				vi.advanceTimersByTime(2000);
 			});
 
@@ -187,11 +233,19 @@ describe('useGameFlow', () => {
 			expect(sound.playSound).toHaveBeenCalledWith('victory');
 		});
 
-		it('does not show confetti when computer wins in challenger mode', () => {
+		it('does not show confetti when computer wins in challenger mode', () =>
+		{
 			const onShowConfetti = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onShowConfetti}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onShowConfetti,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				player1.hp = 0;
 				player1.isAlive = false;
@@ -200,17 +254,20 @@ describe('useGameFlow', () => {
 				result.current.gameState.state.currentPlayerIndex = 0;
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.endTurn();
 			});
 
 			expect(onShowConfetti).not.toHaveBeenCalled();
 		});
 
-		it('unlocks animal when player wins in challenger mode', () => {
+		it('unlocks animal when player wins in challenger mode', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Computer', 'Tiger', true);
 				player2.hp = 0;
@@ -219,7 +276,8 @@ describe('useGameFlow', () => {
 				result.current.gameState.state.currentPlayerIndex = 0;
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.endTurn();
 				vi.advanceTimersByTime(2000);
 			});
@@ -231,17 +289,21 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('playComputerTurn', () => {
-		it('attacks random opponent', () => {
+	describe('playComputerTurn', () =>
+	{
+		it('attacks random opponent', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Computer', 'Coyote', true);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.playComputerTurn(result.current.gameState.state.players[0]!);
 			});
 
@@ -249,16 +311,25 @@ describe('useGameFlow', () => {
 			expect(sound.playSound).toHaveBeenCalledWith('attack');
 		});
 
-		it('ends turn immediately if no opponents remain', () => {
+		it('ends turn immediately if no opponents remain', () =>
+		{
 			const onShowConfetti = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onShowConfetti}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onShowConfetti,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Computer', 'Coyote', true);
 				result.current.gameState.initializeState([player1], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.playComputerTurn(result.current.gameState.state.players[0]!);
 			});
 
@@ -266,11 +337,14 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('handleUndo', () => {
-		it('restores previous state', () => {
+	describe('handleUndo', () =>
+	{
+		it('restores previous state', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
@@ -278,7 +352,8 @@ describe('useGameFlow', () => {
 				result.current.gameState.logMessage('New message');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleUndo();
 			});
 
@@ -288,41 +363,56 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('initiateTargetSelection', () => {
-		it('sets action in progress', () => {
+	describe('initiateTargetSelection', () =>
+	{
+		it('sets action in progress', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.initiateTargetSelection('attack', 0, 1, 'Select a target');
 			});
 
-			expect(result.current.gameState.state.actionInProgress).toEqual({
-				type: 'attack',
-				sourceId: 0,
-				requiredTargets: 1,
-				targets: [],
-				prompt: 'Select a target',
-			});
+			expect(result.current.gameState.state.actionInProgress).toEqual(
+				{
+					type: 'attack',
+					sourceId: 0,
+					requiredTargets: 1,
+					targets: [],
+					prompt: 'Select a target',
+				},
+			);
 		});
 
-		it('auto-selects single opponent in challenger mode', () => {
+		it('auto-selects single opponent in challenger mode', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Computer', 'Llama', true);
 				result.current.gameState.initializeState([player1, player2], 'challenger');
 				result.current.gameState.state.currentPlayerIndex = 0;
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.initiateTargetSelection('attack', 0, 1, 'Select a target');
 			});
 
@@ -331,20 +421,26 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('executeTargetedAction', () => {
-		it('executes attack action', () => {
+	describe('executeTargetedAction', () =>
+	{
+		it('executes attack action', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
-					s.actionInProgress = {
+					s.actionInProgress =
+					{
 						type: 'attack',
 						sourceId: 0,
 						requiredTargets: 1,
@@ -354,26 +450,32 @@ describe('useGameFlow', () => {
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.executeTargetedAction(1);
 			});
 
 			expect(result.current.gameState.state.players[1]!.hp).toBe(2);
 		});
 
-		it('waits for second target in strike', () => {
+		it('waits for second target in strike', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Tiger', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				const player3 = result.current.gameState.createPlayer(2, 'Player 3', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2, player3], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
-					s.actionInProgress = {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
+					s.actionInProgress =
+					{
 						type: 'strike',
 						sourceId: 0,
 						requiredTargets: 2,
@@ -383,7 +485,8 @@ describe('useGameFlow', () => {
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.executeTargetedAction(1);
 			});
 
@@ -393,20 +496,25 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.players[1]?.hp).toBe(3);
 		});
 
-		it('executes strike with two targets', () => {
+		it('executes strike with two targets', () =>
+		{
 			const {result} = renderHook(() => useTestHooks());
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Tiger', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				const player3 = result.current.gameState.createPlayer(2, 'Player 3', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2, player3], 'standard');
 			});
 
-			act(() => {
-				result.current.gameState.updateState((s) => {
+			act(() =>
+			{
+				result.current.gameState.updateState((s) =>
+				{
 					s.currentPlayerIndex = 0;
-					s.actionInProgress = {
+					s.actionInProgress =
+					{
 						type: 'strike',
 						sourceId: 0,
 						requiredTargets: 2,
@@ -416,7 +524,8 @@ describe('useGameFlow', () => {
 				});
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.executeTargetedAction(2);
 			});
 
@@ -425,18 +534,28 @@ describe('useGameFlow', () => {
 		});
 	});
 
-	describe('handleAbility', () => {
-		it('executes Coyote Howl immediately', () => {
+	describe('handleAbility', () =>
+	{
+		it('executes Coyote Howl immediately', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Coyote', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Llama', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleAbility(result.current.gameState.state.players[0]!);
 			});
 
@@ -444,17 +563,26 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.players[1]?.status.isSleeping).toBe(true);
 		});
 
-		it('initiates target selection for Llama Spitball', () => {
+		it('initiates target selection for Llama Spitball', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Llama', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleAbility(result.current.gameState.state.players[0]!);
 			});
 
@@ -462,17 +590,26 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.actionInProgress?.requiredTargets).toBe(1);
 		});
 
-		it('initiates target selection for Tiger Strike', () => {
+		it('initiates target selection for Tiger Strike', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Tiger', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleAbility(result.current.gameState.state.players[0]!);
 			});
 
@@ -480,17 +617,26 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.actionInProgress?.requiredTargets).toBe(2);
 		});
 
-		it('initiates target selection for Gorilla Rampage', () => {
+		it('initiates target selection for Gorilla Rampage', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Gorilla', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleAbility(result.current.gameState.state.players[0]!);
 			});
 
@@ -498,17 +644,26 @@ describe('useGameFlow', () => {
 			expect(result.current.gameState.state.actionInProgress?.requiredTargets).toBe(1);
 		});
 
-		it('initiates target selection for Monkey Mischief', () => {
+		it('initiates target selection for Monkey Mischief', () =>
+		{
 			const onRender = vi.fn<() => void>();
-			const {result} = renderHook(() => useTestHooks({onRender}));
+			const {result} = renderHook(() =>
+				useTestHooks(
+					{
+						onRender,
+					},
+				),
+			);
 
-			act(() => {
+			act(() =>
+			{
 				const player1 = result.current.gameState.createPlayer(0, 'Player 1', 'Monkey', false);
 				const player2 = result.current.gameState.createPlayer(1, 'Player 2', 'Coyote', false);
 				result.current.gameState.initializeState([player1, player2], 'standard');
 			});
 
-			act(() => {
+			act(() =>
+			{
 				result.current.gameFlow.handleAbility(result.current.gameState.state.players[0]!);
 			});
 

@@ -3,25 +3,34 @@ import type {SoundType} from './lib/types.ts';
 let audioContext: AudioContext;
 let isMuted = false;
 
-export function initializeAudioContext(): void {
+export function initializeAudioContext(): void
+{
 	// Fall back to the webkit-prefixed constructor for older Safari, which the DOM lib types omit.
-	const windowWithWebkit: {AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext} = window;
+	const windowWithWebkit:
+	{
+		AudioContext?: typeof AudioContext;
+		webkitAudioContext?: typeof AudioContext;
+	} = window;
 	const audioContextConstructor = windowWithWebkit.AudioContext ?? windowWithWebkit.webkitAudioContext;
-	if (audioContextConstructor === undefined) {
+	if (audioContextConstructor === undefined)
+	{
 		return;
 	}
 	audioContext = new audioContextConstructor();
 }
 
-export function setMuted(muted: boolean): void {
+export function setMuted(muted: boolean): void
+{
 	isMuted = muted;
 }
 
-export function isSoundMuted(): boolean {
+export function isSoundMuted(): boolean
+{
 	return isMuted;
 }
 
-export function playSound(type: SoundType): void {
+export function playSound(type: SoundType): void
+{
 	if (isMuted) return;
 
 	const now = audioContext.currentTime;
@@ -31,7 +40,8 @@ export function playSound(type: SoundType): void {
 	oscillator.connect(gainNode);
 	gainNode.connect(audioContext.destination);
 
-	switch (type) {
+	switch (type)
+	{
 		case 'attack':
 			oscillator.type = 'sawtooth';
 			oscillator.frequency.setValueAtTime(200, now);
@@ -52,7 +62,8 @@ export function playSound(type: SoundType): void {
 			oscillator.stop(now + 0.15);
 			break;
 
-		case 'heal': {
+		case 'heal':
+		{
 			const healOsc1 = audioContext.createOscillator();
 			const healOsc2 = audioContext.createOscillator();
 			const healGain = audioContext.createGain();
@@ -118,7 +129,8 @@ export function playSound(type: SoundType): void {
 			oscillator.start(now);
 			oscillator.stop(now + 0.12);
 
-			setTimeout(() => {
+			setTimeout(() =>
+			{
 				const osc2 = audioContext.createOscillator();
 				const gain2 = audioContext.createGain();
 				osc2.connect(gain2);
@@ -135,8 +147,10 @@ export function playSound(type: SoundType): void {
 			return;
 
 		case 'rampage':
-			for (let i = 0; i < 4; i++) {
-				setTimeout(() => {
+			for (let i = 0; i < 4; i++)
+			{
+				setTimeout(() =>
+				{
 					const rampOsc = audioContext.createOscillator();
 					const rampGain = audioContext.createGain();
 					rampOsc.connect(rampGain);
@@ -183,10 +197,13 @@ export function playSound(type: SoundType): void {
 			oscillator.stop(now + 0.4);
 			break;
 
-		case 'victory': {
+		case 'victory':
+		{
 			const notes = [523.25, 659.25, 783.99, 1046.5];
-			notes.forEach((freq, index) => {
-				setTimeout(() => {
+			notes.forEach((freq, index) =>
+			{
+				setTimeout(() =>
+				{
 					const victoryOsc = audioContext.createOscillator();
 					const victoryGain = audioContext.createGain();
 					victoryOsc.connect(victoryGain);

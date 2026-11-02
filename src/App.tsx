@@ -17,16 +17,23 @@ import {ANIMAL_UNLOCK_ORDER, TEAM_COLORS} from './lib/constants';
 
 type Screen = 'setup' | 'game';
 
-function App() {
+function App()
+{
 	const [screen, setScreen] = useState<Screen>('setup');
 	const [mode, setMode] = useState<GameMode>('standard');
 	const [playerCount, setPlayerCount] = useState(2);
 	const [players, setPlayers] = useState<PlayerConfiguration[]>(
-		Array.from({length: 10}, (_, i) => ({
-			name: `Player ${i + 1}`,
-			animalType: 'Coyote' as AnimalType,
-			playerType: 'human' as const,
-		})),
+		Array.from(
+			{
+				length: 10,
+			},
+			(_, i) => (
+			{
+				name: `Player ${i + 1}`,
+				animalType: 'Coyote' as AnimalType,
+				playerType: 'human' as const,
+			}),
+		),
 	);
 	const [selectedAnimal, setSelectedAnimal] = useState<AnimalType | null>(null);
 	const [confettiVisible, setConfettiVisible] = useState(false);
@@ -36,44 +43,63 @@ function App() {
 	const [teamCount, setTeamCount] = useState(2);
 	const [playersPerTeam, setPlayersPerTeam] = useState(2);
 	const [teams, setTeams] = useState<TeamConfiguration[]>(
-		Array.from({length: 6}, (_, i) => ({
-			id: i,
-			name: `Team ${i + 1}`,
-			color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
-		})),
+		Array.from(
+			{
+				length: 6,
+			},
+			(_, i) => (
+			{
+				id: i,
+				name: `Team ${i + 1}`,
+				color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
+			}),
+		),
 	);
 	const [teamPlayers, setTeamPlayers] = useState<TeamPlayerConfiguration[]>(
-		Array.from({length: 24}, (_, i) => ({
-			name: `Player ${i + 1}`,
-			animalType: 'Coyote' as AnimalType,
-			playerType: 'human' as const,
-			teamId: Math.floor(i / 4),
-		})),
+		Array.from(
+			{
+				length: 24,
+			},
+			(_, i) => (
+			{
+				name: `Player ${i + 1}`,
+				animalType: 'Coyote' as AnimalType,
+				playerType: 'human' as const,
+				teamId: Math.floor(i / 4),
+			}),
+		),
 	);
 
 	const storage = useStorage();
 	const gameState = useGameState();
 	const gameActions = useGameActions();
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		gameState.setUnlockedAnimals(storage.unlockedAnimals);
 	}, [storage.unlockedAnimals, gameState]);
 
-	useEffect(() => {
-		if (gameState.unlockedAnimals.size > 0 && gameState.unlockedAnimals.size > storage.unlockedAnimals.size) {
+	useEffect(() =>
+	{
+		if (gameState.unlockedAnimals.size > 0 && gameState.unlockedAnimals.size > storage.unlockedAnimals.size)
+		{
 			storage.setUnlockedAnimals(gameState.unlockedAnimals);
 		}
 	}, [gameState.unlockedAnimals, storage]);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		document.body.classList.toggle('dark-mode', storage.theme === 'dark');
 	}, [storage.theme]);
 
 	// Check for unlock-all query parameter on mount
-	useEffect(() => {
+	useEffect(() =>
+	{
 		const params = new URLSearchParams(window.location.search);
-		for (const [, value] of params) {
-			if (value === 'NiLtOmIvEl') {
+		for (const [, value] of params)
+		{
+			if (value === 'NiLtOmIvEl')
+			{
 				// Unlock all animals
 				const allAnimals = new Set(ANIMAL_UNLOCK_ORDER);
 				storage.setUnlockedAnimals(allAnimals);
@@ -82,105 +108,137 @@ function App() {
 		}
 	}, [storage]);
 
-	const triggerRender = useCallback(() => {
+	const triggerRender = useCallback(() =>
+	{
 		forceUpdate({});
 	}, []);
 
-	const showConfetti = useCallback(() => {
+	const showConfetti = useCallback(() =>
+	{
 		setConfettiVisible(true);
-		setTimeout(() => {
+		setTimeout(() =>
+		{
 			setConfettiVisible(false);
 		}, 3000);
 	}, []);
 
-	const gameFlow = useGameFlow(gameState, gameActions, {
-		onRender: triggerRender,
-		onShowConfetti: showConfetti,
-		onEndGame: triggerRender,
-	});
+	const gameFlow = useGameFlow(
+		gameState,
+		gameActions,
+		{
+			onRender: triggerRender,
+			onShowConfetti: showConfetti,
+			onEndGame: triggerRender,
+		},
+	);
 
 	const sound = useSound();
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		sound.setIsMuted(storage.isMuted);
 	}, [storage.isMuted, sound]);
 
 	const opponentAnimal = gameState.unlockedAnimals.size > 0 ? gameState.getNextLockedAnimal() : null;
 
-	const handleModeChange = useCallback((newMode: GameMode) => {
+	const handleModeChange = useCallback((newMode: GameMode) =>
+	{
 		setMode(newMode);
-		if (newMode === 'challenger') {
+		if (newMode === 'challenger')
+		{
 			setSelectedAnimal(null);
 		}
 	}, []);
 
-	const handlePlayerCountChange = useCallback((count: number) => {
+	const handlePlayerCountChange = useCallback((count: number) =>
+	{
 		setPlayerCount(count);
 	}, []);
 
-	const handlePlayerChange = useCallback((index: number, player: PlayerConfiguration) => {
-		setPlayers((current) => {
+	const handlePlayerChange = useCallback((index: number, player: PlayerConfiguration) =>
+	{
+		setPlayers((current) =>
+		{
 			const updated = [...current];
 			updated[index] = player;
 			return updated;
 		});
 	}, []);
 
-	const handleAnimalSelect = useCallback((animal: AnimalType) => {
+	const handleAnimalSelect = useCallback((animal: AnimalType) =>
+	{
 		setSelectedAnimal(animal);
 	}, []);
 
-	const handleTeamCountChange = useCallback((count: number) => {
+	const handleTeamCountChange = useCallback((count: number) =>
+	{
 		setTeamCount(count);
 	}, []);
 
-	const handlePlayersPerTeamChange = useCallback((count: number) => {
+	const handlePlayersPerTeamChange = useCallback((count: number) =>
+	{
 		setPlayersPerTeam(count);
 	}, []);
 
-	const handleTeamChange = useCallback((index: number, team: TeamConfiguration) => {
-		setTeams((current) => {
+	const handleTeamChange = useCallback((index: number, team: TeamConfiguration) =>
+	{
+		setTeams((current) =>
+		{
 			const updated = [...current];
 			updated[index] = team;
 			return updated;
 		});
 	}, []);
 
-	const handleTeamPlayerChange = useCallback((index: number, player: TeamPlayerConfiguration) => {
-		setTeamPlayers((current) => {
+	const handleTeamPlayerChange = useCallback((index: number, player: TeamPlayerConfiguration) =>
+	{
+		setTeamPlayers((current) =>
+		{
 			const updated = [...current];
 			updated[index] = player;
 			return updated;
 		});
 	}, []);
 
-	const canStartGame = useCallback(() => {
-		if (mode === 'standard') {
+	const canStartGame = useCallback(() =>
+	{
+		if (mode === 'standard')
+		{
 			return playerCount >= 2;
-		} else if (mode === 'team') {
+		}
+		else if (mode === 'team')
+		{
 			return teamCount >= 2 && playersPerTeam >= 1;
-		} else {
+		}
+		else
+		{
 			return selectedAnimal !== null && opponentAnimal !== null;
 		}
 	}, [mode, playerCount, teamCount, playersPerTeam, selectedAnimal, opponentAnimal]);
 
-	const handleStartGame = useCallback(() => {
-		if (mode === 'standard') {
+	const handleStartGame = useCallback(() =>
+	{
+		if (mode === 'standard')
+		{
 			const gamePlayers = players
 				.slice(0, playerCount)
 				.map((player, index) =>
 					gameState.createPlayer(index, player.name, player.animalType, player.playerType === 'computer'),
 				);
 			gameState.initializeState(gamePlayers, 'standard');
-		} else if (mode === 'team') {
+		}
+		else if (mode === 'team')
+		{
 			const totalPlayers = teamCount * playersPerTeam;
-			const gameTeams: Team[] = teams.slice(0, teamCount).map((team, index) => ({
+			const gameTeams: Team[] = teams.slice(0, teamCount).map((team, index) => (
+			{
 				id: index,
 				name: team.name,
 				color: team.color,
 			}));
 
-			const gamePlayers = teamPlayers.slice(0, totalPlayers).map((player, index) => {
+			const gamePlayers = teamPlayers.slice(0, totalPlayers).map((player, index) =>
+			{
 				const teamIndex = Math.floor(index / playersPerTeam);
 				return gameState.createPlayer(
 					index,
@@ -192,7 +250,9 @@ function App() {
 			});
 
 			gameState.initializeState(gamePlayers, 'team', gameTeams);
-		} else {
+		}
+		else
+		{
 			if (!selectedAnimal || !opponentAnimal) return;
 
 			const humanPlayer = gameState.createPlayer(0, 'You', selectedAnimal, false);
@@ -201,7 +261,8 @@ function App() {
 		}
 
 		setScreen('game');
-		setTimeout(() => {
+		setTimeout(() =>
+		{
 			gameFlow.startTurn();
 		}, 100);
 	}, [
@@ -218,12 +279,14 @@ function App() {
 		gameFlow,
 	]);
 
-	const handlePlayAgain = useCallback(() => {
+	const handlePlayAgain = useCallback(() =>
+	{
 		setScreen('setup');
 		setConfettiVisible(false);
 	}, []);
 
-	const handleAttack = useCallback(() => {
+	const handleAttack = useCallback(() =>
+	{
 		const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
@@ -231,7 +294,8 @@ function App() {
 		triggerRender();
 	}, [gameState, gameFlow, triggerRender]);
 
-	const handleUseAbility = useCallback(() => {
+	const handleUseAbility = useCallback(() =>
+	{
 		const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
@@ -239,7 +303,8 @@ function App() {
 		triggerRender();
 	}, [gameState, gameFlow, triggerRender]);
 
-	const handleHeal = useCallback(() => {
+	const handleHeal = useCallback(() =>
+	{
 		const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
@@ -248,7 +313,8 @@ function App() {
 		triggerRender();
 	}, [gameState, gameActions, gameFlow, triggerRender]);
 
-	const handleShield = useCallback(() => {
+	const handleShield = useCallback(() =>
+	{
 		const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
@@ -257,7 +323,8 @@ function App() {
 		triggerRender();
 	}, [gameState, gameActions, gameFlow, triggerRender]);
 
-	const handleDoNothing = useCallback(() => {
+	const handleDoNothing = useCallback(() =>
+	{
 		const currentPlayer = gameState.state.players[gameState.state.currentPlayerIndex];
 		if (!currentPlayer) return;
 
@@ -267,14 +334,17 @@ function App() {
 		triggerRender();
 	}, [gameState, gameFlow, sound, triggerRender]);
 
-	const handleUndo = useCallback(() => {
+	const handleUndo = useCallback(() =>
+	{
 		gameFlow.handleUndo();
 		triggerRender();
 	}, [gameFlow, triggerRender]);
 
 	const handlePlayerClick = useCallback(
-		(playerId: number) => {
-			if (gameState.state.actionInProgress) {
+		(playerId: number) =>
+		{
+			if (gameState.state.actionInProgress)
+			{
 				gameFlow.executeTargetedAction(playerId);
 				triggerRender();
 			}
@@ -282,9 +352,11 @@ function App() {
 		[gameState, gameFlow, triggerRender],
 	);
 
-	const handleCopyToClipboard = useCallback(() => {
+	const handleCopyToClipboard = useCallback(() =>
+	{
 		const logText = gameState.state.log
-			.map((entry) => {
+			.map((entry) =>
+			{
 				const indentation = '  '.repeat(entry.indent);
 				return `${indentation}${entry.message}`;
 			})
@@ -293,15 +365,22 @@ function App() {
 		void navigator.clipboard.writeText(logText);
 	}, [gameState]);
 
-	const handleSaveLog = useCallback(() => {
+	const handleSaveLog = useCallback(() =>
+	{
 		const logText = gameState.state.log
-			.map((entry) => {
+			.map((entry) =>
+			{
 				const indentation = '  '.repeat(entry.indent);
 				return `${indentation}${entry.message}`;
 			})
 			.join('\n');
 
-		const blob = new Blob([logText], {type: 'text/plain'});
+		const blob = new Blob(
+			[logText],
+			{
+				type: 'text/plain',
+			},
+		);
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
@@ -310,11 +389,13 @@ function App() {
 		URL.revokeObjectURL(url);
 	}, [gameState]);
 
-	const handleThemeToggle = useCallback(() => {
+	const handleThemeToggle = useCallback(() =>
+	{
 		storage.setTheme(storage.theme === 'light' ? 'dark' : 'light');
 	}, [storage]);
 
-	const handleMuteToggle = useCallback(() => {
+	const handleMuteToggle = useCallback(() =>
+	{
 		const newMutedState = !storage.isMuted;
 		storage.setIsMuted(newMutedState);
 		sound.setIsMuted(newMutedState);
@@ -326,11 +407,13 @@ function App() {
 		!gameState.state.turnSkipped && !gameState.state.actionInProgress && currentPlayer && !currentPlayer.isComputer,
 	);
 
-	const aliveOpponents = gameState.state.players.filter((p) => {
+	const aliveOpponents = gameState.state.players.filter((p) =>
+	{
 		if (!p.isAlive) return false;
 		if (p.id === currentPlayer?.id) return false;
 		// In team mode, teammates are not opponents
-		if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined) {
+		if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined)
+		{
 			if (p.teamId === currentPlayer.teamId) return false;
 		}
 		return true;
@@ -370,17 +453,38 @@ function App() {
 
 	const canUndo = Boolean(gameState.stateHistory.length > 0 && currentPlayer && !currentPlayer.isComputer);
 
-	useKeyboard({
-		enabled: screen === 'game' && gameState.state.gameState !== 'gameOver',
-		...(canAttack && {onAttack: handleAttack}),
-		...(canUseAbility && {onUseAbility: handleUseAbility}),
-		...(canHeal && {onHeal: handleHeal}),
-		...(canShield && {onShield: handleShield}),
-		...(canDoNothing && {onDoNothing: handleDoNothing}),
-		...(canUndo && {onUndo: handleUndo}),
-	});
+	useKeyboard(
+		{
+			enabled: screen === 'game' && gameState.state.gameState !== 'gameOver',
+			...(canAttack &&
+			{
+				onAttack: handleAttack,
+			}),
+			...(canUseAbility &&
+			{
+				onUseAbility: handleUseAbility,
+			}),
+			...(canHeal &&
+			{
+				onHeal: handleHeal,
+			}),
+			...(canShield &&
+			{
+				onShield: handleShield,
+			}),
+			...(canDoNothing &&
+			{
+				onDoNothing: handleDoNothing,
+			}),
+			...(canUndo &&
+			{
+				onUndo: handleUndo,
+			}),
+		},
+	);
 
-	if (screen === 'setup') {
+	if (screen === 'setup')
+	{
 		return (
 			<div className="app">
 				<ThemeToggle theme={storage.theme} onToggle={handleThemeToggle} />
@@ -423,11 +527,13 @@ function App() {
 
 	const selectablePlayerIds = gameState.state.actionInProgress
 		? gameState.state.players
-				.filter((p) => {
+				.filter((p) =>
+				{
 					if (!p.isAlive) return false;
 					if (p.id === gameState.state.actionInProgress?.sourceId) return false;
 					// In team mode, can't target teammates
-					if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined) {
+					if (gameState.state.gameMode === 'team' && currentPlayer?.teamId !== undefined)
+					{
 						if (p.teamId === currentPlayer.teamId) return false;
 					}
 					return true;
@@ -473,7 +579,8 @@ function App() {
 			/>
 			{confettiVisible && (
 				<div
-					style={{
+					style={
+					{
 						position: 'fixed',
 						top: 0,
 						left: 0,

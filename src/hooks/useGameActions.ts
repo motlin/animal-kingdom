@@ -2,7 +2,8 @@ import {useCallback} from 'react';
 import type {Player, GameState, AnimalType} from '../lib/types.ts';
 import {playSound} from '../sound.ts';
 
-export interface UseGameActionsReturn {
+export interface UseGameActionsReturn
+{
 	applyDamage: (
 		target: Player,
 		damage: number,
@@ -42,7 +43,8 @@ export interface UseGameActionsReturn {
 	handleSnapBack: (source: Player, logMessage: (message: string, indent?: number) => void) => void;
 }
 
-export function useGameActions(): UseGameActionsReturn {
+export function useGameActions(): UseGameActionsReturn
+{
 	const applyDamage = useCallback(
 		(
 			target: Player,
@@ -50,9 +52,11 @@ export function useGameActions(): UseGameActionsReturn {
 			source: Player,
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: AnimalType) => void,
-		): number => {
+		): number =>
+		{
 			// Crocodile Snap Back counter-attack
-			if (target.status.snapBackActive && damage > 0) {
+			if (target.status.snapBackActive && damage > 0)
+			{
 				target.status.snapBackActive = false;
 				playSound('snapback');
 				logMessage(`${target.name} the Crocodile snaps back at ${source.name}!`, 2);
@@ -66,7 +70,8 @@ export function useGameActions(): UseGameActionsReturn {
 				source.hp -= actualCounterDamage;
 				playSound('damage');
 				logMessage(`${source.name} (${source.animal}) now has ${source.hp}/${source.maxHp} HP.`, 3);
-				if (source.hp <= 0) {
+				if (source.hp <= 0)
+				{
 					source.isAlive = false;
 					playSound('defeat');
 					logMessage(`${source.name}'s (${source.animal}) has been defeated!`, 4);
@@ -75,16 +80,19 @@ export function useGameActions(): UseGameActionsReturn {
 				return 0; // Target (Crocodile) takes no damage
 			}
 
-			if (target.status.isShielded) {
+			if (target.status.isShielded)
+			{
 				playSound('shield');
 				logMessage(`${target.name}'s (${target.animal}) shield blocked the attack from ${source.name}!`, 2);
 				return 0;
 			}
 
 			// Bird evasion: 2/3 chance to evade incoming damage
-			if (target.animal === 'Bird' && damage > 0) {
+			if (target.animal === 'Bird' && damage > 0)
+			{
 				const evasionRoll = Math.random();
-				if (evasionRoll > 1 / 3) {
+				if (evasionRoll > 1 / 3)
+				{
 					playSound('nothing');
 					logMessage(`${target.name} the Bird evaded the attack!`, 2);
 					return 0;
@@ -95,7 +103,8 @@ export function useGameActions(): UseGameActionsReturn {
 			const actualDamage = Math.min(target.hp, damage);
 			target.hp -= actualDamage;
 			logMessage(`${target.name} (${target.animal}) now has ${target.hp}/${target.maxHp} HP.`, 2);
-			if (target.hp <= 0) {
+			if (target.hp <= 0)
+			{
 				target.isAlive = false;
 				playSound('defeat');
 				logMessage(`${target.name}'s (${target.animal}) has been defeated!`, 3);
@@ -112,14 +121,17 @@ export function useGameActions(): UseGameActionsReturn {
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: AnimalType) => void,
-		): void => {
+		): void =>
+		{
 			playSound('attack');
 			logMessage(`${source.name} (${source.animal}) attacks ${target.name} (${target.animal}).`, 1);
 
 			// Bird miss chance: 2/3 chance to miss when attacking
-			if (source.animal === 'Bird') {
+			if (source.animal === 'Bird')
+			{
 				const accuracyRoll = Math.random();
-				if (accuracyRoll > 1 / 3) {
+				if (accuracyRoll > 1 / 3)
+				{
 					playSound('nothing');
 					logMessage(`${source.name} the Bird's attack missed!`, 2);
 					return;
@@ -131,20 +143,25 @@ export function useGameActions(): UseGameActionsReturn {
 		[applyDamage],
 	);
 
-	const handleHeal = useCallback((source: Player, logMessage: (message: string, indent?: number) => void): void => {
+	const handleHeal = useCallback((source: Player, logMessage: (message: string, indent?: number) => void): void =>
+	{
 		playSound('heal');
 		source.oneTimeActions.hasHealed = true;
-		if (source.hp >= source.maxHp) {
+		if (source.hp >= source.maxHp)
+		{
 			source.hp += 1;
 			logMessage(`${source.name} (${source.animal}) is overhealed for 1 HP! (${source.hp}/${source.maxHp})`, 1);
-		} else {
+		}
+		else
+		{
 			const amountToHeal = Math.min(1, source.maxHp - source.hp);
 			source.hp += amountToHeal;
 			logMessage(`${source.name} (${source.animal}) healed for ${amountToHeal} HP.`, 1);
 		}
 	}, []);
 
-	const handleShield = useCallback((source: Player, logMessage: (message: string, indent?: number) => void): void => {
+	const handleShield = useCallback((source: Player, logMessage: (message: string, indent?: number) => void): void =>
+	{
 		playSound('shield');
 		source.oneTimeActions.hasShielded = true;
 		source.status.isShielded = true;
@@ -152,12 +169,15 @@ export function useGameActions(): UseGameActionsReturn {
 	}, []);
 
 	const handleHowl = useCallback(
-		(source: Player, state: GameState, logMessage: (message: string, indent?: number) => void): void => {
+		(source: Player, state: GameState, logMessage: (message: string, indent?: number) => void): void =>
+		{
 			playSound('howl');
 			source.abilityCooldown = 2;
 			logMessage(`${source.name} the Coyote lets out a piercing Howl!`, 1);
-			state.players.forEach((p) => {
-				if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote') {
+			state.players.forEach((p) =>
+			{
+				if (p.isAlive && p.id !== source.id && p.animal !== 'Coyote')
+				{
 					p.status.isSleeping = true;
 					p.status.sleepTurnsRemaining = 1; // Sleep for 1 turn
 					playSound('sleep');
@@ -173,21 +193,28 @@ export function useGameActions(): UseGameActionsReturn {
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: AnimalType) => void,
-		): void => {
+		): void =>
+		{
 			playSound('spitball');
 			const rand = Math.random();
 			let damage = 0;
-			if (rand < 0.15) {
+			if (rand < 0.15)
+			{
 				damage = 2;
-			} else if (rand < 0.55) {
+			}
+			else if (rand < 0.55)
+			{
 				damage = 1;
 			}
 
 			logMessage(`${source.name} the Llama uses Spitball on ${target.name} (${target.animal})...`, 1);
-			if (damage > 0) {
+			if (damage > 0)
+			{
 				logMessage(`It's a direct hit for ${damage} damage!`, 2);
 				applyDamage(target, damage, source, logMessage, unlockAnimal);
-			} else {
+			}
+			else
+			{
 				logMessage(`It missed! 0 damage.`, 2);
 			}
 		},
@@ -201,7 +228,8 @@ export function useGameActions(): UseGameActionsReturn {
 			target2: Player,
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: AnimalType) => void,
-		): void => {
+		): void =>
+		{
 			playSound('strike');
 			logMessage(`${source.name} the Tiger uses Strike on ${target1.name} and ${target2.name}!`, 1);
 			applyDamage(target1, 1, source, logMessage, unlockAnimal);
@@ -216,7 +244,8 @@ export function useGameActions(): UseGameActionsReturn {
 			target: Player,
 			logMessage: (message: string, indent?: number) => void,
 			unlockAnimal: (animalName: AnimalType) => void,
-		): void => {
+		): void =>
+		{
 			playSound('rampage');
 			source.oneTimeActions.hasUsedAbility = true;
 			logMessage(
@@ -229,7 +258,8 @@ export function useGameActions(): UseGameActionsReturn {
 	);
 
 	const handleMischief = useCallback(
-		(source: Player, target: Player, logMessage: (message: string, indent?: number) => void): void => {
+		(source: Player, target: Player, logMessage: (message: string, indent?: number) => void): void =>
+		{
 			playSound('mischief');
 			source.oneTimeActions.hasUsedAbility = true;
 			target.abilityDisabled = true;
@@ -240,7 +270,8 @@ export function useGameActions(): UseGameActionsReturn {
 	);
 
 	const handleSnapBack = useCallback(
-		(source: Player, logMessage: (message: string, indent?: number) => void): void => {
+		(source: Player, logMessage: (message: string, indent?: number) => void): void =>
+		{
 			playSound('snapback');
 			source.status.snapBackActive = true;
 			logMessage(`${source.name} the Crocodile uses Snap Back...`, 1);

@@ -1,11 +1,13 @@
 import './Header.css';
 
-export interface HeaderProperties {
+export interface HeaderProperties
+{
 	isGameActive?: boolean;
 	className?: string;
 }
 
-export function Header({isGameActive = false, className = ''}: HeaderProperties) {
+export function Header({isGameActive = false, className = ''}: HeaderProperties)
+{
 	const activeClass = isGameActive ? 'game-active' : '';
 	const classes = ['header', activeClass, className].filter(Boolean).join(' ');
 	const baseUrl = import.meta.env.BASE_URL || '/';

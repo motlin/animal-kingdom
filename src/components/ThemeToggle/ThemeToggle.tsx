@@ -2,12 +2,14 @@ import {Button} from '../Button/Button';
 import {Icon} from '../Icon/Icon';
 import './ThemeToggle.css';
 
-export interface ThemeToggleProperties {
+export interface ThemeToggleProperties
+{
 	theme: 'light' | 'dark';
 	onToggle: () => void;
 }
 
-export function ThemeToggle({theme, onToggle}: ThemeToggleProperties) {
+export function ThemeToggle({theme, onToggle}: ThemeToggleProperties)
+{
 	return (
 		<Button
 			variant="toggle"

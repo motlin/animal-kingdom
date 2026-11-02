@@ -7,7 +7,8 @@ import {ChallengerSetup} from './ChallengerSetup';
 import type {AnimalType} from '../../lib/types';
 import './SetupScreen.css';
 
-export interface SetupScreenProperties {
+export interface SetupScreenProperties
+{
 	mode: GameMode;
 	unlockedAnimals: Set<AnimalType>;
 	playerCount: number;
@@ -51,9 +52,12 @@ export function SetupScreen({
 	onTeamPlayerChange,
 	onStartGame,
 	canStartGame,
-}: SetupScreenProperties) {
-	const renderSetupContent = () => {
-		switch (mode) {
+}: SetupScreenProperties)
+{
+	const renderSetupContent = () =>
+	{
+		switch (mode)
+		{
 			case 'standard':
 				return (
 					<StandardSetup

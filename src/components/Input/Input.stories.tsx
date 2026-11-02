@@ -2,22 +2,28 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import {useState} from 'react';
 import {Input} from './Input';
 
-const meta = {
+const meta =
+{
 	title: 'Components/Input',
 	component: Input,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		disabled: {
+	argTypes:
+	{
+		disabled:
+		{
 			control: 'boolean',
 		},
-		type: {
+		type:
+		{
 			control: 'select',
 			options: ['text', 'number', 'email', 'password'],
 		},
-		required: {
+		required:
+		{
 			control: 'boolean',
 		},
 	},
@@ -26,109 +32,159 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PlayerName: Story = {
-	args: {
+export const PlayerName: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Enter player name',
 		label: 'Player Name:',
 	},
 };
 
-export const PlayerNameFilled: Story = {
-	args: {
+export const PlayerNameFilled: Story =
+{
+	args:
+	{
 		value: 'Alice',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Enter player name',
 		label: 'Player Name:',
 	},
 };
 
-export const WithPlaceholder: Story = {
-	args: {
+export const WithPlaceholder: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Type something...',
 	},
 };
 
-export const WithoutLabel: Story = {
-	args: {
+export const WithoutLabel: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Enter text',
 	},
 };
 
-export const Disabled: Story = {
-	args: {
+export const Disabled: Story =
+{
+	args:
+	{
 		value: 'Cannot edit',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		label: 'Disabled Input:',
 		disabled: true,
 	},
 };
 
-export const NumberType: Story = {
-	args: {
+export const NumberType: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		type: 'number',
 		placeholder: 'Enter a number',
 		label: 'Number Input:',
 	},
 };
 
-export const EmailType: Story = {
-	args: {
+export const EmailType: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		type: 'email',
 		placeholder: 'Enter email',
 		label: 'Email:',
 	},
 };
 
-export const PasswordType: Story = {
-	args: {
+export const PasswordType: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		type: 'password',
 		placeholder: 'Enter password',
 		label: 'Password:',
 	},
 };
 
-export const WithMaxLength: Story = {
-	args: {
+export const WithMaxLength: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Max 10 characters',
 		label: 'Limited Input:',
 		maxLength: 10,
 	},
 };
 
-export const Required: Story = {
-	args: {
+export const Required: Story =
+{
+	args:
+	{
 		value: '',
-		onChange: () => {},
+		onChange: () =>
+		{
+		},
 		placeholder: 'Required field',
 		label: 'Required Input:',
 		required: true,
 	},
 };
 
-export const Interactive = {
-	render: () => {
-		const InteractiveInput = () => {
+export const Interactive =
+{
+	render: () =>
+	{
+		const InteractiveInput = () =>
+		{
 			const [playerName, setPlayerName] = useState('');
 			const [email, setEmail] = useState('');
 			const [number, setNumber] = useState('');
 
 			return (
 				<div
-					style={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px', minWidth: '300px'}}
+					style={
+					{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '20px',
+						padding: '20px',
+						minWidth: '300px',
+					}}
 				>
 					<Input
 						value={playerName}
@@ -157,27 +213,45 @@ export const Interactive = {
 	},
 };
 
-export const AllVariants = {
-	render: () => {
-		const AllVariantsDemo = () => {
-			const [values, setValues] = useState({
-				playerName: '',
-				email: '',
-				password: '',
-				number: '',
-				limited: '',
-			});
+export const AllVariants =
+{
+	render: () =>
+	{
+		const AllVariantsDemo = () =>
+		{
+			const [values, setValues] = useState(
+				{
+					playerName: '',
+					email: '',
+					password: '',
+					number: '',
+					limited: '',
+				},
+			);
 
 			return (
 				<div
-					style={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px', minWidth: '300px'}}
+					style={
+					{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '20px',
+						padding: '20px',
+						minWidth: '300px',
+					}}
 				>
 					<div>
 						<h3>Player Name Input</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => {
-								setValues({...values, playerName: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										playerName: value,
+									},
+								);
 							}}
 							placeholder="Enter player name"
 							label="Player Name:"
@@ -188,8 +262,14 @@ export const AllVariants = {
 						<h3>Email Input</h3>
 						<Input
 							value={values.email}
-							onChange={(value) => {
-								setValues({...values, email: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										email: value,
+									},
+								);
 							}}
 							type="email"
 							placeholder="player@example.com"
@@ -201,8 +281,14 @@ export const AllVariants = {
 						<h3>Password Input</h3>
 						<Input
 							value={values.password}
-							onChange={(value) => {
-								setValues({...values, password: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										password: value,
+									},
+								);
 							}}
 							type="password"
 							placeholder="Enter password"
@@ -214,8 +300,14 @@ export const AllVariants = {
 						<h3>Number Input</h3>
 						<Input
 							value={values.number}
-							onChange={(value) => {
-								setValues({...values, number: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										number: value,
+									},
+								);
 							}}
 							type="number"
 							placeholder="0"
@@ -227,8 +319,14 @@ export const AllVariants = {
 						<h3>Limited Length Input (max 10)</h3>
 						<Input
 							value={values.limited}
-							onChange={(value) => {
-								setValues({...values, limited: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										limited: value,
+									},
+								);
 							}}
 							placeholder="Max 10 characters"
 							label="Limited:"
@@ -241,8 +339,14 @@ export const AllVariants = {
 						<h3>Without Label</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => {
-								setValues({...values, playerName: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										playerName: value,
+									},
+								);
 							}}
 							placeholder="No label"
 						/>
@@ -250,15 +354,28 @@ export const AllVariants = {
 
 					<div>
 						<h3>Disabled</h3>
-						<Input value="Cannot edit this" onChange={() => {}} label="Disabled:" disabled />
+						<Input
+							value="Cannot edit this"
+							onChange={() =>
+							{
+							}}
+							label="Disabled:"
+							disabled
+						/>
 					</div>
 
 					<div>
 						<h3>Required Field</h3>
 						<Input
 							value={values.playerName}
-							onChange={(value) => {
-								setValues({...values, playerName: value});
+							onChange={(value) =>
+							{
+								setValues(
+									{
+										...values,
+										playerName: value,
+									},
+								);
 							}}
 							placeholder="Required field"
 							label="Required:"

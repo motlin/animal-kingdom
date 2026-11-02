@@ -3,7 +3,8 @@ import {Select, type SelectOption} from '../Select/Select';
 import type {AnimalType} from '../../lib/types';
 import './PlayerSetup.css';
 
-export interface PlayerSetupProperties {
+export interface PlayerSetupProperties
+{
 	playerNumber: number;
 	playerName: string;
 	animalType: AnimalType;
@@ -27,25 +28,36 @@ export function PlayerSetup({
 	onAnimalTypeChange,
 	onPlayerTypeChange,
 	disabled = false,
-}: PlayerSetupProperties) {
+}: PlayerSetupProperties)
+{
 	const availableAnimals = playerType === 'human' ? Array.from(unlockedAnimals) : allAnimals;
 
-	const animalOptions: SelectOption[] = availableAnimals.map((animal) => ({
+	const animalOptions: SelectOption[] = availableAnimals.map((animal) => (
+	{
 		value: animal,
 		label: animal,
 	}));
 
 	const playerTypeOptions: SelectOption[] = [
-		{value: 'human', label: 'Human'},
-		{value: 'computer', label: 'Computer'},
+		{
+			value: 'human',
+			label: 'Human',
+		},
+		{
+			value: 'computer',
+			label: 'Computer',
+		},
 	];
 
-	const handlePlayerTypeChange = (newType: string) => {
+	const handlePlayerTypeChange = (newType: string) =>
+	{
 		onPlayerTypeChange(newType === 'computer' ? 'computer' : 'human');
 
-		if (newType === 'human' && !unlockedAnimals.has(animalType)) {
+		if (newType === 'human' && !unlockedAnimals.has(animalType))
+		{
 			const firstUnlocked = Array.from(unlockedAnimals)[0];
-			if (firstUnlocked) {
+			if (firstUnlocked)
+			{
 				onAnimalTypeChange(firstUnlocked);
 			}
 		}
@@ -67,9 +79,11 @@ export function PlayerSetup({
 				id={`player-${playerNumber}-animal`}
 				value={animalType}
 				options={animalOptions}
-				onChange={(value) => {
+				onChange={(value) =>
+				{
 					const animal = allAnimals.find((candidate) => candidate === value);
-					if (animal !== undefined) {
+					if (animal !== undefined)
+					{
 						onAnimalTypeChange(animal);
 					}
 				}}

@@ -5,20 +5,23 @@ import './ModeSelector.css';
 
 export type {GameMode};
 
-export interface ModeSelectorProperties {
+export interface ModeSelectorProperties
+{
 	selectedMode: GameMode;
 	onModeChange: (mode: GameMode) => void;
 	disabled?: boolean;
 }
 
-export function ModeSelector({selectedMode, onModeChange, disabled = false}: ModeSelectorProperties) {
+export function ModeSelector({selectedMode, onModeChange, disabled = false}: ModeSelectorProperties)
+{
 	return (
 		<div className="mode-selection">
 			<Button
 				variant="mode"
 				active={selectedMode === 'standard'}
 				disabled={disabled}
-				onClick={() => {
+				onClick={() =>
+				{
 					onModeChange('standard');
 				}}
 			>
@@ -29,7 +32,8 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 				variant="mode"
 				active={selectedMode === 'team'}
 				disabled={disabled}
-				onClick={() => {
+				onClick={() =>
+				{
 					onModeChange('team');
 				}}
 			>
@@ -40,7 +44,8 @@ export function ModeSelector({selectedMode, onModeChange, disabled = false}: Mod
 				variant="mode"
 				active={selectedMode === 'challenger'}
 				disabled={disabled}
-				onClick={() => {
+				onClick={() =>
+				{
 					onModeChange('challenger');
 				}}
 			>

@@ -1,4 +1,5 @@
-.hp-bar-container {
+.hp-bar-container
+{
 	width: 100%;
 	height: 20px;
 	background-color: #e0e0e0;
@@ -8,25 +9,30 @@
 	position: relative;
 }
 
-.hp-bar {
+.hp-bar
+{
 	height: 100%;
 	border-radius: 10px;
 	transition: width 0.5s ease;
 }
 
-.hp-bar.hp-full {
+.hp-bar.hp-full
+{
 	background-color: var(--hp-full);
 }
 
-.hp-bar.hp-medium {
+.hp-bar.hp-medium
+{
 	background-color: var(--hp-medium);
 }
 
-.hp-bar.hp-low {
+.hp-bar.hp-low
+{
 	background-color: var(--hp-low);
 }
 
-.hp-text {
+.hp-text
+{
 	position: absolute;
 	top: 0;
 	left: 0;

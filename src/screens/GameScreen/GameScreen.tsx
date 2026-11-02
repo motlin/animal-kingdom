@@ -5,7 +5,8 @@ import {GameOverModal} from '../../components/GameOverModal/GameOverModal';
 import type {Player, LogEntry, AnimalType, Team} from '../../lib/types';
 import './GameScreen.css';
 
-export interface GameScreenProperties {
+export interface GameScreenProperties
+{
 	players: Player[];
 	teams?: Team[];
 	currentPlayerIndex: number;
@@ -67,16 +68,20 @@ export function GameScreen({
 	onPlayAgain,
 	onCopyLog,
 	onSaveGameLog,
-}: GameScreenProperties) {
-	const handlePlayerClick = (playerId: number) => {
-		if (onPlayerClick) {
+}: GameScreenProperties)
+{
+	const handlePlayerClick = (playerId: number) =>
+	{
+		if (onPlayerClick)
+		{
 			onPlayerClick(playerId);
 		}
 	};
 
 	const currentPlayer = players[currentPlayerIndex];
 
-	const getTeamColor = (teamId: number | undefined): string | undefined => {
+	const getTeamColor = (teamId: number | undefined): string | undefined =>
+	{
 		if (teamId === undefined) return undefined;
 		const team = teams.find((t) => t.id === teamId);
 		return team?.color;
@@ -85,7 +90,8 @@ export function GameScreen({
 	return (
 		<div className="game-screen">
 			<div className="players-container">
-				{players.map((player) => {
+				{players.map((player) =>
+				{
 					const isActive = Boolean(currentPlayer && player.id === currentPlayer.id);
 					const isSelectable = selectablePlayerIds.includes(player.id);
 					const teamColor = getTeamColor(player.teamId);
@@ -96,7 +102,12 @@ export function GameScreen({
 							player={player}
 							isActive={isActive}
 							isSelectable={isSelectable}
-							{...(teamColor !== undefined && teamColor !== '' ? {teamColor} : {})}
+							{...(teamColor !== undefined && teamColor !== ''
+								?
+									{
+										teamColor,
+									}
+								: {})}
 							onClick={handlePlayerClick}
 						/>
 					);
@@ -116,20 +127,44 @@ export function GameScreen({
 						canUndo={canUndo}
 						healsRemaining={healsRemaining}
 						shieldsRemaining={shieldsRemaining}
-						{...(onAttack && {onAttack})}
-						{...(onUseAbility && {onUseAbility})}
-						{...(onHeal && {onHeal})}
-						{...(onShield && {onShield})}
-						{...(onDoNothing && {onDoNothing})}
-						{...(onUndo && {onUndo})}
+						{...(onAttack &&
+						{
+							onAttack,
+						})}
+						{...(onUseAbility &&
+						{
+							onUseAbility,
+						})}
+						{...(onHeal &&
+						{
+							onHeal,
+						})}
+						{...(onShield &&
+						{
+							onShield,
+						})}
+						{...(onDoNothing &&
+						{
+							onDoNothing,
+						})}
+						{...(onUndo &&
+						{
+							onUndo,
+						})}
 					/>
 				</div>
 
 				<div className="log-container">
 					<GameLog
 						entries={logEntries}
-						{...(onCopyToClipboard && {onCopyToClipboard})}
-						{...(onSaveLog && {onSaveLog})}
+						{...(onCopyToClipboard &&
+						{
+							onCopyToClipboard,
+						})}
+						{...(onSaveLog &&
+						{
+							onSaveLog,
+						})}
 					/>
 				</div>
 			</div>
@@ -138,9 +173,18 @@ export function GameScreen({
 				winnerAnnouncement={winnerAnnouncement}
 				logEntries={logEntries}
 				isOpen={isGameOver}
-				{...(onPlayAgain && {onPlayAgain})}
-				{...(onCopyLog && {onCopyLog})}
-				{...(onSaveGameLog && {onSaveLog: onSaveGameLog})}
+				{...(onPlayAgain &&
+				{
+					onPlayAgain,
+				})}
+				{...(onCopyLog &&
+				{
+					onCopyLog,
+				})}
+				{...(onSaveGameLog &&
+				{
+					onSaveLog: onSaveGameLog,
+				})}
 			/>
 		</div>
 	);

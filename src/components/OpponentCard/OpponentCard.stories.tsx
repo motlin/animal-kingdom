@@ -1,15 +1,19 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
 import {OpponentCard} from './OpponentCard';
 
-const meta = {
+const meta =
+{
 	title: 'Components/OpponentCard',
 	component: OpponentCard,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		opponentName: {
+	argTypes:
+	{
+		opponentName:
+		{
 			control: 'select',
 			options: ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'],
 		},
@@ -19,40 +23,52 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Coyote: Story = {
-	args: {
+export const Coyote: Story =
+{
+	args:
+	{
 		opponentName: 'Coyote',
 	},
 };
 
-export const Llama: Story = {
-	args: {
+export const Llama: Story =
+{
+	args:
+	{
 		opponentName: 'Llama',
 	},
 };
 
-export const Tiger: Story = {
-	args: {
+export const Tiger: Story =
+{
+	args:
+	{
 		opponentName: 'Tiger',
 	},
 };
 
-export const Gorilla: Story = {
-	args: {
+export const Gorilla: Story =
+{
+	args:
+	{
 		opponentName: 'Gorilla',
 	},
 };
 
-export const Monkey: Story = {
-	args: {
+export const Monkey: Story =
+{
+	args:
+	{
 		opponentName: 'Monkey',
 	},
 };
 
-export const AllOpponents = {
+export const AllOpponents =
+{
 	render: () => (
 		<div
-			style={{
+			style={
+			{
 				display: 'grid',
 				gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
 				gap: '20px',
@@ -69,10 +85,12 @@ export const AllOpponents = {
 	),
 };
 
-export const ResponsiveLayout = {
+export const ResponsiveLayout =
+{
 	render: () => (
 		<div
-			style={{
+			style={
+			{
 				display: 'grid',
 				gridTemplateColumns: '1fr 1fr',
 				gap: '30px',
@@ -80,22 +98,62 @@ export const ResponsiveLayout = {
 				padding: '20px',
 			}}
 		>
-			<div style={{textAlign: 'center'}}>
-				<h3 style={{marginBottom: '15px'}}>Player Selection</h3>
+			<div
+				style={
+				{
+					textAlign: 'center',
+				}}
+			>
+				<h3
+					style={
+					{
+						marginBottom: '15px',
+					}}
+				>
+					Player Selection
+				</h3>
 				<div
-					style={{
+					style={
+					{
 						backgroundColor: '#fff',
 						border: '2px solid var(--color-accent)',
 						borderRadius: '10px',
 						padding: '15px',
 					}}
 				>
-					<div style={{fontWeight: 'bold', marginBottom: '8px'}}>Llama</div>
-					<div style={{fontSize: '0.9em'}}>Spitball: An attack with random damage (0-2).</div>
+					<div
+						style={
+						{
+							fontWeight: 'bold',
+							marginBottom: '8px',
+						}}
+					>
+						Llama
+					</div>
+					<div
+						style={
+						{
+							fontSize: '0.9em',
+						}}
+					>
+						Spitball: An attack with random damage (0-2).
+					</div>
 				</div>
 			</div>
-			<div style={{textAlign: 'center'}}>
-				<h3 style={{marginBottom: '15px'}}>Opponent</h3>
+			<div
+				style={
+				{
+					textAlign: 'center',
+				}}
+			>
+				<h3
+					style={
+					{
+						marginBottom: '15px',
+					}}
+				>
+					Opponent
+				</h3>
 				<OpponentCard opponentName="Tiger" />
 			</div>
 		</div>

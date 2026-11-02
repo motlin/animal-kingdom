@@ -3,44 +3,57 @@ import {renderHook, act} from '@testing-library/react';
 import {useStorage} from './useStorage.ts';
 import type {AnimalType} from '../lib/types.ts';
 
-function mockLocalStorage() {
+function mockLocalStorage()
+{
 	const store = new Map<string, string>();
 
 	return {
 		getItem: vi.fn<(key: string) => string | null>((key: string) => store.get(key) ?? null),
-		setItem: vi.fn<(key: string, value: string) => void>((key: string, value: string) => {
+		setItem: vi.fn<(key: string, value: string) => void>((key: string, value: string) =>
+		{
 			store.set(key, value);
 		}),
-		clear: vi.fn<() => void>(() => {
+		clear: vi.fn<() => void>(() =>
+		{
 			store.clear();
 		}),
 	};
 }
 
-describe('useStorage', () => {
+describe('useStorage', () =>
+{
 	let localStorageMock: ReturnType<typeof mockLocalStorage>;
 
-	beforeEach(() => {
+	beforeEach(() =>
+	{
 		localStorageMock = mockLocalStorage();
-		Object.defineProperty(window, 'localStorage', {
-			value: localStorageMock,
-			writable: true,
-		});
+		Object.defineProperty(
+			window,
+			'localStorage',
+			{
+				value: localStorageMock,
+				writable: true,
+			},
+		);
 	});
 
-	afterEach(() => {
+	afterEach(() =>
+	{
 		vi.clearAllMocks();
 	});
 
-	describe('unlockedAnimals', () => {
-		it('initializes with Coyote when no saved data exists', () => {
+	describe('unlockedAnimals', () =>
+	{
+		it('initializes with Coyote when no saved data exists', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
 			expect(result.current.unlockedAnimals.has('Coyote')).toBe(true);
 			expect(result.current.unlockedAnimals.size).toBe(1);
 		});
 
-		it('loads saved unlocked animals from localStorage', () => {
+		it('loads saved unlocked animals from localStorage', () =>
+		{
 			localStorageMock.setItem('animalKingdomUnlockedAnimals', JSON.stringify(['Coyote', 'Llama', 'Tiger']));
 
 			const {result} = renderHook(() => useStorage());
@@ -51,12 +64,14 @@ describe('useStorage', () => {
 			expect(result.current.unlockedAnimals.size).toBe(3);
 		});
 
-		it('saves unlocked animals to localStorage', () => {
+		it('saves unlocked animals to localStorage', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
 			const newAnimals = new Set<AnimalType>(['Coyote', 'Llama', 'Tiger', 'Gorilla']);
 
-			act(() => {
+			act(() =>
+			{
 				result.current.setUnlockedAnimals(newAnimals);
 			});
 
@@ -67,15 +82,20 @@ describe('useStorage', () => {
 			expect(result.current.unlockedAnimals).toEqual(newAnimals);
 		});
 
-		it('updates unlocked animals on storage event', () => {
+		it('updates unlocked animals on storage event', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
-			const storageEvent = new StorageEvent('storage', {
-				key: 'animalKingdomUnlockedAnimals',
-				newValue: JSON.stringify(['Coyote', 'Monkey']),
-			});
+			const storageEvent = new StorageEvent(
+				'storage',
+				{
+					key: 'animalKingdomUnlockedAnimals',
+					newValue: JSON.stringify(['Coyote', 'Monkey']),
+				},
+			);
 
-			act(() => {
+			act(() =>
+			{
 				window.dispatchEvent(storageEvent);
 			});
 
@@ -85,14 +105,17 @@ describe('useStorage', () => {
 		});
 	});
 
-	describe('theme', () => {
-		it('initializes with light theme when no saved data exists', () => {
+	describe('theme', () =>
+	{
+		it('initializes with light theme when no saved data exists', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
 			expect(result.current.theme).toBe('light');
 		});
 
-		it('loads saved theme from localStorage', () => {
+		it('loads saved theme from localStorage', () =>
+		{
 			localStorageMock.setItem('animalKingdomTheme', 'dark');
 
 			const {result} = renderHook(() => useStorage());
@@ -100,10 +123,12 @@ describe('useStorage', () => {
 			expect(result.current.theme).toBe('dark');
 		});
 
-		it('saves theme to localStorage', () => {
+		it('saves theme to localStorage', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
-			act(() => {
+			act(() =>
+			{
 				result.current.setTheme('dark');
 			});
 
@@ -111,22 +136,28 @@ describe('useStorage', () => {
 			expect(result.current.theme).toBe('dark');
 		});
 
-		it('updates theme on storage event', () => {
+		it('updates theme on storage event', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
-			const storageEvent = new StorageEvent('storage', {
-				key: 'animalKingdomTheme',
-				newValue: 'dark',
-			});
+			const storageEvent = new StorageEvent(
+				'storage',
+				{
+					key: 'animalKingdomTheme',
+					newValue: 'dark',
+				},
+			);
 
-			act(() => {
+			act(() =>
+			{
 				window.dispatchEvent(storageEvent);
 			});
 
 			expect(result.current.theme).toBe('dark');
 		});
 
-		it('defaults to light theme for invalid values', () => {
+		it('defaults to light theme for invalid values', () =>
+		{
 			localStorageMock.setItem('animalKingdomTheme', 'invalid');
 
 			const {result} = renderHook(() => useStorage());
@@ -135,14 +166,17 @@ describe('useStorage', () => {
 		});
 	});
 
-	describe('isMuted', () => {
-		it('initializes with false when no saved data exists', () => {
+	describe('isMuted', () =>
+	{
+		it('initializes with false when no saved data exists', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
 			expect(result.current.isMuted).toBe(false);
 		});
 
-		it('loads saved mute preference from localStorage', () => {
+		it('loads saved mute preference from localStorage', () =>
+		{
 			localStorageMock.setItem('animalKingdomMuted', 'true');
 
 			const {result} = renderHook(() => useStorage());
@@ -150,10 +184,12 @@ describe('useStorage', () => {
 			expect(result.current.isMuted).toBe(true);
 		});
 
-		it('saves mute preference to localStorage', () => {
+		it('saves mute preference to localStorage', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
-			act(() => {
+			act(() =>
+			{
 				result.current.setIsMuted(true);
 			});
 
@@ -161,15 +197,20 @@ describe('useStorage', () => {
 			expect(result.current.isMuted).toBe(true);
 		});
 
-		it('updates mute preference on storage event', () => {
+		it('updates mute preference on storage event', () =>
+		{
 			const {result} = renderHook(() => useStorage());
 
-			const storageEvent = new StorageEvent('storage', {
-				key: 'animalKingdomMuted',
-				newValue: 'true',
-			});
+			const storageEvent = new StorageEvent(
+				'storage',
+				{
+					key: 'animalKingdomMuted',
+					newValue: 'true',
+				},
+			);
 
-			act(() => {
+			act(() =>
+			{
 				window.dispatchEvent(storageEvent);
 			});
 
@@ -177,8 +218,10 @@ describe('useStorage', () => {
 		});
 	});
 
-	describe('storage event cleanup', () => {
-		it('removes event listener on unmount', () => {
+	describe('storage event cleanup', () =>
+	{
+		it('removes event listener on unmount', () =>
+		{
 			const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 			const {unmount} = renderHook(() => useStorage());
 

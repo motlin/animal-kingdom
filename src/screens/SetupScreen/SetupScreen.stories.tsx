@@ -8,10 +8,12 @@ import type {AnimalType} from '../../lib/types';
 import type {GameMode} from '../../components/ModeSelector/ModeSelector';
 import {TEAM_COLORS} from '../../lib/constants';
 
-const meta = {
+const meta =
+{
 	title: 'Screens/SetupScreen',
 	component: SetupScreen,
-	parameters: {
+	parameters:
+	{
 		layout: 'padded',
 	},
 	tags: ['autodocs'],
@@ -20,33 +22,55 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const createDefaultPlayers = (): PlayerConfiguration[] => {
+const createDefaultPlayers = (): PlayerConfiguration[] =>
+{
 	const animals: readonly [AnimalType, ...AnimalType[]] = ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'];
-	return Array.from({length: 10}, (_, i) => ({
-		name: '',
-		animalType: animals[i % animals.length] ?? animals[0],
-		playerType: 'human' as const,
-	}));
+	return Array.from(
+		{
+			length: 10,
+		},
+		(_, i) => (
+		{
+			name: '',
+			animalType: animals[i % animals.length] ?? animals[0],
+			playerType: 'human' as const,
+		}),
+	);
 };
 
-const createDefaultTeams = (): TeamConfiguration[] => {
-	return Array.from({length: 6}, (_, i) => ({
-		id: i,
-		name: `Team ${i + 1}`,
-		color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
-	}));
+const createDefaultTeams = (): TeamConfiguration[] =>
+{
+	return Array.from(
+		{
+			length: 6,
+		},
+		(_, i) => (
+		{
+			id: i,
+			name: `Team ${i + 1}`,
+			color: TEAM_COLORS[i % TEAM_COLORS.length] ?? '#888888',
+		}),
+	);
 };
 
-const createDefaultTeamPlayers = (): TeamPlayerConfiguration[] => {
-	return Array.from({length: 24}, (_, i) => ({
-		name: `Player ${i + 1}`,
-		animalType: 'Coyote' as AnimalType,
-		playerType: 'human' as const,
-		teamId: Math.floor(i / 4),
-	}));
+const createDefaultTeamPlayers = (): TeamPlayerConfiguration[] =>
+{
+	return Array.from(
+		{
+			length: 24,
+		},
+		(_, i) => (
+		{
+			name: `Player ${i + 1}`,
+			animalType: 'Coyote' as AnimalType,
+			playerType: 'human' as const,
+			teamId: Math.floor(i / 4),
+		}),
+	);
 };
 
-const defaultTeamProps = {
+const defaultTeamProps =
+{
 	teamCount: 2,
 	playersPerTeam: 2,
 	teams: createDefaultTeams(),
@@ -57,8 +81,10 @@ const defaultTeamProps = {
 	onTeamPlayerChange: fn(),
 };
 
-export const StandardModeInitial: Story = {
-	args: {
+export const StandardModeInitial: Story =
+{
+	args:
+	{
 		mode: 'standard',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger']),
 		playerCount: 3,
@@ -73,7 +99,8 @@ export const StandardModeInitial: Story = {
 		onStartGame: fn(),
 		canStartGame: true,
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText('Game Setup')).toBeInTheDocument();
@@ -87,32 +114,62 @@ export const StandardModeInitial: Story = {
 	},
 };
 
-export const StandardModeConfigured: Story = {
-	args: {
+export const StandardModeConfigured: Story =
+{
+	args:
+	{
 		mode: 'standard',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger']),
 		playerCount: 4,
 		players: [
-			{name: 'Alice', animalType: 'Coyote', playerType: 'human'},
-			{name: 'Bob', animalType: 'Llama', playerType: 'human'},
-			{name: 'Charlie', animalType: 'Tiger', playerType: 'computer'},
-			{name: 'Diana', animalType: 'Coyote', playerType: 'computer'},
+			{
+				name: 'Alice',
+				animalType: 'Coyote',
+				playerType: 'human',
+			},
+			{
+				name: 'Bob',
+				animalType: 'Llama',
+				playerType: 'human',
+			},
+			{
+				name: 'Charlie',
+				animalType: 'Tiger',
+				playerType: 'computer',
+			},
+			{
+				name: 'Diana',
+				animalType: 'Coyote',
+				playerType: 'computer',
+			},
 			...createDefaultPlayers(),
 		],
 		selectedAnimal: null,
 		opponentAnimal: null,
 		...defaultTeamProps,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: () =>
+		{
+		},
+		onPlayerCountChange: () =>
+		{
+		},
+		onPlayerChange: () =>
+		{
+		},
+		onAnimalSelect: () =>
+		{
+		},
+		onStartGame: () =>
+		{
+		},
 		canStartGame: true,
 	},
 };
 
-export const StandardModeTenPlayers: Story = {
-	args: {
+export const StandardModeTenPlayers: Story =
+{
+	args:
+	{
 		mode: 'standard',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey']),
 		playerCount: 10,
@@ -120,17 +177,29 @@ export const StandardModeTenPlayers: Story = {
 		selectedAnimal: null,
 		opponentAnimal: null,
 		...defaultTeamProps,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: () =>
+		{
+		},
+		onPlayerCountChange: () =>
+		{
+		},
+		onPlayerChange: () =>
+		{
+		},
+		onAnimalSelect: () =>
+		{
+		},
+		onStartGame: () =>
+		{
+		},
 		canStartGame: true,
 	},
 };
 
-export const ChallengerModeInitial: Story = {
-	args: {
+export const ChallengerModeInitial: Story =
+{
+	args:
+	{
 		mode: 'challenger',
 		unlockedAnimals: new Set(['Coyote', 'Llama']),
 		playerCount: 2,
@@ -145,7 +214,8 @@ export const ChallengerModeInitial: Story = {
 		onStartGame: fn(),
 		canStartGame: false,
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText('New Challenger')).toBeInTheDocument();
@@ -159,8 +229,10 @@ export const ChallengerModeInitial: Story = {
 	},
 };
 
-export const ChallengerModeSelected: Story = {
-	args: {
+export const ChallengerModeSelected: Story =
+{
+	args:
+	{
 		mode: 'challenger',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger']),
 		playerCount: 2,
@@ -175,7 +247,8 @@ export const ChallengerModeSelected: Story = {
 		onStartGame: fn(),
 		canStartGame: true,
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		const startButton = canvas.getByText('Start Game');
@@ -186,8 +259,10 @@ export const ChallengerModeSelected: Story = {
 	},
 };
 
-export const ChallengerModeAllUnlocked: Story = {
-	args: {
+export const ChallengerModeAllUnlocked: Story =
+{
+	args:
+	{
 		mode: 'challenger',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey']),
 		playerCount: 2,
@@ -195,17 +270,29 @@ export const ChallengerModeAllUnlocked: Story = {
 		selectedAnimal: 'Tiger',
 		opponentAnimal: 'Monkey',
 		...defaultTeamProps,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: () =>
+		{
+		},
+		onPlayerCountChange: () =>
+		{
+		},
+		onPlayerChange: () =>
+		{
+		},
+		onAnimalSelect: () =>
+		{
+		},
+		onStartGame: () =>
+		{
+		},
 		canStartGame: true,
 	},
 };
 
-export const ChallengerModeNoOpponent: Story = {
-	args: {
+export const ChallengerModeNoOpponent: Story =
+{
+	args:
+	{
 		mode: 'challenger',
 		unlockedAnimals: new Set(['Coyote']),
 		playerCount: 2,
@@ -213,17 +300,29 @@ export const ChallengerModeNoOpponent: Story = {
 		selectedAnimal: null,
 		opponentAnimal: null,
 		...defaultTeamProps,
-		onModeChange: () => {},
-		onPlayerCountChange: () => {},
-		onPlayerChange: () => {},
-		onAnimalSelect: () => {},
-		onStartGame: () => {},
+		onModeChange: () =>
+		{
+		},
+		onPlayerCountChange: () =>
+		{
+		},
+		onPlayerChange: () =>
+		{
+		},
+		onAnimalSelect: () =>
+		{
+		},
+		onStartGame: () =>
+		{
+		},
 		canStartGame: false,
 	},
 };
 
-export const StandardModeCannotStart: Story = {
-	args: {
+export const StandardModeCannotStart: Story =
+{
+	args:
+	{
 		mode: 'standard',
 		unlockedAnimals: new Set(['Coyote']),
 		playerCount: 2,
@@ -238,7 +337,8 @@ export const StandardModeCannotStart: Story = {
 		onStartGame: fn(),
 		canStartGame: false,
 	},
-	play: async ({canvasElement}) => {
+	play: async ({canvasElement}) =>
+	{
 		const canvas = within(canvasElement);
 
 		const startButton = canvas.getByText('Start Game');
@@ -246,9 +346,12 @@ export const StandardModeCannotStart: Story = {
 	},
 };
 
-export const Interactive = {
-	render: () => {
-		const InteractiveSetupScreen = () => {
+export const Interactive =
+{
+	render: () =>
+	{
+		const InteractiveSetupScreen = () =>
+		{
 			const [mode, setMode] = useState<GameMode>('standard');
 			const [playerCount, setPlayerCount] = useState(3);
 			const [players, setPlayers] = useState<PlayerConfiguration[]>(createDefaultPlayers());
@@ -257,24 +360,31 @@ export const Interactive = {
 			const unlockedAnimals: Set<AnimalType> = new Set(['Coyote', 'Llama', 'Tiger']);
 			const opponentAnimal: AnimalType | null = mode === 'challenger' ? 'Tiger' : null;
 
-			const handlePlayerChange = (index: number, player: PlayerConfiguration) => {
+			const handlePlayerChange = (index: number, player: PlayerConfiguration) =>
+			{
 				const newPlayers = [...players];
 				newPlayers[index] = player;
 				setPlayers(newPlayers);
 			};
 
-			const handleModeChange = (newMode: GameMode) => {
+			const handleModeChange = (newMode: GameMode) =>
+			{
 				setMode(newMode);
-				if (newMode === 'challenger') {
+				if (newMode === 'challenger')
+				{
 					setSelectedAnimal(null);
 				}
 			};
 
-			const handleStartGame = () => {
+			const handleStartGame = () =>
+			{
 				console.log('Starting game with mode:', mode);
-				if (mode === 'standard') {
+				if (mode === 'standard')
+				{
 					console.log('Players:', players.slice(0, playerCount));
-				} else {
+				}
+				else
+				{
 					console.log('Selected animal:', selectedAnimal);
 					console.log('Opponent:', opponentAnimal);
 				}
@@ -283,7 +393,14 @@ export const Interactive = {
 			const canStartGame = mode === 'standard' ? true : selectedAnimal !== null && opponentAnimal !== null;
 
 			return (
-				<div style={{padding: '20px', maxWidth: '1200px', margin: '0 auto'}}>
+				<div
+					style={
+					{
+						padding: '20px',
+						maxWidth: '1200px',
+						margin: '0 auto',
+					}}
+				>
 					<SetupScreen
 						mode={mode}
 						unlockedAnimals={unlockedAnimals}
@@ -299,15 +416,31 @@ export const Interactive = {
 						onPlayerCountChange={setPlayerCount}
 						onPlayerChange={handlePlayerChange}
 						onAnimalSelect={setSelectedAnimal}
-						onTeamCountChange={() => {}}
-						onPlayersPerTeamChange={() => {}}
-						onTeamChange={() => {}}
-						onTeamPlayerChange={() => {}}
+						onTeamCountChange={() =>
+						{
+						}}
+						onPlayersPerTeamChange={() =>
+						{
+						}}
+						onTeamChange={() =>
+						{
+						}}
+						onTeamPlayerChange={() =>
+						{
+						}}
 						onStartGame={handleStartGame}
 						canStartGame={canStartGame}
 					/>
 
-					<div style={{marginTop: '30px', padding: '15px', backgroundColor: '#f0f0f0', borderRadius: '8px'}}>
+					<div
+						style={
+						{
+							marginTop: '30px',
+							padding: '15px',
+							backgroundColor: '#f0f0f0',
+							borderRadius: '8px',
+						}}
+					>
 						<h3>Current State:</h3>
 						<p>
 							<strong>Mode:</strong> {mode}
@@ -320,7 +453,13 @@ export const Interactive = {
 								<p>
 									<strong>Players:</strong>
 								</p>
-								<ul style={{marginTop: '5px', paddingLeft: '20px'}}>
+								<ul
+									style={
+									{
+										marginTop: '5px',
+										paddingLeft: '20px',
+									}}
+								>
 									{players.slice(0, playerCount).map((player, index) => (
 										<li key={index}>
 											Player {index + 1}: {player.name || '(no name)'} - {player.animalType} -{' '}
@@ -351,8 +490,10 @@ export const Interactive = {
 	},
 };
 
-export const ModeSwitching: Story = {
-	args: {
+export const ModeSwitching: Story =
+{
+	args:
+	{
 		mode: 'standard',
 		unlockedAnimals: new Set(['Coyote', 'Llama', 'Tiger']),
 		playerCount: 3,
@@ -367,27 +508,53 @@ export const ModeSwitching: Story = {
 		onStartGame: fn(),
 		canStartGame: true,
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const standardButton = canvas.getByRole('button', {name: /Standard Battle/});
+		const standardButton = canvas.getByRole(
+			'button',
+			{
+				name: /Standard Battle/,
+			},
+		);
 		await expect(standardButton).toHaveClass('active');
 
-		const challengerButton = canvas.getByRole('button', {name: /New Challenger/});
+		const challengerButton = canvas.getByRole(
+			'button',
+			{
+				name: /New Challenger/,
+			},
+		);
 		await userEvent.click(challengerButton);
 		await expect(args.onModeChange).toHaveBeenCalledWith('challenger');
 	},
 };
 
-export const ModeSwitchingDemo = {
-	render: () => {
-		const ModeSwitchingDemo = () => {
+export const ModeSwitchingDemo =
+{
+	render: () =>
+	{
+		const ModeSwitchingDemo = () =>
+		{
 			const [mode, setMode] = useState<GameMode>('standard');
 			const [playerCount, setPlayerCount] = useState(3);
 			const [players, setPlayers] = useState<PlayerConfiguration[]>([
-				{name: 'Alice', animalType: 'Coyote', playerType: 'human'},
-				{name: 'Bob', animalType: 'Llama', playerType: 'human'},
-				{name: 'Charlie', animalType: 'Tiger', playerType: 'computer'},
+				{
+					name: 'Alice',
+					animalType: 'Coyote',
+					playerType: 'human',
+				},
+				{
+					name: 'Bob',
+					animalType: 'Llama',
+					playerType: 'human',
+				},
+				{
+					name: 'Charlie',
+					animalType: 'Tiger',
+					playerType: 'computer',
+				},
 				...createDefaultPlayers(),
 			]);
 			const [selectedAnimal, setSelectedAnimal] = useState<AnimalType | null>(null);
@@ -395,15 +562,18 @@ export const ModeSwitchingDemo = {
 			const unlockedAnimals: Set<AnimalType> = new Set(['Coyote', 'Llama', 'Tiger']);
 			const opponentAnimal: AnimalType | null = mode === 'challenger' ? 'Tiger' : null;
 
-			const handlePlayerChange = (index: number, player: PlayerConfiguration) => {
+			const handlePlayerChange = (index: number, player: PlayerConfiguration) =>
+			{
 				const newPlayers = [...players];
 				newPlayers[index] = player;
 				setPlayers(newPlayers);
 			};
 
-			const handleModeChange = (newMode: GameMode) => {
+			const handleModeChange = (newMode: GameMode) =>
+			{
 				setMode(newMode);
-				if (newMode === 'challenger') {
+				if (newMode === 'challenger')
+				{
 					setSelectedAnimal(null);
 				}
 			};
@@ -411,8 +581,21 @@ export const ModeSwitchingDemo = {
 			const canStartGame = mode === 'standard' ? true : selectedAnimal !== null && opponentAnimal !== null;
 
 			return (
-				<div style={{padding: '20px', maxWidth: '1200px', margin: '0 auto'}}>
-					<p style={{marginBottom: '20px', fontSize: '1.1em'}}>
+				<div
+					style={
+					{
+						padding: '20px',
+						maxWidth: '1200px',
+						margin: '0 auto',
+					}}
+				>
+					<p
+						style={
+						{
+							marginBottom: '20px',
+							fontSize: '1.1em',
+						}}
+					>
 						This demo shows how the setup screen changes when switching between Standard and Challenger
 						modes. Player configurations in Standard mode are preserved when switching.
 					</p>
@@ -431,11 +614,20 @@ export const ModeSwitchingDemo = {
 						onPlayerCountChange={setPlayerCount}
 						onPlayerChange={handlePlayerChange}
 						onAnimalSelect={setSelectedAnimal}
-						onTeamCountChange={() => {}}
-						onPlayersPerTeamChange={() => {}}
-						onTeamChange={() => {}}
-						onTeamPlayerChange={() => {}}
-						onStartGame={() => {
+						onTeamCountChange={() =>
+						{
+						}}
+						onPlayersPerTeamChange={() =>
+						{
+						}}
+						onTeamChange={() =>
+						{
+						}}
+						onTeamPlayerChange={() =>
+						{
+						}}
+						onStartGame={() =>
+						{
 							console.log('Start game');
 						}}
 						canStartGame={canStartGame}
@@ -448,23 +640,47 @@ export const ModeSwitchingDemo = {
 	},
 };
 
-const inlineTeamProps = {
+const inlineTeamProps =
+{
 	teamCount: 2,
 	playersPerTeam: 2,
 	teams: createDefaultTeams(),
 	teamPlayers: createDefaultTeamPlayers(),
-	onTeamCountChange: () => {},
-	onPlayersPerTeamChange: () => {},
-	onTeamChange: () => {},
-	onTeamPlayerChange: () => {},
+	onTeamCountChange: () =>
+	{
+	},
+	onPlayersPerTeamChange: () =>
+	{
+	},
+	onTeamChange: () =>
+	{
+	},
+	onTeamPlayerChange: () =>
+	{
+	},
 };
 
-export const AllVariants = {
-	render: () => {
-		const AllVariantsDemo = () => {
+export const AllVariants =
+{
+	render: () =>
+	{
+		const AllVariantsDemo = () =>
+		{
 			return (
-				<div style={{padding: '20px', maxWidth: '1200px', margin: '0 auto'}}>
-					<div style={{marginBottom: '60px'}}>
+				<div
+					style={
+					{
+						padding: '20px',
+						maxWidth: '1200px',
+						margin: '0 auto',
+					}}
+				>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Standard Mode - Initial Setup (3 Players)</h3>
 						<SetupScreen
 							mode="standard"
@@ -474,41 +690,87 @@ export const AllVariants = {
 							selectedAnimal={null}
 							opponentAnimal={null}
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={true}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Standard Mode - Configured (4 Players with Names)</h3>
 						<SetupScreen
 							mode="standard"
 							unlockedAnimals={new Set(['Coyote', 'Llama', 'Tiger'])}
 							playerCount={4}
 							players={[
-								{name: 'Alice', animalType: 'Coyote', playerType: 'human'},
-								{name: 'Bob', animalType: 'Llama', playerType: 'human'},
-								{name: 'Charlie', animalType: 'Tiger', playerType: 'computer'},
-								{name: 'Diana', animalType: 'Coyote', playerType: 'computer'},
+								{
+									name: 'Alice',
+									animalType: 'Coyote',
+									playerType: 'human',
+								},
+								{
+									name: 'Bob',
+									animalType: 'Llama',
+									playerType: 'human',
+								},
+								{
+									name: 'Charlie',
+									animalType: 'Tiger',
+									playerType: 'computer',
+								},
+								{
+									name: 'Diana',
+									animalType: 'Coyote',
+									playerType: 'computer',
+								},
 								...createDefaultPlayers(),
 							]}
 							selectedAnimal={null}
 							opponentAnimal={null}
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={true}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Challenger Mode - No Selection</h3>
 						<SetupScreen
 							mode="challenger"
@@ -518,16 +780,31 @@ export const AllVariants = {
 							selectedAnimal={null}
 							opponentAnimal="Tiger"
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={false}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Challenger Mode - Animal Selected</h3>
 						<SetupScreen
 							mode="challenger"
@@ -537,16 +814,31 @@ export const AllVariants = {
 							selectedAnimal="Coyote"
 							opponentAnimal="Tiger"
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={true}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Challenger Mode - All Animals Unlocked</h3>
 						<SetupScreen
 							mode="challenger"
@@ -556,16 +848,31 @@ export const AllVariants = {
 							selectedAnimal="Gorilla"
 							opponentAnimal="Monkey"
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={true}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Challenger Mode - No Opponent Available</h3>
 						<SetupScreen
 							mode="challenger"
@@ -575,16 +882,31 @@ export const AllVariants = {
 							selectedAnimal={null}
 							opponentAnimal={null}
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={false}
 						/>
 					</div>
 
-					<div style={{marginBottom: '60px'}}>
+					<div
+						style={
+						{
+							marginBottom: '60px',
+						}}
+					>
 						<h3>Standard Mode - Cannot Start</h3>
 						<SetupScreen
 							mode="standard"
@@ -594,11 +916,21 @@ export const AllVariants = {
 							selectedAnimal={null}
 							opponentAnimal={null}
 							{...inlineTeamProps}
-							onModeChange={() => {}}
-							onPlayerCountChange={() => {}}
-							onPlayerChange={() => {}}
-							onAnimalSelect={() => {}}
-							onStartGame={() => {}}
+							onModeChange={() =>
+							{
+							}}
+							onPlayerCountChange={() =>
+							{
+							}}
+							onPlayerChange={() =>
+							{
+							}}
+							onAnimalSelect={() =>
+							{
+							}}
+							onStartGame={() =>
+							{
+							}}
 							canStartGame={false}
 						/>
 					</div>

@@ -4,7 +4,8 @@ import {Icon} from '../Icon/Icon';
 import type {LogEntry} from '../../lib/types';
 import './GameOverModal.css';
 
-export interface GameOverModalProperties {
+export interface GameOverModalProperties
+{
 	winnerAnnouncement: string;
 	logEntries: LogEntry[];
 	isOpen?: boolean;
@@ -20,16 +21,21 @@ export function GameOverModal({
 	onPlayAgain,
 	onCopyLog,
 	onSaveLog,
-}: GameOverModalProperties) {
+}: GameOverModalProperties)
+{
 	const [viewingLog, setViewingLog] = useState(false);
 
-	useEffect(() => {
-		if (!isOpen || !viewingLog) {
+	useEffect(() =>
+	{
+		if (!isOpen || !viewingLog)
+		{
 			return undefined;
 		}
 
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
+		const handleKeyDown = (event: KeyboardEvent) =>
+		{
+			if (event.key === 'Escape')
+			{
 				setViewingLog(false);
 				event.preventDefault();
 			}
@@ -37,17 +43,21 @@ export function GameOverModal({
 
 		document.addEventListener('keydown', handleKeyDown);
 
-		return () => {
+		return () =>
+		{
 			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [isOpen, viewingLog]);
 
-	if (!isOpen) {
+	if (!isOpen)
+	{
 		return null;
 	}
 
-	const formatLogEntry = (entry: LogEntry, index: number): string => {
-		if (entry.indent === 0) {
+	const formatLogEntry = (entry: LogEntry, index: number): string =>
+	{
+		if (entry.indent === 0)
+		{
 			return entry.message;
 		}
 
@@ -56,20 +66,31 @@ export function GameOverModal({
 		const hasChildren = nextEntry !== undefined && nextEntry.indent > entry.indent;
 
 		let prefix = '';
-		if (entry.indent === 1) {
-			if (hasChildren) {
+		if (entry.indent === 1)
+		{
+			if (hasChildren)
+			{
 				prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
-			} else {
+			}
+			else
+			{
 				prefix = hasNextSibling ? '├── ' : '└── ';
 			}
-		} else if (entry.indent === 2) {
+		}
+		else if (entry.indent === 2)
+		{
 			const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
-			if (hasChildren) {
+			if (hasChildren)
+			{
 				prefix = '  ' + connector;
-			} else {
+			}
+			else
+			{
 				prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
 			}
-		} else if (entry.indent === 3) {
+		}
+		else if (entry.indent === 3)
+		{
 			const connector = hasNextSibling ? '├── ' : '└── ';
 			prefix = '    ' + connector;
 		}
@@ -77,7 +98,8 @@ export function GameOverModal({
 		return prefix + entry.message;
 	};
 
-	if (viewingLog) {
+	if (viewingLog)
+	{
 		return (
 			<div className="game-over-screen">
 				<div className="game-over-modal game-over-modal-log">
@@ -92,18 +114,31 @@ export function GameOverModal({
 					<div className="button-group">
 						<Button
 							variant="primary"
-							onClick={() => {
+							onClick={() =>
+							{
 								setViewingLog(false);
 							}}
 						>
 							<Icon name="undo" />
 							Back to Results
 						</Button>
-						<Button variant="primary" {...(onCopyLog && {onClick: onCopyLog})}>
+						<Button
+							variant="primary"
+							{...(onCopyLog &&
+							{
+								onClick: onCopyLog,
+							})}
+						>
 							<Icon name="clipboard-copy" />
 							Copy to Clipboard
 						</Button>
-						<Button variant="primary" {...(onSaveLog && {onClick: onSaveLog})}>
+						<Button
+							variant="primary"
+							{...(onSaveLog &&
+							{
+								onClick: onSaveLog,
+							})}
+						>
 							<Icon name="download" />
 							Save Log
 						</Button>
@@ -118,24 +153,44 @@ export function GameOverModal({
 			<div className="game-over-modal">
 				<h2>{winnerAnnouncement}</h2>
 				<div className="button-group">
-					<Button variant="primary" className="primary" {...(onPlayAgain && {onClick: onPlayAgain})}>
+					<Button
+						variant="primary"
+						className="primary"
+						{...(onPlayAgain &&
+						{
+							onClick: onPlayAgain,
+						})}
+					>
 						<Icon name="refresh-cw" />
 						Play Again
 					</Button>
 					<Button
 						variant="primary"
-						onClick={() => {
+						onClick={() =>
+						{
 							setViewingLog(true);
 						}}
 					>
 						<Icon name="eye" />
 						View Log
 					</Button>
-					<Button variant="primary" {...(onCopyLog && {onClick: onCopyLog})}>
+					<Button
+						variant="primary"
+						{...(onCopyLog &&
+						{
+							onClick: onCopyLog,
+						})}
+					>
 						<Icon name="clipboard-copy" />
 						Copy to Clipboard
 					</Button>
-					<Button variant="primary" {...(onSaveLog && {onClick: onSaveLog})}>
+					<Button
+						variant="primary"
+						{...(onSaveLog &&
+						{
+							onClick: onSaveLog,
+						})}
+					>
 						<Icon name="download" />
 						Save Log
 					</Button>

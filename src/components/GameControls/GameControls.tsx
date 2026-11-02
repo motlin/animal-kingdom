@@ -4,7 +4,8 @@ import type {AnimalType} from '../../lib/types';
 import {ABILITY_NAMES} from '../../lib/constants';
 import './GameControls.css';
 
-export interface GameControlsProperties {
+export interface GameControlsProperties
+{
 	turnIndicator: string;
 	currentAnimal: AnimalType;
 	canAttack?: boolean;
@@ -40,7 +41,8 @@ export function GameControls({
 	onShield,
 	onDoNothing,
 	onUndo,
-}: GameControlsProperties) {
+}: GameControlsProperties)
+{
 	const abilityName = ABILITY_NAMES[currentAnimal];
 
 	const healText = healsRemaining > 0 ? `<u>H</u>eal (${healsRemaining})` : '<u>H</u>eal (0)';
@@ -50,30 +52,102 @@ export function GameControls({
 		<div className="game-controls">
 			<div className="turn-indicator">{turnIndicator}</div>
 			<div className="action-buttons">
-				<Button variant="primary" disabled={!canAttack} {...(onAttack && {onClick: onAttack})}>
+				<Button
+					variant="primary"
+					disabled={!canAttack}
+					{...(onAttack &&
+					{
+						onClick: onAttack,
+					})}
+				>
 					<Icon name="crosshair" />
-					<span dangerouslySetInnerHTML={{__html: '<u>A</u>ttack'}} />
+					<span
+						dangerouslySetInnerHTML={
+						{
+							__html: '<u>A</u>ttack',
+						}}
+					/>
 				</Button>
-				<Button variant="primary" disabled={!canUseAbility} {...(onUseAbility && {onClick: onUseAbility})}>
+				<Button
+					variant="primary"
+					disabled={!canUseAbility}
+					{...(onUseAbility &&
+					{
+						onClick: onUseAbility,
+					})}
+				>
 					<Icon name="sparkles" />
-					<span dangerouslySetInnerHTML={{__html: `Use A<u>b</u>ility: ${abilityName}`}} />
+					<span
+						dangerouslySetInnerHTML={
+						{
+							__html: `Use A<u>b</u>ility: ${abilityName}`,
+						}}
+					/>
 				</Button>
-				<Button variant="primary" disabled={!canHeal} {...(onHeal && {onClick: onHeal})}>
+				<Button
+					variant="primary"
+					disabled={!canHeal}
+					{...(onHeal &&
+					{
+						onClick: onHeal,
+					})}
+				>
 					<Icon name="heart" />
-					<span dangerouslySetInnerHTML={{__html: healText}} />
+					<span
+						dangerouslySetInnerHTML={
+						{
+							__html: healText,
+						}}
+					/>
 				</Button>
-				<Button variant="primary" disabled={!canShield} {...(onShield && {onClick: onShield})}>
+				<Button
+					variant="primary"
+					disabled={!canShield}
+					{...(onShield &&
+					{
+						onClick: onShield,
+					})}
+				>
 					<Icon name="shield-check" />
-					<span dangerouslySetInnerHTML={{__html: shieldText}} />
+					<span
+						dangerouslySetInnerHTML={
+						{
+							__html: shieldText,
+						}}
+					/>
 				</Button>
-				<Button variant="primary" disabled={!canDoNothing} {...(onDoNothing && {onClick: onDoNothing})}>
+				<Button
+					variant="primary"
+					disabled={!canDoNothing}
+					{...(onDoNothing &&
+					{
+						onClick: onDoNothing,
+					})}
+				>
 					<Icon name="pause" />
-					<span dangerouslySetInnerHTML={{__html: 'Do <u>N</u>othing'}} />
+					<span
+						dangerouslySetInnerHTML={
+						{
+							__html: 'Do <u>N</u>othing',
+						}}
+					/>
 				</Button>
 			</div>
-			<Button variant="undo" disabled={!canUndo} {...(onUndo && {onClick: onUndo})}>
+			<Button
+				variant="undo"
+				disabled={!canUndo}
+				{...(onUndo &&
+				{
+					onClick: onUndo,
+				})}
+			>
 				<Icon name="undo" />
-				<span dangerouslySetInnerHTML={{__html: '<u>U</u>ndo Last Action'}} />
+				<span
+					dangerouslySetInnerHTML={
+					{
+						__html: '<u>U</u>ndo Last Action',
+					}}
+				/>
 			</Button>
 		</div>
 	);

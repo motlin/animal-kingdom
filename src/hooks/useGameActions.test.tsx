@@ -4,7 +4,8 @@ import {useGameActions} from './useGameActions.ts';
 import type {Player, GameState, SoundType} from '../lib/types.ts';
 import * as sound from '../sound.ts';
 
-vi.mock('../sound.ts', () => ({
+vi.mock('../sound.ts', () => (
+{
 	playSound: vi.fn<(type: SoundType) => void>(),
 }));
 
@@ -13,7 +14,8 @@ function createTestPlayer(
 	name: string,
 	animal: 'Coyote' | 'Llama' | 'Tiger' | 'Gorilla' | 'Monkey',
 	hp: number = 3,
-): Player {
+): Player
+{
 	return {
 		id,
 		name,
@@ -22,13 +24,15 @@ function createTestPlayer(
 		maxHp: animal === 'Gorilla' ? 4 : 3,
 		isAlive: true,
 		isComputer: false,
-		status: {
+		status:
+		{
 			isShielded: false,
 			isSleeping: false,
 			sleepTurnsRemaining: 0,
 			snapBackActive: false,
 		},
-		oneTimeActions: {
+		oneTimeActions:
+		{
 			hasHealed: false,
 			hasShielded: false,
 			hasUsedAbility: false,
@@ -38,13 +42,17 @@ function createTestPlayer(
 	};
 }
 
-describe('useGameActions', () => {
-	beforeEach(() => {
+describe('useGameActions', () =>
+{
+	beforeEach(() =>
+	{
 		vi.clearAllMocks();
 	});
 
-	describe('applyDamage', () => {
-		it('applies damage to a player without shield', () => {
+	describe('applyDamage', () =>
+	{
+		it('applies damage to a player without shield', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			const source = createTestPlayer(2, 'Source', 'Llama');
@@ -60,7 +68,8 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith('Target (Coyote) now has 1/3 HP.', 2);
 		});
 
-		it('blocks damage with shield', () => {
+		it('blocks damage with shield', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			target.status.isShielded = true;
@@ -77,7 +86,8 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith("Target's (Coyote) shield blocked the attack from Source!", 2);
 		});
 
-		it('defeats player when hp reaches zero', () => {
+		it('defeats player when hp reaches zero', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const target = createTestPlayer(1, 'Target', 'Tiger');
 			target.hp = 1;
@@ -97,7 +107,8 @@ describe('useGameActions', () => {
 			expect(unlockAnimal).toHaveBeenCalledWith('Tiger');
 		});
 
-		it('caps damage at remaining hp', () => {
+		it('caps damage at remaining hp', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const target = createTestPlayer(1, 'Target', 'Coyote');
 			target.hp = 1;
@@ -112,8 +123,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleAttack', () => {
-		it('attacks target with 1 damage', () => {
+	describe('handleAttack', () =>
+	{
+		it('attacks target with 1 damage', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Attacker', 'Coyote');
 			const target = createTestPlayer(2, 'Target', 'Llama');
@@ -128,8 +141,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleHeal', () => {
-		it('heals player below max hp', () => {
+	describe('handleHeal', () =>
+	{
+		it('heals player below max hp', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Healer', 'Coyote');
 			source.hp = 1;
@@ -143,7 +158,8 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith('Healer (Coyote) healed for 1 HP.', 1);
 		});
 
-		it('overheals player at max hp', () => {
+		it('overheals player at max hp', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Healer', 'Coyote');
 			const logMessage = vi.fn<(message: string, indent?: number) => void>();
@@ -157,8 +173,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleShield', () => {
-		it('raises shield for player', () => {
+	describe('handleShield', () =>
+	{
+		it('raises shield for player', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Shielder', 'Coyote');
 			const logMessage = vi.fn<(message: string, indent?: number) => void>();
@@ -175,14 +193,17 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleHowl', () => {
-		it('puts all non-Coyote players to sleep', () => {
+	describe('handleHowl', () =>
+	{
+		it('puts all non-Coyote players to sleep', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Howler', 'Coyote');
 			const otherCoyote = createTestPlayer(2, 'Other Coyote', 'Coyote');
 			const llama = createTestPlayer(3, 'Llama', 'Llama');
 			const tiger = createTestPlayer(4, 'Tiger', 'Tiger');
-			const state: GameState = {
+			const state: GameState =
+			{
 				players: [source, otherCoyote, llama, tiger],
 				teams: [],
 				currentPlayerIndex: 0,
@@ -207,12 +228,14 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith('Howler the Coyote lets out a piercing Howl!', 1);
 		});
 
-		it('does not affect dead players', () => {
+		it('does not affect dead players', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Howler', 'Coyote');
 			const llama = createTestPlayer(2, 'Llama', 'Llama');
 			llama.isAlive = false;
-			const state: GameState = {
+			const state: GameState =
+			{
 				players: [source, llama],
 				teams: [],
 				currentPlayerIndex: 0,
@@ -231,8 +254,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleSpitball', () => {
-		it('can deal 2 damage with 15% chance', () => {
+	describe('handleSpitball', () =>
+	{
+		it('can deal 2 damage with 15% chance', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			vi.spyOn(Math, 'random').mockReturnValue(0.1);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
@@ -248,7 +273,8 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith("It's a direct hit for 2 damage!", 2);
 		});
 
-		it('can deal 1 damage with 40% chance', () => {
+		it('can deal 1 damage with 40% chance', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			vi.spyOn(Math, 'random').mockReturnValue(0.3);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
@@ -262,7 +288,8 @@ describe('useGameActions', () => {
 			expect(logMessage).toHaveBeenCalledWith("It's a direct hit for 1 damage!", 2);
 		});
 
-		it('can miss with 45% chance', () => {
+		it('can miss with 45% chance', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			vi.spyOn(Math, 'random').mockReturnValue(0.8);
 			const source = createTestPlayer(1, 'Spitter', 'Llama');
@@ -277,8 +304,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleStrike', () => {
-		it('attacks two targets for 1 damage each', () => {
+	describe('handleStrike', () =>
+	{
+		it('attacks two targets for 1 damage each', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Striker', 'Tiger');
 			const target1 = createTestPlayer(2, 'Target1', 'Coyote');
@@ -295,8 +324,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleRampage', () => {
-		it('deals 4 damage to target', () => {
+	describe('handleRampage', () =>
+	{
+		it('deals 4 damage to target', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Rampager', 'Gorilla');
 			const target = createTestPlayer(2, 'Target', 'Coyote');
@@ -317,8 +348,10 @@ describe('useGameActions', () => {
 		});
 	});
 
-	describe('handleMischief', () => {
-		it('permanently disables target ability', () => {
+	describe('handleMischief', () =>
+	{
+		it('permanently disables target ability', () =>
+		{
 			const {result} = renderHook(() => useGameActions());
 			const source = createTestPlayer(1, 'Prankster', 'Monkey');
 			const target = createTestPlayer(2, 'Target', 'Coyote');

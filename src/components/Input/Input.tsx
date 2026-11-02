@@ -1,7 +1,8 @@
 import React from 'react';
 import './Input.css';
 
-export interface InputProperties {
+export interface InputProperties
+{
 	value: string;
 	onChange: (value: string) => void;
 	placeholder?: string;
@@ -27,8 +28,10 @@ export function Input({
 	maxLength,
 	minLength,
 	required = false,
-}: InputProperties) {
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+}: InputProperties)
+{
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+	{
 		onChange(event.target.value);
 	};
 

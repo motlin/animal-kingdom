@@ -1,40 +1,48 @@
-.team-setup {
+.team-setup
+{
 	text-align: left;
 }
 
-.team-setup .setup-section {
+.team-setup .setup-section
+{
 	margin-bottom: 20px;
 }
 
-.team-setup .team-options {
+.team-setup .team-options
+{
 	display: flex;
 	gap: 20px;
 	flex-wrap: wrap;
 }
 
-.team-setup .team-options .select-container {
+.team-setup .team-options .select-container
+{
 	flex: 1;
 	min-width: 150px;
 }
 
-.team-setup h3 {
+.team-setup h3
+{
 	margin: 20px 0 10px;
 	color: var(--color-text);
 }
 
-.team-setup .team-names {
+.team-setup .team-names
+{
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 }
 
-.team-setup .team-name-input {
+.team-setup .team-name-input
+{
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
-.team-setup .team-color-indicator {
+.team-setup .team-color-indicator
+{
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
@@ -42,23 +50,27 @@
 	border: 2px solid var(--color-border);
 }
 
-.team-setup .team-name-input .input-container {
+.team-setup .team-name-input .input-container
+{
 	flex: 1;
 	max-width: 300px;
 }
 
-.team-setup .players-section {
+.team-setup .players-section
+{
 	margin-top: 20px;
 }
 
-.team-setup .team-players {
+.team-setup .team-players
+{
 	margin-bottom: 20px;
 	padding: 10px;
 	background: var(--color-bg-secondary);
 	border-radius: 8px;
 }
 
-.team-setup .team-header {
+.team-setup .team-header
+{
 	font-weight: bold;
 	padding: 8px 12px;
 	margin-bottom: 10px;
@@ -67,7 +79,8 @@
 	border-radius: 4px;
 }
 
-.team-setup .player-selections {
+.team-setup .player-selections
+{
 	display: flex;
 	flex-direction: column;
 	gap: 10px;

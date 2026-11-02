@@ -1,12 +1,14 @@
 import React from 'react';
 import './Select.css';
 
-export interface SelectOption {
+export interface SelectOption
+{
 	value: string;
 	label: string;
 }
 
-export interface SelectProperties {
+export interface SelectProperties
+{
 	value: string;
 	options: SelectOption[];
 	onChange: (value: string) => void;
@@ -16,8 +18,10 @@ export interface SelectProperties {
 	label?: string;
 }
 
-export function Select({value, options, onChange, disabled = false, className = '', id, label}: SelectProperties) {
-	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+export function Select({value, options, onChange, disabled = false, className = '', id, label}: SelectProperties)
+{
+	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+	{
 		onChange(event.target.value);
 	};
 
