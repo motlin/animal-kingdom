@@ -1,4 +1,5 @@
-.game-over-screen {
+.game-over-screen
+{
 	display: flex;
 	position: fixed;
 	top: 0;
@@ -11,7 +12,8 @@
 	z-index: 100;
 }
 
-.game-over-modal {
+.game-over-modal
+{
 	background-color: var(--color-light);
 	padding: 40px;
 	border-radius: 15px;
@@ -19,7 +21,8 @@
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
-.game-over-modal-log {
+.game-over-modal-log
+{
 	max-width: 800px;
 	max-height: 90vh;
 	overflow: hidden;
@@ -27,7 +30,8 @@
 	flex-direction: column;
 }
 
-.modal-log-content {
+.modal-log-content
+{
 	flex: 1;
 	overflow-y: auto;
 	text-align: left;
@@ -39,49 +43,58 @@
 	max-height: 60vh;
 }
 
-.modal-log-entry {
+.modal-log-entry
+{
 	white-space: pre-wrap;
 	line-height: 1.2;
 }
 
-.game-over-modal h2 {
+.game-over-modal h2
+{
 	font-size: 2.5em;
 	margin-bottom: 20px;
 	color: var(--color-primary);
 }
 
-.game-over-modal button {
+.game-over-modal button
+{
 	margin-top: 20px;
 	font-size: 1.2em;
 }
 
-.game-over-modal .button-group {
+.game-over-modal .button-group
+{
 	display: flex;
 	gap: 10px;
 	justify-content: center;
 	flex-wrap: wrap;
 }
 
-.game-over-modal .button-group button {
+.game-over-modal .button-group button
+{
 	flex: 1;
 	min-width: 150px;
 }
 
-.game-over-modal .button-group button.primary {
+.game-over-modal .button-group button.primary
+{
 	background-color: #2ecc71;
 	font-size: 1.3em;
 	font-weight: bold;
 	padding: 12px 20px;
 }
 
-.game-over-modal .button-group button.primary:hover:not(:disabled) {
+.game-over-modal .button-group button.primary:hover:not(:disabled)
+{
 	background-color: #27ae60;
 }
 
-body.dark-mode .game-over-modal .button-group button.primary {
+body.dark-mode .game-over-modal .button-group button.primary
+{
 	background-color: #27ae60;
 }
 
-body.dark-mode .game-over-modal .button-group button.primary:hover:not(:disabled) {
+body.dark-mode .game-over-modal .button-group button.primary:hover:not(:disabled)
+{
 	background-color: #229954;
 }

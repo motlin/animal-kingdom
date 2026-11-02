@@ -1,7 +1,8 @@
 import type {AnimalType} from '../../lib/types';
 import './AnimalCard.css';
 
-export interface AnimalCardProperties {
+export interface AnimalCardProperties
+{
 	animal: AnimalType;
 	abilityDescription: string;
 	selected?: boolean;
@@ -15,9 +16,12 @@ export function AnimalCard({
 	selected = false,
 	onClick,
 	className = '',
-}: AnimalCardProperties) {
-	const handleClick = () => {
-		if (onClick) {
+}: AnimalCardProperties)
+{
+	const handleClick = () =>
+	{
+		if (onClick)
+		{
 			onClick(animal);
 		}
 	};
@@ -31,8 +35,10 @@ export function AnimalCard({
 			onClick={handleClick}
 			role="button"
 			tabIndex={0}
-			onKeyDown={(event) => {
-				if (event.key === 'Enter' || event.key === ' ') {
+			onKeyDown={(event) =>
+			{
+				if (event.key === 'Enter' || event.key === ' ')
+				{
 					event.preventDefault();
 					handleClick();
 				}

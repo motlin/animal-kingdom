@@ -4,7 +4,8 @@ import {ANIMAL_ROSTER} from '../../lib/constants';
 import type {AnimalType} from '../../lib/types';
 import './ChallengerSetup.css';
 
-export interface ChallengerSetupProperties {
+export interface ChallengerSetupProperties
+{
 	selectedAnimal: AnimalType | null;
 	unlockedAnimals: Set<AnimalType>;
 	opponentAnimal: AnimalType | null;
@@ -18,7 +19,8 @@ export function ChallengerSetup({
 	opponentAnimal,
 	onAnimalSelect,
 	disabled = false,
-}: ChallengerSetupProperties) {
+}: ChallengerSetupProperties)
+{
 	const unlockedAnimalsList = Array.from(unlockedAnimals);
 
 	const handleAnimalClick = disabled ? undefined : onAnimalSelect;
@@ -34,7 +36,12 @@ export function ChallengerSetup({
 							animal={animal}
 							abilityDescription={ANIMAL_ROSTER[animal].abilityDesc}
 							selected={selectedAnimal === animal}
-							{...(handleAnimalClick ? {onClick: handleAnimalClick} : {})}
+							{...(handleAnimalClick
+								?
+									{
+										onClick: handleAnimalClick,
+									}
+								: {})}
 						/>
 					))}
 				</div>

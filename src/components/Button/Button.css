@@ -1,4 +1,5 @@
-button {
+button
+{
 	font-family: var(--font-main);
 	padding: 10px 15px;
 	border-radius: 8px;
@@ -12,49 +13,58 @@ button {
 	gap: 8px;
 }
 
-body.dark-mode button {
+body.dark-mode button
+{
 	background-color: var(--color-light);
 	color: var(--color-text);
 }
 
-button svg {
+button svg
+{
 	width: 18px;
 	height: 18px;
 	flex-shrink: 0;
 	vertical-align: middle;
 }
 
-button u {
+button u
+{
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
 }
 
-.button-primary {
+.button-primary
+{
 	background-color: var(--color-primary);
 	color: white;
 	border: none;
 }
 
-body.dark-mode .button-primary {
+body.dark-mode .button-primary
+{
 	background-color: var(--color-primary);
 	color: white;
 }
 
-.button-primary:hover:not(:disabled) {
+.button-primary:hover:not(:disabled)
+{
 	background-color: var(--color-secondary);
 }
 
-.button-primary:disabled {
+.button-primary:disabled
+{
 	background-color: #ccc;
 	cursor: not-allowed;
 }
 
-body.dark-mode .button-primary:disabled {
+body.dark-mode .button-primary:disabled
+{
 	background-color: #555;
 	color: #888;
 }
 
-.button-mode {
+.button-mode
+{
 	flex: 1;
 	max-width: 250px;
 	padding: 15px 20px;
@@ -64,19 +74,22 @@ body.dark-mode .button-primary:disabled {
 	border: 2px solid var(--color-accent);
 }
 
-.button-mode:hover:not(:disabled) {
+.button-mode:hover:not(:disabled)
+{
 	background-color: var(--color-primary);
 	color: white;
 	border-color: var(--color-primary);
 }
 
-.button-mode.active {
+.button-mode.active
+{
 	background-color: var(--color-primary);
 	color: white;
 	border-color: var(--color-secondary);
 }
 
-.button-undo {
+.button-undo
+{
 	margin-top: 15px;
 	width: 100%;
 	background-color: #9b59b6;
@@ -84,26 +97,31 @@ body.dark-mode .button-primary:disabled {
 	border: none;
 }
 
-body.dark-mode .button-undo {
+body.dark-mode .button-undo
+{
 	background-color: #9b59b6;
 	color: white;
 }
 
-.button-undo:hover:not(:disabled) {
+.button-undo:hover:not(:disabled)
+{
 	background-color: #8e44ad;
 }
 
-.button-undo:disabled {
+.button-undo:disabled
+{
 	background-color: #ccc;
 	cursor: not-allowed;
 }
 
-body.dark-mode .button-undo:disabled {
+body.dark-mode .button-undo:disabled
+{
 	background-color: #555;
 	color: #888;
 }
 
-.button-toggle {
+.button-toggle
+{
 	position: fixed;
 	background-color: var(--color-accent);
 	border: 2px solid var(--color-primary);
@@ -121,28 +139,33 @@ body.dark-mode .button-undo:disabled {
 	padding: 0;
 }
 
-.button-toggle svg {
+.button-toggle svg
+{
 	width: 24px;
 	height: 24px;
 }
 
-.button-toggle:hover {
+.button-toggle:hover
+{
 	background-color: var(--color-primary);
 	transform: scale(1.1);
 }
 
-.button-log {
+.button-log
+{
 	flex: 1;
 	background-color: var(--color-primary);
 	color: white;
 	border: none;
 }
 
-body.dark-mode .button-log {
+body.dark-mode .button-log
+{
 	background-color: var(--color-primary);
 	color: white;
 }
 
-.button-log:hover:not(:disabled) {
+.button-log:hover:not(:disabled)
+{
 	background-color: var(--color-secondary);
 }

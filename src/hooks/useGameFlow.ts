@@ -4,13 +4,15 @@ import type {UseGameStateReturn} from './useGameState.ts';
 import type {UseGameActionsReturn} from './useGameActions.ts';
 import {playSound} from '../sound.ts';
 
-export interface UseGameFlowCallbacks {
+export interface UseGameFlowCallbacks
+{
 	onRender?: () => void;
 	onShowConfetti?: () => void;
 	onEndGame?: (winner: Player | undefined, announcement: string) => void;
 }
 
-export interface UseGameFlowReturn {
+export interface UseGameFlowReturn
+{
 	startTurn: (playerIndex?: number) => void;
 	endTurn: () => void;
 	playComputerTurn: (player: Player) => void;
@@ -29,11 +31,13 @@ export function useGameFlow(
 	gameState: UseGameStateReturn,
 	gameActions: UseGameActionsReturn,
 	callbacks: UseGameFlowCallbacks = {},
-): UseGameFlowReturn {
+): UseGameFlowReturn
+{
 	const gameStateRef = useRef(gameState);
 	const gameActionsRef = useRef(gameActions);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		gameStateRef.current = gameState;
 		gameActionsRef.current = gameActions;
 	});
@@ -48,55 +52,83 @@ export function useGameFlow(
 	const playComputerTurnRef = useRef<((player: Player) => void) | null>(null);
 
 	const endGame = useCallback(
-		(winner: Player | undefined, winningTeamId?: number): void => {
+		(winner: Player | undefined, winningTeamId?: number): void =>
+		{
 			const state = gameStateRef.current.state;
 			playSound('victory');
 
 			let announcement: string;
-			if (state.gameMode === 'team' && winningTeamId !== undefined) {
+			if (state.gameMode === 'team' && winningTeamId !== undefined)
+			{
 				const winningTeam = state.teams.find((t) => t.id === winningTeamId);
 				const teamName =
 					winningTeam?.name !== undefined && winningTeam.name !== ''
 						? winningTeam.name
 						: `Team ${winningTeamId + 1}`;
 				announcement = `${teamName} wins!`;
-			} else if (winner === undefined) {
+			}
+			else if (winner === undefined)
+			{
 				announcement = "It's a draw!";
-			} else {
+			}
+			else
+			{
 				announcement = `${winner.name} the ${winner.animal} is the new ruler!`;
 			}
 
 			const gameMode = state.gameMode;
 			const opponent = state.players.find((p) => p.isComputer);
 
-			updateState((newState) => {
+			updateState((newState) =>
+			{
 				newState.gameState = 'gameOver';
-				newState.log.push({message: announcement, indent: 0});
+				newState.log.push(
+					{
+						message: announcement,
+						indent: 0,
+					},
+				);
 
-				if (gameMode === 'challenger' && winner && !winner.isComputer && opponent) {
-					newState.log.push({message: `You unlocked the ${opponent.animal}!`, indent: 1});
+				if (gameMode === 'challenger' && winner && !winner.isComputer && opponent)
+				{
+					newState.log.push(
+						{
+							message: `You unlocked the ${opponent.animal}!`,
+							indent: 1,
+						},
+					);
 				}
 
-				if (gameMode === 'team' && winningTeamId !== undefined) {
+				if (gameMode === 'team' && winningTeamId !== undefined)
+				{
 					const winningPlayers = newState.players.filter((p) => p.teamId === winningTeamId && p.isAlive);
-					for (const player of winningPlayers) {
-						newState.log.push({message: `${player.name} the ${player.animal} is victorious!`, indent: 1});
+					for (const player of winningPlayers)
+					{
+						newState.log.push(
+							{
+								message: `${player.name} the ${player.animal} is victorious!`,
+								indent: 1,
+							},
+						);
 					}
 				}
 			});
 
-			if (gameMode === 'challenger' && winner && !winner.isComputer && opponent) {
+			if (gameMode === 'challenger' && winner && !winner.isComputer && opponent)
+			{
 				unlockAnimal(opponent.animal);
 			}
 
-			if (onEndGame) {
+			if (onEndGame)
+			{
 				onEndGame(winner, announcement);
 			}
 		},
 		[updateState, unlockAnimal, onEndGame],
 	);
 
-	const endTurn = useCallback((): void => {
+	const endTurn = useCallback((): void =>
+	{
 		const state = gameStateRef.current.state;
 		const currentPlayerIndex = state.currentPlayerIndex;
 		const lastPlayer = state.players[currentPlayerIndex];
@@ -110,30 +142,39 @@ export function useGameFlow(
 		let winner: Player | undefined;
 		let winningTeamId: number | undefined;
 
-		if (state.gameMode === 'team') {
+		if (state.gameMode === 'team')
+		{
 			// In team mode, check if only one team has alive players
 			const aliveTeamIds = new Set(alivePlayers.map((p) => p.teamId).filter((id) => id !== undefined));
-			if (aliveTeamIds.size <= 1) {
+			if (aliveTeamIds.size <= 1)
+			{
 				gameEnded = true;
-				if (aliveTeamIds.size === 1) {
+				if (aliveTeamIds.size === 1)
+				{
 					winningTeamId = Array.from(aliveTeamIds)[0];
 					winner = alivePlayers[0];
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// Standard/Challenger mode: game ends when 1 or fewer players alive
-			if (alivePlayers.length <= 1) {
+			if (alivePlayers.length <= 1)
+			{
 				gameEnded = true;
 				winner = alivePlayers[0];
 			}
 		}
 
-		if (gameEnded) {
-			updateState((newState) => {
+		if (gameEnded)
+		{
+			updateState((newState) =>
+			{
 				newState.gameState = 'gameEnding';
 			});
 
-			if (onRender) {
+			if (onRender)
+			{
 				onRender();
 			}
 
@@ -141,11 +182,13 @@ export function useGameFlow(
 				state.gameMode === 'standard' ||
 				state.gameMode === 'team' ||
 				(winner !== undefined && !winner.isComputer);
-			if (shouldShowConfetti && onShowConfetti !== undefined) {
+			if (shouldShowConfetti && onShowConfetti !== undefined)
+			{
 				onShowConfetti();
 			}
 
-			setTimeout(() => {
+			setTimeout(() =>
+			{
 				endGame(winner, winningTeamId);
 			}, 2000);
 			return;
@@ -153,29 +196,39 @@ export function useGameFlow(
 
 		let nextIndex = (currentPlayerIndex + 1) % state.players.length;
 		let nextPlayer = state.players[nextIndex];
-		while (nextPlayer !== undefined && !nextPlayer.isAlive) {
+		while (nextPlayer !== undefined && !nextPlayer.isAlive)
+		{
 			nextIndex = (nextIndex + 1) % state.players.length;
 			nextPlayer = state.players[nextIndex];
 		}
 
-		updateState((newState) => {
-			if (lastPlayerCooldown > 0) {
+		updateState((newState) =>
+		{
+			if (lastPlayerCooldown > 0)
+			{
 				const player = newState.players[currentPlayerIndex];
-				if (player) {
+				if (player)
+				{
 					player.abilityCooldown = lastPlayerCooldown - 1;
 				}
 			}
 			// Decrement sleep counter at the end of the sleeping player's turn
-			if (lastPlayerWasSleeping) {
+			if (lastPlayerWasSleeping)
+			{
 				const player = newState.players[currentPlayerIndex];
-				if (player) {
-					if (player.status.sleepTurnsRemaining > 0) {
+				if (player)
+				{
+					if (player.status.sleepTurnsRemaining > 0)
+					{
 						player.status.sleepTurnsRemaining -= 1;
 						// Clear sleep status when counter reaches 0
-						if (player.status.sleepTurnsRemaining === 0) {
+						if (player.status.sleepTurnsRemaining === 0)
+						{
 							player.status.isSleeping = false;
 						}
-					} else {
+					}
+					else
+					{
 						// If isSleeping is true but counter is 0, clear it immediately
 						// (handles edge cases and backward compatibility)
 						player.status.isSleeping = false;
@@ -190,39 +243,53 @@ export function useGameFlow(
 	}, [updateState, onRender, onShowConfetti, endGame]);
 
 	const playComputerTurn = useCallback(
-		(player: Player): void => {
+		(player: Player): void =>
+		{
 			const state = gameStateRef.current.state;
 			// In team mode, only target opponents (not teammates)
-			const aliveOpponents = state.players.filter((p) => {
+			const aliveOpponents = state.players.filter((p) =>
+			{
 				if (!p.isAlive) return false;
 				if (p.id === player.id) return false;
 				// In team mode, can't attack teammates
-				if (state.gameMode === 'team' && player.teamId !== undefined) {
+				if (state.gameMode === 'team' && player.teamId !== undefined)
+				{
 					if (p.teamId === player.teamId) return false;
 				}
 				return true;
 			});
-			if (aliveOpponents.length === 0) {
+			if (aliveOpponents.length === 0)
+			{
 				endTurnRef.current?.();
 				return;
 			}
 
 			const randomTarget = aliveOpponents[Math.floor(Math.random() * aliveOpponents.length)];
-			if (randomTarget) {
-				updateState((newState) => {
-					const localLog = (message: string, indent = 0) => {
-						newState.log.push({message, indent});
+			if (randomTarget)
+			{
+				updateState((newState) =>
+				{
+					const localLog = (message: string, indent = 0) =>
+					{
+						newState.log.push(
+							{
+								message,
+								indent,
+							},
+						);
 					};
 
 					const source = newState.players.find((p) => p.id === player.id);
 					const target = newState.players.find((p) => p.id === randomTarget.id);
 
-					if (source && target) {
+					if (source && target)
+					{
 						handleAttack(source, target, localLog, unlockAnimal);
 					}
 				});
 			}
-			setTimeout(() => {
+			setTimeout(() =>
+			{
 				endTurnRef.current?.();
 			}, 1000);
 		},
@@ -230,7 +297,8 @@ export function useGameFlow(
 	);
 
 	const startTurn = useCallback(
-		(playerIndex?: number): void => {
+		(playerIndex?: number): void =>
+		{
 			saveStateToHistory();
 
 			const state = gameStateRef.current.state;
@@ -242,15 +310,22 @@ export function useGameFlow(
 			const wasSleeping = currentPlayer.status.isSleeping;
 			const hadSnapBackActive = currentPlayer.status.snapBackActive;
 
-			updateState((newState) => {
+			updateState((newState) =>
+			{
 				const player = newState.players[currentPlayerIndex];
 				if (!player) return;
 
 				newState.turnSkipped = false;
-				newState.log.push({message: `It's ${player.name}'s (${player.animal}) turn!`, indent: 0});
+				newState.log.push(
+					{
+						message: `It's ${player.name}'s (${player.animal}) turn!`,
+						indent: 0,
+					},
+				);
 
 				// Check for failed Snap Back
-				if (hadSnapBackActive) {
+				if (hadSnapBackActive)
+				{
 					player.status.snapBackActive = false;
 					player.abilityDisabled = true;
 					player.status.isSleeping = true;
@@ -258,63 +333,96 @@ export function useGameFlow(
 					const snapBackDamage = 1;
 					player.hp -= snapBackDamage;
 					playSound('damage');
-					newState.log.push({
-						message: `${player.name}'s Snap Back failed! No one attacked during the counter window.`,
-						indent: 1,
-					});
-					newState.log.push({message: `${player.name} takes ${snapBackDamage} damage!`, indent: 2});
-					newState.log.push({
-						message: `${player.name} (${player.animal}) now has ${player.hp}/${player.maxHp} HP.`,
-						indent: 2,
-					});
-					newState.log.push({message: `${player.name}'s ability is permanently disabled!`, indent: 2});
-					newState.log.push({message: `${player.name} loses their next turn!`, indent: 2});
+					newState.log.push(
+						{
+							message: `${player.name}'s Snap Back failed! No one attacked during the counter window.`,
+							indent: 1,
+						},
+					);
+					newState.log.push(
+						{
+							message: `${player.name} takes ${snapBackDamage} damage!`,
+							indent: 2,
+						},
+					);
+					newState.log.push(
+						{
+							message: `${player.name} (${player.animal}) now has ${player.hp}/${player.maxHp} HP.`,
+							indent: 2,
+						},
+					);
+					newState.log.push(
+						{
+							message: `${player.name}'s ability is permanently disabled!`,
+							indent: 2,
+						},
+					);
+					newState.log.push(
+						{
+							message: `${player.name} loses their next turn!`,
+							indent: 2,
+						},
+					);
 
-					if (player.hp <= 0) {
+					if (player.hp <= 0)
+					{
 						player.isAlive = false;
 						playSound('defeat');
-						newState.log.push({
-							message: `${player.name}'s (${player.animal}) has been defeated!`,
-							indent: 3,
-						});
+						newState.log.push(
+							{
+								message: `${player.name}'s (${player.animal}) has been defeated!`,
+								indent: 3,
+							},
+						);
 					}
 					newState.actionInProgress = null;
 					newState.turnSkipped = true;
 				}
 
-				if (wasShielded) {
+				if (wasShielded)
+				{
 					player.status.isShielded = false;
-					newState.log.push({
-						message: `${player.name}'s (${player.animal}) shield has worn off.`,
-						indent: 1,
-					});
+					newState.log.push(
+						{
+							message: `${player.name}'s (${player.animal}) shield has worn off.`,
+							indent: 1,
+						},
+					);
 				}
 
-				if (wasSleeping) {
+				if (wasSleeping)
+				{
 					// Don't clear sleep status yet - clear it in endTurn instead
-					newState.log.push({
-						message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
-						indent: 1,
-					});
+					newState.log.push(
+						{
+							message: `${player.name} (${player.animal}) is asleep and skips their turn!`,
+							indent: 1,
+						},
+					);
 					newState.actionInProgress = null;
 					newState.turnSkipped = true;
 				}
 			});
 
-			if (wasSleeping || hadSnapBackActive) {
-				if (onRender) {
+			if (wasSleeping || hadSnapBackActive)
+			{
+				if (onRender)
+				{
 					onRender();
 				}
 				setTimeout(() => endTurnRef.current?.(), 1500);
 				return;
 			}
 
-			if (onRender) {
+			if (onRender)
+			{
 				onRender();
 			}
 
-			if (currentPlayer.isComputer) {
-				setTimeout(() => {
+			if (currentPlayer.isComputer)
+			{
+				setTimeout(() =>
+				{
 					playComputerTurnRef.current?.(currentPlayer);
 				}, 1000);
 			}
@@ -322,16 +430,19 @@ export function useGameFlow(
 		[saveStateToHistory, updateState, onRender],
 	);
 
-	const handleUndo = useCallback((): void => {
+	const handleUndo = useCallback((): void =>
+	{
 		restorePreviousState();
 		logMessage('Turn undone');
-		if (onRender) {
+		if (onRender)
+		{
 			onRender();
 		}
 	}, [restorePreviousState, logMessage, onRender]);
 
 	const executeTargetedAction = useCallback(
-		(targetId: number): void => {
+		(targetId: number): void =>
+		{
 			const state = gameStateRef.current.state;
 			const actionInProgress = state.actionInProgress;
 			if (!actionInProgress) return;
@@ -339,19 +450,28 @@ export function useGameFlow(
 			const {type, sourceId, requiredTargets} = actionInProgress;
 			const currentTargets = [...actionInProgress.targets];
 
-			if (!currentTargets.includes(targetId)) {
+			if (!currentTargets.includes(targetId))
+			{
 				currentTargets.push(targetId);
 			}
 
-			if (currentTargets.length === requiredTargets) {
-				updateState((newState) => {
+			if (currentTargets.length === requiredTargets)
+			{
+				updateState((newState) =>
+				{
 					const action = newState.actionInProgress;
 					if (!action) return;
 
 					action.targets = currentTargets;
 
-					const localLog = (message: string, indent = 0) => {
-						newState.log.push({message, indent});
+					const localLog = (message: string, indent = 0) =>
+					{
+						newState.log.push(
+							{
+								message,
+								indent,
+							},
+						);
 					};
 
 					const source = newState.players.find((p) => p.id === sourceId);
@@ -361,7 +481,8 @@ export function useGameFlow(
 
 					const [firstTarget, secondTarget] = targetPlayers;
 
-					if (source !== undefined && firstTarget !== undefined) {
+					if (source !== undefined && firstTarget !== undefined)
+					{
 						if (type === 'attack') handleAttack(source, firstTarget, localLog, unlockAnimal);
 						if (type === 'spitball') handleSpitball(source, firstTarget, localLog, unlockAnimal);
 						if (type === 'strike' && secondTarget !== undefined)
@@ -373,14 +494,19 @@ export function useGameFlow(
 					newState.actionInProgress = null;
 				});
 				setTimeout(() => endTurnRef.current?.(), 0);
-			} else {
-				updateState((newState) => {
-					if (newState.actionInProgress) {
+			}
+			else
+			{
+				updateState((newState) =>
+				{
+					if (newState.actionInProgress)
+					{
 						newState.actionInProgress.targets = currentTargets;
 						newState.actionInProgress.prompt = `Select target 2 of ${requiredTargets}.`;
 					}
 				});
-				if (onRender) {
+				if (onRender)
+				{
 					onRender();
 				}
 			}
@@ -398,15 +524,20 @@ export function useGameFlow(
 	);
 
 	const initiateTargetSelection = useCallback(
-		(type: ActionInProgress['type'], sourceId: number, requiredTargets: number, prompt: string): void => {
+		(type: ActionInProgress['type'], sourceId: number, requiredTargets: number, prompt: string): void =>
+		{
 			const state = gameStateRef.current.state;
-			if (state.gameMode === 'challenger' && requiredTargets === 1) {
+			if (state.gameMode === 'challenger' && requiredTargets === 1)
+			{
 				const aliveOpponents = state.players.filter((p) => p.isAlive && p.id !== sourceId);
 				const soleOpponent = aliveOpponents[0];
-				if (aliveOpponents.length === 1 && soleOpponent !== undefined) {
+				if (aliveOpponents.length === 1 && soleOpponent !== undefined)
+				{
 					const targetId = soleOpponent.id;
-					updateState((newState) => {
-						newState.actionInProgress = {
+					updateState((newState) =>
+					{
+						newState.actionInProgress =
+						{
 							type,
 							sourceId,
 							requiredTargets,
@@ -414,14 +545,21 @@ export function useGameFlow(
 							prompt,
 						};
 
-						const localLog = (message: string, indent = 0) => {
-							newState.log.push({message, indent});
+						const localLog = (message: string, indent = 0) =>
+						{
+							newState.log.push(
+								{
+									message,
+									indent,
+								},
+							);
 						};
 
 						const source = newState.players.find((p) => p.id === sourceId);
 						const target = newState.players.find((p) => p.id === targetId);
 
-						if (source && target) {
+						if (source && target)
+						{
 							if (type === 'attack') handleAttack(source, target, localLog, unlockAnimal);
 							if (type === 'spitball') handleSpitball(source, target, localLog, unlockAnimal);
 							if (type === 'rampage') handleRampage(source, target, localLog, unlockAnimal);
@@ -435,8 +573,10 @@ export function useGameFlow(
 				}
 			}
 
-			updateState((newState) => {
-				newState.actionInProgress = {
+			updateState((newState) =>
+			{
+				newState.actionInProgress =
+				{
 					type,
 					sourceId,
 					requiredTargets,
@@ -444,7 +584,8 @@ export function useGameFlow(
 					prompt,
 				};
 			});
-			if (onRender) {
+			if (onRender)
+			{
 				onRender();
 			}
 		},
@@ -452,21 +593,32 @@ export function useGameFlow(
 	);
 
 	const handleAbility = useCallback(
-		(source: Player): void => {
-			switch (source.animal) {
+		(source: Player): void =>
+		{
+			switch (source.animal)
+			{
 				case 'Coyote':
-					updateState((newState) => {
-						const localLog = (message: string, indent = 0) => {
-							newState.log.push({message, indent});
+					updateState((newState) =>
+					{
+						const localLog = (message: string, indent = 0) =>
+						{
+							newState.log.push(
+								{
+									message,
+									indent,
+								},
+							);
 						};
 						const coyote = newState.players.find((p) => p.id === source.id);
-						if (coyote) {
+						if (coyote)
+						{
 							handleHowl(coyote, newState, localLog);
 						}
 						// Clear action so coyote can take another action immediately
 						newState.actionInProgress = null;
 					});
-					if (onRender) {
+					if (onRender)
+					{
 						onRender();
 					}
 					// Don't end turn - coyote gets to act again immediately!
@@ -484,18 +636,27 @@ export function useGameFlow(
 					initiateTargetSelection('mischief', source.id, 1, `Select a target for Mischief.`);
 					break;
 				case 'Crocodile':
-					updateState((newState) => {
-						const localLog = (message: string, indent = 0) => {
-							newState.log.push({message, indent});
+					updateState((newState) =>
+					{
+						const localLog = (message: string, indent = 0) =>
+						{
+							newState.log.push(
+								{
+									message,
+									indent,
+								},
+							);
 						};
 						const crocodile = newState.players.find((p) => p.id === source.id);
-						if (crocodile) {
+						if (crocodile)
+						{
 							handleSnapBack(crocodile, localLog);
 						}
 						// Clear action so crocodile can take another action immediately
 						newState.actionInProgress = null;
 					});
-					if (onRender) {
+					if (onRender)
+					{
 						onRender();
 					}
 					// Don't end turn - crocodile gets to act again immediately!
@@ -508,7 +669,8 @@ export function useGameFlow(
 		[updateState, handleHowl, handleSnapBack, onRender, initiateTargetSelection],
 	);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		startTurnRef.current = startTurn;
 		endTurnRef.current = endTurn;
 		playComputerTurnRef.current = playComputerTurn;

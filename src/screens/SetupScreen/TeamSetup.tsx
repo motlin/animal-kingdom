@@ -5,20 +5,23 @@ import type {AnimalType} from '../../lib/types';
 import {TEAM_COLORS} from '../../lib/constants';
 import './TeamSetup.css';
 
-export interface TeamConfiguration {
+export interface TeamConfiguration
+{
 	id: number;
 	name: string;
 	color: string;
 }
 
-export interface TeamPlayerConfiguration {
+export interface TeamPlayerConfiguration
+{
 	name: string;
 	animalType: AnimalType;
 	playerType: 'human' | 'computer';
 	teamId: number;
 }
 
-export interface TeamSetupProperties {
+export interface TeamSetupProperties
+{
 	teamCount: number;
 	playersPerTeam: number;
 	teams: TeamConfiguration[];
@@ -42,22 +45,37 @@ export function TeamSetup({
 	onTeamChange,
 	onPlayerChange,
 	disabled = false,
-}: TeamSetupProperties) {
-	const teamCountOptions: SelectOption[] = Array.from({length: 5}, (_, i) => ({
-		value: (i + 2).toString(),
-		label: `${i + 2} Teams`,
-	}));
+}: TeamSetupProperties)
+{
+	const teamCountOptions: SelectOption[] = Array.from(
+		{
+			length: 5,
+		},
+		(_, i) => (
+		{
+			value: (i + 2).toString(),
+			label: `${i + 2} Teams`,
+		}),
+	);
 
-	const playersPerTeamOptions: SelectOption[] = Array.from({length: 4}, (_, i) => ({
-		value: (i + 1).toString(),
-		label: `${i + 1} per team`,
-	}));
+	const playersPerTeamOptions: SelectOption[] = Array.from(
+		{
+			length: 4,
+		},
+		(_, i) => (
+		{
+			value: (i + 1).toString(),
+			label: `${i + 1} per team`,
+		}),
+	);
 
-	const handleTeamCountChange = (value: string) => {
+	const handleTeamCountChange = (value: string) =>
+	{
 		onTeamCountChange(parseInt(value, 10));
 	};
 
-	const handlePlayersPerTeamChange = (value: string) => {
+	const handlePlayersPerTeamChange = (value: string) =>
+	{
 		onPlayersPerTeamChange(parseInt(value, 10));
 	};
 
@@ -91,17 +109,24 @@ export function TeamSetup({
 						<div key={index} className="team-name-input">
 							<span
 								className="team-color-indicator"
-								style={{backgroundColor: TEAM_COLORS[index % TEAM_COLORS.length]}}
+								style={
+								{
+									backgroundColor: TEAM_COLORS[index % TEAM_COLORS.length],
+								}}
 							/>
 							<Input
 								id={`team-${index}-name`}
 								value={team.name}
-								onChange={(name) => {
-									onTeamChange(index, {
-										...team,
-										name,
-										color: TEAM_COLORS[index % TEAM_COLORS.length] ?? '#888888',
-									});
+								onChange={(name) =>
+								{
+									onTeamChange(
+										index,
+										{
+											...team,
+											name,
+											color: TEAM_COLORS[index % TEAM_COLORS.length] ?? '#888888',
+										},
+									);
 								}}
 								placeholder={`Team ${index + 1}`}
 								disabled={disabled}
@@ -115,12 +140,19 @@ export function TeamSetup({
 				<h3>Players</h3>
 				{teams.slice(0, teamCount).map((team, teamIndex) => (
 					<div key={teamIndex} className="team-players">
-						<div className="team-header" style={{borderLeftColor: team.color}}>
+						<div
+							className="team-header"
+							style={
+							{
+								borderLeftColor: team.color,
+							}}
+						>
 							{team.name || `Team ${teamIndex + 1}`}
 						</div>
 						{players
 							.slice(teamIndex * playersPerTeam, (teamIndex + 1) * playersPerTeam)
-							.map((player, playerIndex) => {
+							.map((player, playerIndex) =>
+							{
 								const globalIndex = teamIndex * playersPerTeam + playerIndex;
 								if (globalIndex >= totalPlayers) return null;
 								return (
@@ -131,14 +163,35 @@ export function TeamSetup({
 										animalType={player.animalType}
 										playerType={player.playerType}
 										unlockedAnimals={unlockedAnimals}
-										onPlayerNameChange={(name) => {
-											onPlayerChange(globalIndex, {...player, name});
+										onPlayerNameChange={(name) =>
+										{
+											onPlayerChange(
+												globalIndex,
+												{
+													...player,
+													name,
+												},
+											);
 										}}
-										onAnimalTypeChange={(animalType) => {
-											onPlayerChange(globalIndex, {...player, animalType});
+										onAnimalTypeChange={(animalType) =>
+										{
+											onPlayerChange(
+												globalIndex,
+												{
+													...player,
+													animalType,
+												},
+											);
 										}}
-										onPlayerTypeChange={(playerType) => {
-											onPlayerChange(globalIndex, {...player, playerType});
+										onPlayerTypeChange={(playerType) =>
+										{
+											onPlayerChange(
+												globalIndex,
+												{
+													...player,
+													playerType,
+												},
+											);
 										}}
 										disabled={disabled}
 									/>

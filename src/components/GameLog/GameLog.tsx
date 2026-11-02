@@ -4,23 +4,29 @@ import {Icon} from '../Icon/Icon';
 import type {LogEntry} from '../../lib/types';
 import './GameLog.css';
 
-export interface GameLogProperties {
+export interface GameLogProperties
+{
 	entries: LogEntry[];
 	onCopyToClipboard?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	onSaveLog?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperties) {
+export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperties)
+{
 	const logContainerReference = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		if (logContainerReference.current) {
+	useEffect(() =>
+	{
+		if (logContainerReference.current)
+		{
 			logContainerReference.current.scrollTop = logContainerReference.current.scrollHeight;
 		}
 	}, [entries]);
 
-	const formatLogEntry = (entry: LogEntry, index: number): string => {
-		if (entry.indent === 0) {
+	const formatLogEntry = (entry: LogEntry, index: number): string =>
+	{
+		if (entry.indent === 0)
+		{
 			return entry.message;
 		}
 
@@ -29,20 +35,31 @@ export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperti
 		const hasChildren = nextEntry !== undefined && nextEntry.indent > entry.indent;
 
 		let prefix = '';
-		if (entry.indent === 1) {
-			if (hasChildren) {
+		if (entry.indent === 1)
+		{
+			if (hasChildren)
+			{
 				prefix = hasNextSibling ? '├─┐ ' : '└─┐ ';
-			} else {
+			}
+			else
+			{
 				prefix = hasNextSibling ? '├── ' : '└── ';
 			}
-		} else if (entry.indent === 2) {
+		}
+		else if (entry.indent === 2)
+		{
 			const connector = hasNextSibling ? '├─┐ ' : '└─┐ ';
-			if (hasChildren) {
+			if (hasChildren)
+			{
 				prefix = '  ' + connector;
-			} else {
+			}
+			else
+			{
 				prefix = '  ' + (hasNextSibling ? '├── ' : '└── ');
 			}
-		} else if (entry.indent === 3) {
+		}
+		else if (entry.indent === 3)
+		{
 			const connector = hasNextSibling ? '├── ' : '└── ';
 			prefix = '    ' + connector;
 		}
@@ -50,14 +67,18 @@ export function GameLog({entries, onCopyToClipboard, onSaveLog}: GameLogProperti
 		return prefix + entry.message;
 	};
 
-	const handleCopyToClipboard = (event: React.MouseEvent<HTMLButtonElement>) => {
-		if (onCopyToClipboard) {
+	const handleCopyToClipboard = (event: React.MouseEvent<HTMLButtonElement>) =>
+	{
+		if (onCopyToClipboard)
+		{
 			onCopyToClipboard(event);
 		}
 	};
 
-	const handleSaveLog = (event: React.MouseEvent<HTMLButtonElement>) => {
-		if (onSaveLog) {
+	const handleSaveLog = (event: React.MouseEvent<HTMLButtonElement>) =>
+	{
+		if (onSaveLog)
+		{
 			onSaveLog(event);
 		}
 	};

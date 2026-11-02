@@ -2,19 +2,24 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import {useState} from 'react';
 import {ModeSelector, type GameMode} from './ModeSelector';
 
-const meta = {
+const meta =
+{
 	title: 'Components/ModeSelector',
 	component: ModeSelector,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		selectedMode: {
+	argTypes:
+	{
+		selectedMode:
+		{
 			control: 'select',
 			options: ['standard', 'challenger'],
 		},
-		disabled: {
+		disabled:
+		{
 			control: 'boolean',
 		},
 	},
@@ -23,43 +28,66 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const StandardSelected: Story = {
-	args: {
+export const StandardSelected: Story =
+{
+	args:
+	{
 		selectedMode: 'standard',
-		onModeChange: (mode: GameMode) => {
+		onModeChange: (mode: GameMode) =>
+		{
 			console.log('Mode changed to:', mode);
 		},
 	},
 };
 
-export const ChallengerSelected: Story = {
-	args: {
+export const ChallengerSelected: Story =
+{
+	args:
+	{
 		selectedMode: 'challenger',
-		onModeChange: (mode: GameMode) => {
+		onModeChange: (mode: GameMode) =>
+		{
 			console.log('Mode changed to:', mode);
 		},
 	},
 };
 
-export const Disabled: Story = {
-	args: {
+export const Disabled: Story =
+{
+	args:
+	{
 		selectedMode: 'standard',
 		disabled: true,
-		onModeChange: (mode: GameMode) => {
+		onModeChange: (mode: GameMode) =>
+		{
 			console.log('Mode changed to:', mode);
 		},
 	},
 };
 
-export const Interactive = {
-	render: () => {
-		const InteractiveExample = () => {
+export const Interactive =
+{
+	render: () =>
+	{
+		const InteractiveExample = () =>
+		{
 			const [selectedMode, setSelectedMode] = useState<GameMode>('standard');
 
 			return (
-				<div style={{padding: '20px'}}>
+				<div
+					style={
+					{
+						padding: '20px',
+					}}
+				>
 					<ModeSelector selectedMode={selectedMode} onModeChange={setSelectedMode} />
-					<p style={{marginTop: '20px', textAlign: 'center'}}>
+					<p
+						style={
+						{
+							marginTop: '20px',
+							textAlign: 'center',
+						}}
+					>
 						Selected mode: <strong>{selectedMode}</strong>
 					</p>
 				</div>
@@ -70,14 +98,24 @@ export const Interactive = {
 	},
 };
 
-export const AllStates = {
+export const AllStates =
+{
 	render: () => (
-		<div style={{display: 'flex', flexDirection: 'column', gap: '40px', padding: '20px'}}>
+		<div
+			style={
+			{
+				display: 'flex',
+				flexDirection: 'column',
+				gap: '40px',
+				padding: '20px',
+			}}
+		>
 			<div>
 				<h3>Standard Mode Selected</h3>
 				<ModeSelector
 					selectedMode="standard"
-					onModeChange={(mode: GameMode) => {
+					onModeChange={(mode: GameMode) =>
+					{
 						console.log('Mode changed to:', mode);
 					}}
 				/>
@@ -87,7 +125,8 @@ export const AllStates = {
 				<h3>Challenger Mode Selected</h3>
 				<ModeSelector
 					selectedMode="challenger"
-					onModeChange={(mode: GameMode) => {
+					onModeChange={(mode: GameMode) =>
+					{
 						console.log('Mode changed to:', mode);
 					}}
 				/>
@@ -98,7 +137,8 @@ export const AllStates = {
 				<ModeSelector
 					selectedMode="standard"
 					disabled
-					onModeChange={(mode: GameMode) => {
+					onModeChange={(mode: GameMode) =>
+					{
 						console.log('Mode changed to:', mode);
 					}}
 				/>

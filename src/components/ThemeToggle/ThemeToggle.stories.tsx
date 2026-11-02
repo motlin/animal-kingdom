@@ -1,10 +1,12 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
 import {ThemeToggle} from './ThemeToggle';
 
-const meta = {
+const meta =
+{
 	title: 'Components/ThemeToggle',
 	component: ThemeToggle,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
@@ -13,16 +15,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LightMode: Story = {
-	args: {
+export const LightMode: Story =
+{
+	args:
+	{
 		theme: 'light',
-		onToggle: () => {},
+		onToggle: () =>
+		{
+		},
 	},
 };
 
-export const DarkMode: Story = {
-	args: {
+export const DarkMode: Story =
+{
+	args:
+	{
 		theme: 'dark',
-		onToggle: () => {},
+		onToggle: () =>
+		{
+		},
 	},
 };

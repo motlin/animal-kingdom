@@ -3,10 +3,12 @@ import {expect, userEvent, within, fn} from 'storybook/test';
 import {GameScreen} from './GameScreen';
 import type {Player, LogEntry} from '../../lib/types';
 
-const meta = {
+const meta =
+{
 	title: 'Screens/GameScreen',
 	component: GameScreen,
-	parameters: {
+	parameters:
+	{
 		layout: 'padded',
 	},
 	tags: ['autodocs'],
@@ -22,9 +24,16 @@ const createPlayer = (
 	hp: number,
 	maxHp: number,
 	isComputer = false,
-	status = {isShielded: false, isSleeping: false, sleepTurnsRemaining: 0, snapBackActive: false},
+	status =
+	{
+		isShielded: false,
+		isSleeping: false,
+		sleepTurnsRemaining: 0,
+		snapBackActive: false,
+	},
 	abilityCooldown = 0,
-): Player => ({
+): Player => (
+{
 	id,
 	name,
 	animal,
@@ -33,7 +42,8 @@ const createPlayer = (
 	isAlive: hp > 0,
 	isComputer,
 	status,
-	oneTimeActions: {
+	oneTimeActions:
+	{
 		hasHealed: false,
 		hasShielded: false,
 		hasUsedAbility: false,
@@ -43,44 +53,139 @@ const createPlayer = (
 });
 
 const basicLogEntries: LogEntry[] = [
-	{message: 'Turn 1:', indent: 0},
-	{message: "Alice's turn", indent: 1},
-	{message: 'Alice attacks Bob', indent: 2},
-	{message: 'Bob takes 10 damage', indent: 3},
-	{message: 'Turn 2:', indent: 0},
-	{message: "Bob's turn", indent: 1},
-	{message: 'Bob uses ability: Spitball', indent: 2},
-	{message: 'Alice takes 5 damage', indent: 3},
-	{message: 'Charlie takes 5 damage', indent: 3},
+	{
+		message: 'Turn 1:',
+		indent: 0,
+	},
+	{
+		message: "Alice's turn",
+		indent: 1,
+	},
+	{
+		message: 'Alice attacks Bob',
+		indent: 2,
+	},
+	{
+		message: 'Bob takes 10 damage',
+		indent: 3,
+	},
+	{
+		message: 'Turn 2:',
+		indent: 0,
+	},
+	{
+		message: "Bob's turn",
+		indent: 1,
+	},
+	{
+		message: 'Bob uses ability: Spitball',
+		indent: 2,
+	},
+	{
+		message: 'Alice takes 5 damage',
+		indent: 3,
+	},
+	{
+		message: 'Charlie takes 5 damage',
+		indent: 3,
+	},
 ];
 
 const extendedLogEntries: LogEntry[] = [
-	{message: 'Turn 1:', indent: 0},
-	{message: "Alice's turn", indent: 1},
-	{message: 'Alice attacks Bob', indent: 2},
-	{message: 'Bob takes 10 damage', indent: 3},
-	{message: 'Turn 2:', indent: 0},
-	{message: "Bob's turn", indent: 1},
-	{message: 'Bob uses ability: Spitball', indent: 2},
-	{message: 'Alice takes 5 damage', indent: 3},
-	{message: 'Charlie takes 5 damage', indent: 3},
-	{message: 'Turn 3:', indent: 0},
-	{message: "Charlie's turn", indent: 1},
-	{message: 'Charlie heals', indent: 2},
-	{message: 'Charlie gains 15 HP', indent: 3},
-	{message: 'Turn 4:', indent: 0},
-	{message: "Dave's turn", indent: 1},
-	{message: 'Dave shields', indent: 2},
-	{message: 'Dave is now shielded', indent: 3},
-	{message: 'Turn 5:', indent: 0},
-	{message: "Alice's turn", indent: 1},
-	{message: 'Alice attacks Dave', indent: 2},
-	{message: 'Dave blocks attack with shield', indent: 3},
-	{message: 'Shield is now broken', indent: 3},
+	{
+		message: 'Turn 1:',
+		indent: 0,
+	},
+	{
+		message: "Alice's turn",
+		indent: 1,
+	},
+	{
+		message: 'Alice attacks Bob',
+		indent: 2,
+	},
+	{
+		message: 'Bob takes 10 damage',
+		indent: 3,
+	},
+	{
+		message: 'Turn 2:',
+		indent: 0,
+	},
+	{
+		message: "Bob's turn",
+		indent: 1,
+	},
+	{
+		message: 'Bob uses ability: Spitball',
+		indent: 2,
+	},
+	{
+		message: 'Alice takes 5 damage',
+		indent: 3,
+	},
+	{
+		message: 'Charlie takes 5 damage',
+		indent: 3,
+	},
+	{
+		message: 'Turn 3:',
+		indent: 0,
+	},
+	{
+		message: "Charlie's turn",
+		indent: 1,
+	},
+	{
+		message: 'Charlie heals',
+		indent: 2,
+	},
+	{
+		message: 'Charlie gains 15 HP',
+		indent: 3,
+	},
+	{
+		message: 'Turn 4:',
+		indent: 0,
+	},
+	{
+		message: "Dave's turn",
+		indent: 1,
+	},
+	{
+		message: 'Dave shields',
+		indent: 2,
+	},
+	{
+		message: 'Dave is now shielded',
+		indent: 3,
+	},
+	{
+		message: 'Turn 5:',
+		indent: 0,
+	},
+	{
+		message: "Alice's turn",
+		indent: 1,
+	},
+	{
+		message: 'Alice attacks Dave',
+		indent: 2,
+	},
+	{
+		message: 'Dave blocks attack with shield',
+		indent: 3,
+	},
+	{
+		message: 'Shield is now broken',
+		indent: 3,
+	},
 ];
 
-export const StandardGameInProgress: Story = {
-	args: {
+export const StandardGameInProgress: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 90, 100),
 			createPlayer(2, 'Bob', 'Llama', 85, 100),
@@ -111,12 +216,18 @@ export const StandardGameInProgress: Story = {
 		onCopyToClipboard: fn(),
 		onSaveLog: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText("Alice's Turn")).toBeInTheDocument();
 
-		const attackButton = canvas.getByRole('button', {name: 'Attack'});
+		const attackButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Attack',
+			},
+		);
 		await expect(attackButton).toBeEnabled();
 
 		await userEvent.click(attackButton);
@@ -124,8 +235,10 @@ export const StandardGameInProgress: Story = {
 	},
 };
 
-export const WithTargetSelection: Story = {
-	args: {
+export const WithTargetSelection: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 90, 100),
 			createPlayer(2, 'Bob', 'Llama', 85, 100),
@@ -151,7 +264,8 @@ export const WithTargetSelection: Story = {
 		onCopyToClipboard: fn(),
 		onSaveLog: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText("Alice's Turn - Select a target")).toBeInTheDocument();
@@ -162,22 +276,40 @@ export const WithTargetSelection: Story = {
 	},
 };
 
-export const WithStatusEffects: Story = {
-	args: {
+export const WithStatusEffects: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 60, 100),
-			createPlayer(2, 'Bob', 'Llama', 75, 100, false, {
-				isShielded: true,
-				isSleeping: false,
-				sleepTurnsRemaining: 0,
-				snapBackActive: false,
-			}),
-			createPlayer(3, 'Charlie', 'Tiger', 40, 100, false, {
-				isShielded: false,
-				isSleeping: true,
-				sleepTurnsRemaining: 1,
-				snapBackActive: false,
-			}),
+			createPlayer(
+				2,
+				'Bob',
+				'Llama',
+				75,
+				100,
+				false,
+				{
+					isShielded: true,
+					isSleeping: false,
+					sleepTurnsRemaining: 0,
+					snapBackActive: false,
+				},
+			),
+			createPlayer(
+				3,
+				'Charlie',
+				'Tiger',
+				40,
+				100,
+				false,
+				{
+					isShielded: false,
+					isSleeping: true,
+					sleepTurnsRemaining: 1,
+					snapBackActive: false,
+				},
+			),
 			createPlayer(
 				4,
 				'Dave',
@@ -185,7 +317,12 @@ export const WithStatusEffects: Story = {
 				100,
 				100,
 				false,
-				{isShielded: false, isSleeping: false, sleepTurnsRemaining: 0, snapBackActive: false},
+				{
+					isShielded: false,
+					isSleeping: false,
+					sleepTurnsRemaining: 0,
+					snapBackActive: false,
+				},
 				2,
 			),
 		],
@@ -213,13 +350,24 @@ export const WithStatusEffects: Story = {
 		onCopyToClipboard: fn(),
 		onSaveLog: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
-		const healButton = canvas.getByRole('button', {name: 'Heal (1)'});
+		const healButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Heal (1)',
+			},
+		);
 		await expect(healButton).toBeEnabled();
 
-		const shieldButton = canvas.getByRole('button', {name: 'Shield (0)'});
+		const shieldButton = canvas.getByRole(
+			'button',
+			{
+				name: 'Shield (0)',
+			},
+		);
 		await expect(shieldButton).toBeDisabled();
 
 		await userEvent.click(healButton);
@@ -227,8 +375,10 @@ export const WithStatusEffects: Story = {
 	},
 };
 
-export const LowHealthPlayers: Story = {
-	args: {
+export const LowHealthPlayers: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 15, 100),
 			createPlayer(2, 'Bob', 'Llama', 5, 100),
@@ -249,38 +399,49 @@ export const LowHealthPlayers: Story = {
 		logEntries: extendedLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => {
+		onPlayerClick: (playerId: number) =>
+		{
 			console.log('Player clicked:', playerId);
 		},
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const TwoPlayerGame: Story = {
-	args: {
+export const TwoPlayerGame: Story =
+{
+	args:
+	{
 		players: [createPlayer(1, 'Alice', 'Tiger', 85, 100), createPlayer(2, 'Bob', 'Gorilla', 70, 100)],
 		currentPlayerIndex: 0,
 		turnIndicator: "Alice's Turn",
@@ -294,45 +455,68 @@ export const TwoPlayerGame: Story = {
 		healsRemaining: 1,
 		shieldsRemaining: 1,
 		logEntries: [
-			{message: 'Turn 1:', indent: 0},
-			{message: "Alice's turn", indent: 1},
-			{message: 'Alice attacks Bob', indent: 2},
-			{message: 'Bob takes 10 damage', indent: 3},
+			{
+				message: 'Turn 1:',
+				indent: 0,
+			},
+			{
+				message: "Alice's turn",
+				indent: 1,
+			},
+			{
+				message: 'Alice attacks Bob',
+				indent: 2,
+			},
+			{
+				message: 'Bob takes 10 damage',
+				indent: 3,
+			},
 		],
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => {
+		onPlayerClick: (playerId: number) =>
+		{
 			console.log('Player clicked:', playerId);
 		},
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const ChallengerMode: Story = {
-	args: {
+export const ChallengerMode: Story =
+{
+	args:
+	{
 		players: [createPlayer(1, 'You', 'Monkey', 65, 100), createPlayer(2, 'Tiger', 'Tiger', 80, 100, true)],
 		currentPlayerIndex: 0,
 		turnIndicator: 'Your Turn',
@@ -346,53 +530,100 @@ export const ChallengerMode: Story = {
 		healsRemaining: 1,
 		shieldsRemaining: 1,
 		logEntries: [
-			{message: 'Turn 1:', indent: 0},
-			{message: 'Your turn', indent: 1},
-			{message: 'You attack Tiger', indent: 2},
-			{message: 'Tiger takes 10 damage', indent: 3},
-			{message: 'Turn 2:', indent: 0},
-			{message: "Tiger's turn", indent: 1},
-			{message: 'Tiger uses ability: Ferocious Strike', indent: 2},
-			{message: 'You take 20 damage', indent: 3},
-			{message: 'Turn 3:', indent: 0},
-			{message: 'Your turn', indent: 1},
-			{message: 'You use ability: Mischief', indent: 2},
-			{message: 'Tiger is now sleeping', indent: 3},
+			{
+				message: 'Turn 1:',
+				indent: 0,
+			},
+			{
+				message: 'Your turn',
+				indent: 1,
+			},
+			{
+				message: 'You attack Tiger',
+				indent: 2,
+			},
+			{
+				message: 'Tiger takes 10 damage',
+				indent: 3,
+			},
+			{
+				message: 'Turn 2:',
+				indent: 0,
+			},
+			{
+				message: "Tiger's turn",
+				indent: 1,
+			},
+			{
+				message: 'Tiger uses ability: Ferocious Strike',
+				indent: 2,
+			},
+			{
+				message: 'You take 20 damage',
+				indent: 3,
+			},
+			{
+				message: 'Turn 3:',
+				indent: 0,
+			},
+			{
+				message: 'Your turn',
+				indent: 1,
+			},
+			{
+				message: 'You use ability: Mischief',
+				indent: 2,
+			},
+			{
+				message: 'Tiger is now sleeping',
+				indent: 3,
+			},
 		],
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onPlayerClick: (playerId: number) => {
+		onPlayerClick: (playerId: number) =>
+		{
 			console.log('Player clicked:', playerId);
 		},
-		onAttack: () => {
+		onAttack: () =>
+		{
 			console.log('Attack clicked');
 		},
-		onUseAbility: () => {
+		onUseAbility: () =>
+		{
 			console.log('Use Ability clicked');
 		},
-		onHeal: () => {
+		onHeal: () =>
+		{
 			console.log('Heal clicked');
 		},
-		onShield: () => {
+		onShield: () =>
+		{
 			console.log('Shield clicked');
 		},
-		onDoNothing: () => {
+		onDoNothing: () =>
+		{
 			console.log('Do Nothing clicked');
 		},
-		onUndo: () => {
+		onUndo: () =>
+		{
 			console.log('Undo clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const GameOverSingleWinner: Story = {
-	args: {
+export const GameOverSingleWinner: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 55, 100),
 			createPlayer(2, 'Bob', 'Llama', 0, 100),
@@ -420,7 +651,8 @@ export const GameOverSingleWinner: Story = {
 		onCopyToClipboard: fn(),
 		onSaveLog: fn(),
 	},
-	play: async ({canvasElement, args}) => {
+	play: async ({canvasElement, args}) =>
+	{
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText('🎉 Alice wins! 🎉')).toBeInTheDocument();
@@ -433,8 +665,10 @@ export const GameOverSingleWinner: Story = {
 	},
 };
 
-export const GameOverMultipleWinners: Story = {
-	args: {
+export const GameOverMultipleWinners: Story =
+{
+	args:
+	{
 		players: [
 			createPlayer(1, 'Alice', 'Coyote', 30, 100),
 			createPlayer(2, 'Bob', 'Llama', 45, 100),
@@ -456,26 +690,33 @@ export const GameOverMultipleWinners: Story = {
 		isGameOver: true,
 		winnerAnnouncement: '🎉 Alice and Bob win! 🎉',
 		selectablePlayerIds: [],
-		onPlayAgain: () => {
+		onPlayAgain: () =>
+		{
 			console.log('Play Again clicked');
 		},
-		onCopyLog: () => {
+		onCopyLog: () =>
+		{
 			console.log('Copy Log clicked');
 		},
-		onSaveGameLog: () => {
+		onSaveGameLog: () =>
+		{
 			console.log('Save Game Log clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const ChallengerVictory: Story = {
-	args: {
+export const ChallengerVictory: Story =
+{
+	args:
+	{
 		players: [createPlayer(1, 'You', 'Monkey', 70, 100), createPlayer(2, 'Tiger', 'Tiger', 0, 100, true)],
 		currentPlayerIndex: 0,
 		turnIndicator: 'Your Turn',
@@ -489,35 +730,57 @@ export const ChallengerVictory: Story = {
 		healsRemaining: 0,
 		shieldsRemaining: 0,
 		logEntries: [
-			{message: 'Turn 8:', indent: 0},
-			{message: 'Your turn', indent: 1},
-			{message: 'You attack Tiger', indent: 2},
-			{message: 'Tiger takes 15 damage', indent: 3},
-			{message: 'Tiger has been defeated!', indent: 3},
+			{
+				message: 'Turn 8:',
+				indent: 0,
+			},
+			{
+				message: 'Your turn',
+				indent: 1,
+			},
+			{
+				message: 'You attack Tiger',
+				indent: 2,
+			},
+			{
+				message: 'Tiger takes 15 damage',
+				indent: 3,
+			},
+			{
+				message: 'Tiger has been defeated!',
+				indent: 3,
+			},
 		],
 		isGameOver: true,
 		winnerAnnouncement: '🏆 You defeated the Tiger! 🏆',
 		selectablePlayerIds: [],
-		onPlayAgain: () => {
+		onPlayAgain: () =>
+		{
 			console.log('Play Again clicked');
 		},
-		onCopyLog: () => {
+		onCopyLog: () =>
+		{
 			console.log('Copy Log clicked');
 		},
-		onSaveGameLog: () => {
+		onSaveGameLog: () =>
+		{
 			console.log('Save Game Log clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const ChallengerDefeat: Story = {
-	args: {
+export const ChallengerDefeat: Story =
+{
+	args:
+	{
 		players: [createPlayer(1, 'You', 'Monkey', 0, 100), createPlayer(2, 'Tiger', 'Tiger', 45, 100, true)],
 		currentPlayerIndex: 1,
 		turnIndicator: "Tiger's Turn",
@@ -531,35 +794,57 @@ export const ChallengerDefeat: Story = {
 		healsRemaining: 0,
 		shieldsRemaining: 0,
 		logEntries: [
-			{message: 'Turn 7:', indent: 0},
-			{message: "Tiger's turn", indent: 1},
-			{message: 'Tiger uses ability: Ferocious Strike', indent: 2},
-			{message: 'You take 25 damage', indent: 3},
-			{message: 'You have been defeated!', indent: 3},
+			{
+				message: 'Turn 7:',
+				indent: 0,
+			},
+			{
+				message: "Tiger's turn",
+				indent: 1,
+			},
+			{
+				message: 'Tiger uses ability: Ferocious Strike',
+				indent: 2,
+			},
+			{
+				message: 'You take 25 damage',
+				indent: 3,
+			},
+			{
+				message: 'You have been defeated!',
+				indent: 3,
+			},
 		],
 		isGameOver: true,
 		winnerAnnouncement: '💀 The Tiger defeated you! 💀',
 		selectablePlayerIds: [],
-		onPlayAgain: () => {
+		onPlayAgain: () =>
+		{
 			console.log('Play Again clicked');
 		},
-		onCopyLog: () => {
+		onCopyLog: () =>
+		{
 			console.log('Copy Log clicked');
 		},
-		onSaveGameLog: () => {
+		onSaveGameLog: () =>
+		{
 			console.log('Save Game Log clicked');
 		},
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},
 };
 
-export const NoActionsAvailable: Story = {
-	args: {
+export const NoActionsAvailable: Story =
+{
+	args:
+	{
 		players: [createPlayer(1, 'Alice', 'Coyote', 90, 100), createPlayer(2, 'Bob', 'Llama', 85, 100)],
 		currentPlayerIndex: 0,
 		turnIndicator: "Alice's Turn",
@@ -575,10 +860,12 @@ export const NoActionsAvailable: Story = {
 		logEntries: basicLogEntries,
 		isGameOver: false,
 		selectablePlayerIds: [],
-		onCopyToClipboard: () => {
+		onCopyToClipboard: () =>
+		{
 			console.log('Copy to Clipboard clicked');
 		},
-		onSaveLog: () => {
+		onSaveLog: () =>
+		{
 			console.log('Save Log clicked');
 		},
 	},

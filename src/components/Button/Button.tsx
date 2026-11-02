@@ -3,7 +3,8 @@ import './Button.css';
 
 export type ButtonVariant = 'primary' | 'mode' | 'undo' | 'toggle' | 'log';
 
-export interface ButtonProperties {
+export interface ButtonProperties
+{
 	variant?: ButtonVariant;
 	disabled?: boolean;
 	active?: boolean;
@@ -21,7 +22,8 @@ export function Button({
 	onClick,
 	type = 'button',
 	className = '',
-}: ButtonProperties) {
+}: ButtonProperties)
+{
 	const variantClass = `button-${variant}`;
 	const activeClass = active ? 'active' : '';
 	const classes = [variantClass, activeClass, className].filter(Boolean).join(' ');

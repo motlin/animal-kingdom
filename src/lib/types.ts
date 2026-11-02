@@ -1,10 +1,12 @@
-export interface Team {
+export interface Team
+{
 	id: number;
 	name: string;
 	color: string;
 }
 
-export interface Player {
+export interface Player
+{
 	id: number;
 	name: string;
 	animal: AnimalType;
@@ -13,13 +15,15 @@ export interface Player {
 	isAlive: boolean;
 	isComputer: boolean;
 	teamId?: number;
-	status: {
+	status:
+	{
 		isShielded: boolean;
 		isSleeping: boolean;
 		sleepTurnsRemaining: number;
 		snapBackActive: boolean;
 	};
-	oneTimeActions: {
+	oneTimeActions:
+	{
 		hasHealed: boolean;
 		hasShielded: boolean;
 		hasUsedAbility: boolean;
@@ -28,7 +32,8 @@ export interface Player {
 	abilityDisabled: boolean;
 }
 
-export interface GameState {
+export interface GameState
+{
 	players: Player[];
 	teams: Team[];
 	currentPlayerIndex: number;
@@ -40,7 +45,8 @@ export interface GameState {
 	log: LogEntry[];
 }
 
-export interface ActionInProgress {
+export interface ActionInProgress
+{
 	type: ActionType;
 	sourceId: number;
 	requiredTargets: number;
@@ -48,12 +54,14 @@ export interface ActionInProgress {
 	prompt: string;
 }
 
-export interface LogEntry {
+export interface LogEntry
+{
 	message: string;
 	indent: number;
 }
 
-export interface AnimalRoster {
+export interface AnimalRoster
+{
 	name: string;
 	abilityDesc: string;
 }

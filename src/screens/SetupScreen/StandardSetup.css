@@ -1,17 +1,21 @@
-.standard-setup {
+.standard-setup
+{
 	text-align: left;
 }
 
-.standard-setup .setup-section {
+.standard-setup .setup-section
+{
 	margin-bottom: 20px;
 }
 
-.standard-setup .setup-section label {
+.standard-setup .setup-section label
+{
 	margin-right: 10px;
 	font-weight: bold;
 }
 
-.standard-setup .player-selections {
+.standard-setup .player-selections
+{
 	display: flex;
 	flex-direction: column;
 	gap: 10px;

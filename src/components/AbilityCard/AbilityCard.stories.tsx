@@ -2,15 +2,19 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import {AbilityCard} from './AbilityCard';
 import {ANIMAL_ROSTER} from '../../lib/constants';
 
-const meta = {
+const meta =
+{
 	title: 'Components/AbilityCard',
 	component: AbilityCard,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		animal: {
+	argTypes:
+	{
+		animal:
+		{
 			control: 'select',
 			options: ['Coyote', 'Llama', 'Tiger', 'Gorilla', 'Monkey'],
 		},
@@ -20,45 +24,57 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Coyote: Story = {
-	args: {
+export const Coyote: Story =
+{
+	args:
+	{
 		animal: 'Coyote',
 		abilityDescription: ANIMAL_ROSTER.Coyote.abilityDesc,
 	},
 };
 
-export const Llama: Story = {
-	args: {
+export const Llama: Story =
+{
+	args:
+	{
 		animal: 'Llama',
 		abilityDescription: ANIMAL_ROSTER.Llama.abilityDesc,
 	},
 };
 
-export const Tiger: Story = {
-	args: {
+export const Tiger: Story =
+{
+	args:
+	{
 		animal: 'Tiger',
 		abilityDescription: ANIMAL_ROSTER.Tiger.abilityDesc,
 	},
 };
 
-export const Gorilla: Story = {
-	args: {
+export const Gorilla: Story =
+{
+	args:
+	{
 		animal: 'Gorilla',
 		abilityDescription: ANIMAL_ROSTER.Gorilla.abilityDesc,
 	},
 };
 
-export const Monkey: Story = {
-	args: {
+export const Monkey: Story =
+{
+	args:
+	{
 		animal: 'Monkey',
 		abilityDescription: ANIMAL_ROSTER.Monkey.abilityDesc,
 	},
 };
 
-export const AllAbilities = {
+export const AllAbilities =
+{
 	render: () => (
 		<div
-			style={{
+			style={
+			{
 				display: 'grid',
 				gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
 				gap: '15px',

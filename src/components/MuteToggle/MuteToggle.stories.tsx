@@ -1,10 +1,12 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
 import {MuteToggle} from './MuteToggle';
 
-const meta = {
+const meta =
+{
 	title: 'Components/MuteToggle',
 	component: MuteToggle,
-	parameters: {
+	parameters:
+	{
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
@@ -13,16 +15,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Unmuted: Story = {
-	args: {
+export const Unmuted: Story =
+{
+	args:
+	{
 		isMuted: false,
-		onToggle: () => {},
+		onToggle: () =>
+		{
+		},
 	},
 };
 
-export const Muted: Story = {
-	args: {
+export const Muted: Story =
+{
+	args:
+	{
 		isMuted: true,
-		onToggle: () => {},
+		onToggle: () =>
+		{
+		},
 	},
 };

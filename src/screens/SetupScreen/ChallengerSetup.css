@@ -1,4 +1,5 @@
-.challenger-setup {
+.challenger-setup
+{
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 30px;
@@ -6,20 +7,23 @@
 }
 
 .challenger-selection h3,
-.challenger-opponent h3 {
+.challenger-opponent h3
+{
 	text-align: center;
 	color: var(--color-primary);
 	margin-bottom: 15px;
 }
 
-.unlocked-animals-grid {
+.unlocked-animals-grid
+{
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
 	align-items: stretch;
 }
 
-.no-challengers {
+.no-challengers
+{
 	background-color: var(--color-accent);
 	border: 2px solid var(--color-primary);
 	border-radius: 10px;
@@ -27,19 +31,23 @@
 	text-align: center;
 }
 
-.no-challengers p {
+.no-challengers p
+{
 	margin: 10px 0;
 	font-size: 1.1em;
 }
 
-.no-challengers p:first-child {
+.no-challengers p:first-child
+{
 	font-weight: bold;
 	font-size: 1.3em;
 	color: var(--color-primary);
 }
 
-@media (max-width: 768px) {
-	.challenger-setup {
+@media (max-width: 768px)
+{
+	.challenger-setup
+	{
 		grid-template-columns: 1fr;
 	}
 }

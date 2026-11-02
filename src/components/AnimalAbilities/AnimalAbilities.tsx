@@ -6,18 +6,21 @@ import {Icon} from '../Icon/Icon';
 import {AbilityCard} from '../AbilityCard/AbilityCard';
 import './AnimalAbilities.css';
 
-export interface AnimalAbilitiesProperties {
+export interface AnimalAbilitiesProperties
+{
 	unlockedCount: number;
 	className?: string;
 	defaultExpanded?: boolean;
 }
 
-export function AnimalAbilities({unlockedCount, className = '', defaultExpanded = false}: AnimalAbilitiesProperties) {
+export function AnimalAbilities({unlockedCount, className = '', defaultExpanded = false}: AnimalAbilitiesProperties)
+{
 	const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
 	const unlockedAnimals = ANIMAL_UNLOCK_ORDER.slice(0, unlockedCount);
 
-	const toggleExpanded = () => {
+	const toggleExpanded = () =>
+	{
 		setIsExpanded(!isExpanded);
 	};
 

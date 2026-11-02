@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
 
-export interface UseKeyboardOptions {
+export interface UseKeyboardOptions
+{
 	enabled?: boolean;
 	onAttack?: () => void;
 	onUseAbility?: () => void;
@@ -10,33 +11,48 @@ export interface UseKeyboardOptions {
 	onUndo?: () => void;
 }
 
-export function useKeyboard(options: UseKeyboardOptions) {
+export function useKeyboard(options: UseKeyboardOptions)
+{
 	const {enabled = true, onAttack, onUseAbility, onHeal, onShield, onDoNothing, onUndo} = options;
 
-	useEffect(() => {
-		if (!enabled) {
+	useEffect(() =>
+	{
+		if (!enabled)
+		{
 			return undefined;
 		}
 
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyDown = (event: KeyboardEvent) =>
+		{
 			const key = event.key.toLowerCase();
 
-			if (key === 'a' && onAttack) {
+			if (key === 'a' && onAttack)
+			{
 				onAttack();
 				event.preventDefault();
-			} else if (key === 'b' && onUseAbility) {
+			}
+			else if (key === 'b' && onUseAbility)
+			{
 				onUseAbility();
 				event.preventDefault();
-			} else if (key === 'h' && onHeal) {
+			}
+			else if (key === 'h' && onHeal)
+			{
 				onHeal();
 				event.preventDefault();
-			} else if (key === 's' && onShield) {
+			}
+			else if (key === 's' && onShield)
+			{
 				onShield();
 				event.preventDefault();
-			} else if (key === 'n' && onDoNothing) {
+			}
+			else if (key === 'n' && onDoNothing)
+			{
 				onDoNothing();
 				event.preventDefault();
-			} else if (key === 'u' && onUndo) {
+			}
+			else if (key === 'u' && onUndo)
+			{
 				onUndo();
 				event.preventDefault();
 			}
@@ -44,7 +60,8 @@ export function useKeyboard(options: UseKeyboardOptions) {
 
 		document.addEventListener('keydown', handleKeyDown);
 
-		return () => {
+		return () =>
+		{
 			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [enabled, onAttack, onUseAbility, onHeal, onShield, onDoNothing, onUndo]);

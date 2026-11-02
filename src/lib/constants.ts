@@ -1,26 +1,40 @@
 import type {AnimalRoster, AnimalType} from './types.ts';
 
-export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
-	Coyote: {
+export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> =
+{
+	Coyote:
+	{
 		name: 'Coyote',
 		abilityDesc: 'Howl: Puts all other animals to sleep for one turn. Cooldown: 2 turns.',
 	},
-	Llama: {name: 'Llama', abilityDesc: 'Spitball: An attack with random damage (0-2).'},
-	Tiger: {name: 'Tiger', abilityDesc: 'Strike: Hits two different opponents for 1 damage each.'},
-	Gorilla: {
+	Llama:
+	{
+		name: 'Llama',
+		abilityDesc: 'Spitball: An attack with random damage (0-2).',
+	},
+	Tiger:
+	{
+		name: 'Tiger',
+		abilityDesc: 'Strike: Hits two different opponents for 1 damage each.',
+	},
+	Gorilla:
+	{
 		name: 'Gorilla',
 		abilityDesc: 'Rampage: A one-time attack that deals 4x damage. Can only be used on turn 5.',
 	},
-	Monkey: {
+	Monkey:
+	{
 		name: 'Monkey',
 		abilityDesc: "Mischief: A one-time ability that disables another player's ability permanently.",
 	},
-	Bird: {
+	Bird:
+	{
 		name: 'Bird',
 		abilityDesc:
 			'Evasion: Passive ability. Bird only has a 1/3 chance to hit with attacks, and enemies only have a 1/3 chance to hit Bird.',
 	},
-	Crocodile: {
+	Crocodile:
+	{
 		name: 'Crocodile',
 		abilityDesc:
 			'Snap Back: Appears to do nothing, but counters the first attacker for double damage. If unused by next turn, takes 1 damage, loses next turn, and ability is permanently disabled.',
@@ -29,7 +43,8 @@ export const ANIMAL_ROSTER: Record<AnimalType, AnimalRoster> = {
 
 export const INITIAL_HP = 3;
 
-export const ANIMAL_EMOJIS: Record<AnimalType, string> = {
+export const ANIMAL_EMOJIS: Record<AnimalType, string> =
+{
 	Coyote: '🐺',
 	Llama: '🦙',
 	Tiger: '🐯',
@@ -39,7 +54,8 @@ export const ANIMAL_EMOJIS: Record<AnimalType, string> = {
 	Crocodile: '🐊',
 };
 
-export const ABILITY_NAMES: Record<AnimalType, string> = {
+export const ABILITY_NAMES: Record<AnimalType, string> =
+{
 	Coyote: 'Howl',
 	Llama: 'Spitball',
 	Tiger: 'Strike',

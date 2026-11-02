@@ -2,13 +2,15 @@ import type {AnimalType} from '../../lib/types';
 import {ANIMAL_EMOJIS, ABILITY_NAMES} from '../../lib/constants';
 import './AbilityCard.css';
 
-export interface AbilityCardProperties {
+export interface AbilityCardProperties
+{
 	animal: AnimalType;
 	abilityDescription: string;
 	className?: string;
 }
 
-export function AbilityCard({animal, abilityDescription, className = ''}: AbilityCardProperties) {
+export function AbilityCard({animal, abilityDescription, className = ''}: AbilityCardProperties)
+{
 	const emoji = ANIMAL_EMOJIS[animal];
 	const abilityName = ABILITY_NAMES[animal];
 	const classes = ['ability-card', className].filter(Boolean).join(' ');

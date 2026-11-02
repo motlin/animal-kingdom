@@ -3,8 +3,10 @@ import {renderHook, act} from '@testing-library/react';
 import {useGameState} from './useGameState.ts';
 import type {Player, AnimalType} from '../lib/types.ts';
 
-describe('useGameState', () => {
-	it('initializes with default state', () => {
+describe('useGameState', () =>
+{
+	it('initializes with default state', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		expect(result.current.state.players).toEqual([]);
@@ -19,7 +21,8 @@ describe('useGameState', () => {
 		expect(result.current.unlockedAnimals.size).toBe(0);
 	});
 
-	it('creates a player with correct initial values', () => {
+	it('creates a player with correct initial values', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const player = result.current.createPlayer(1, 'Test Player', 'Coyote', false);
@@ -40,7 +43,8 @@ describe('useGameState', () => {
 		expect(player.abilityDisabled).toBe(false);
 	});
 
-	it('creates a Gorilla player with 4 HP', () => {
+	it('creates a Gorilla player with 4 HP', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const player = result.current.createPlayer(1, 'Gorilla Player', 'Gorilla', false);
@@ -49,7 +53,8 @@ describe('useGameState', () => {
 		expect(player.maxHp).toBe(4);
 	});
 
-	it('initializes state with players', () => {
+	it('initializes state with players', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const players: Player[] = [
@@ -57,7 +62,8 @@ describe('useGameState', () => {
 			result.current.createPlayer(2, 'Player 2', 'Llama', true),
 		];
 
-		act(() => {
+		act(() =>
+		{
 			result.current.initializeState(players, 'standard');
 		});
 
@@ -69,26 +75,36 @@ describe('useGameState', () => {
 		expect(result.current.stateHistory).toEqual([]);
 	});
 
-	it('logs messages to the state', () => {
+	it('logs messages to the state', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
-		act(() => {
+		act(() =>
+		{
 			result.current.logMessage('First message');
 			result.current.logMessage('Second message', 1);
 		});
 
 		expect(result.current.state.log).toEqual([
-			{message: 'First message', indent: 0},
-			{message: 'Second message', indent: 1},
+			{
+				message: 'First message',
+				indent: 0,
+			},
+			{
+				message: 'Second message',
+				indent: 1,
+			},
 		]);
 	});
 
-	it('saves state to history', () => {
+	it('saves state to history', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const players: Player[] = [result.current.createPlayer(1, 'Player 1', 'Coyote', false)];
 
-		act(() => {
+		act(() =>
+		{
 			result.current.initializeState(players);
 			result.current.saveStateToHistory();
 			result.current.logMessage('After save');
@@ -96,15 +112,22 @@ describe('useGameState', () => {
 
 		expect(result.current.stateHistory.length).toBe(1);
 		expect(result.current.stateHistory[0]?.log).toEqual([]);
-		expect(result.current.state.log).toEqual([{message: 'After save', indent: 0}]);
+		expect(result.current.state.log).toEqual([
+			{
+				message: 'After save',
+				indent: 0,
+			},
+		]);
 	});
 
-	it('restores previous state', () => {
+	it('restores previous state', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const players: Player[] = [result.current.createPlayer(1, 'Player 1', 'Coyote', false)];
 
-		act(() => {
+		act(() =>
+		{
 			result.current.initializeState(players);
 			result.current.logMessage('First message');
 			result.current.saveStateToHistory();
@@ -112,14 +135,21 @@ describe('useGameState', () => {
 			result.current.restorePreviousState();
 		});
 
-		expect(result.current.state.log).toEqual([{message: 'First message', indent: 0}]);
+		expect(result.current.state.log).toEqual([
+			{
+				message: 'First message',
+				indent: 0,
+			},
+		]);
 		expect(result.current.stateHistory).toEqual([]);
 	});
 
-	it('unlocks animals', () => {
+	it('unlocks animals', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
-		act(() => {
+		act(() =>
+		{
 			result.current.unlockAnimal('Coyote');
 			result.current.unlockAnimal('Llama');
 		});
@@ -129,10 +159,12 @@ describe('useGameState', () => {
 		expect(result.current.unlockedAnimals.has('Tiger')).toBe(false);
 	});
 
-	it('does not unlock the same animal twice', () => {
+	it('does not unlock the same animal twice', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
-		act(() => {
+		act(() =>
+		{
 			result.current.unlockAnimal('Coyote');
 			result.current.unlockAnimal('Coyote');
 		});
@@ -140,18 +172,21 @@ describe('useGameState', () => {
 		expect(result.current.unlockedAnimals.size).toBe(1);
 	});
 
-	it('gets next locked animal in order', () => {
+	it('gets next locked animal in order', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		expect(result.current.getNextLockedAnimal()).toBe('Coyote');
 
-		act(() => {
+		act(() =>
+		{
 			result.current.unlockAnimal('Coyote');
 		});
 
 		expect(result.current.getNextLockedAnimal()).toBe('Llama');
 
-		act(() => {
+		act(() =>
+		{
 			result.current.unlockAnimal('Llama');
 			result.current.unlockAnimal('Tiger');
 		});
@@ -159,10 +194,12 @@ describe('useGameState', () => {
 		expect(result.current.getNextLockedAnimal()).toBe('Gorilla');
 	});
 
-	it('returns null when all animals are unlocked', () => {
+	it('returns null when all animals are unlocked', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
-		act(() => {
+		act(() =>
+		{
 			result.current.unlockAnimal('Coyote');
 			result.current.unlockAnimal('Llama');
 			result.current.unlockAnimal('Tiger');
@@ -175,12 +212,14 @@ describe('useGameState', () => {
 		expect(result.current.getNextLockedAnimal()).toBe(null);
 	});
 
-	it('sets unlocked animals', () => {
+	it('sets unlocked animals', () =>
+	{
 		const {result} = renderHook(() => useGameState());
 
 		const animals = new Set<AnimalType>(['Coyote', 'Tiger', 'Monkey']);
 
-		act(() => {
+		act(() =>
+		{
 			result.current.setUnlockedAnimals(animals);
 		});
 

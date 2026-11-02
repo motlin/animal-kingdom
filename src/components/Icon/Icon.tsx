@@ -1,4 +1,5 @@
-import {
+import
+{
 	Moon,
 	Sun,
 	Volume2,
@@ -45,7 +46,8 @@ export type IconName =
 	| 'eye'
 	| 'x';
 
-const iconMap = {
+const iconMap =
+{
 	moon: Moon,
 	sun: Sun,
 	'volume-2': Volume2,
@@ -68,13 +70,15 @@ const iconMap = {
 	x: X,
 };
 
-export interface IconProperties extends Omit<LucideProps, 'ref'> {
+export interface IconProperties extends Omit<LucideProps, 'ref'>
+{
 	name: IconName;
 	size?: number;
 	className?: string;
 }
 
-export function Icon({name, size = 18, className = '', ...properties}: IconProperties) {
+export function Icon({name, size = 18, className = '', ...properties}: IconProperties)
+{
 	const IconComponent = iconMap[name];
 
 	return <IconComponent size={size} className={`icon ${className}`} {...properties} />;

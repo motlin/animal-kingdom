@@ -13,7 +13,8 @@ const IMAGE_ALT =
 	'The Animal Kingdom logo beside the game setup screen, with a Coyote and a Tiger picked for two players';
 
 // Crawlers for link previews read the HTML as served and run no script, so the tags have to be in the page's own head.
-test("the page's head carries the tags link previews read", () => {
+test("the page's head carries the tags link previews read", () =>
+{
 	const tags = [...page.head.querySelectorAll('meta[name], meta[property]')]
 		.map((meta) => [meta.getAttribute('name') ?? meta.getAttribute('property'), meta.getAttribute('content')])
 		.filter(([key]) => key !== 'viewport');
@@ -35,15 +36,20 @@ test("the page's head carries the tags link previews read", () => {
 	]);
 });
 
-test('the preview image is a 1200 by 630 PNG', () => {
+test('the preview image is a 1200 by 630 PNG', () =>
+{
 	const png = read('public/og.png');
-	expect({
-		signature: png.subarray(0, 8).toString('hex'),
-		width: png.readUInt32BE(16),
-		height: png.readUInt32BE(20),
-	}).toStrictEqual({
-		signature: '89504e470d0a1a0a',
-		width: 1200,
-		height: 630,
-	});
+	expect(
+		{
+			signature: png.subarray(0, 8).toString('hex'),
+			width: png.readUInt32BE(16),
+			height: png.readUInt32BE(20),
+		},
+	).toStrictEqual(
+		{
+			signature: '89504e470d0a1a0a',
+			width: 1200,
+			height: 630,
+		},
+	);
 });

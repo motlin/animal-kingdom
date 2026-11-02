@@ -6,10 +6,12 @@
 	"entry": ["src/index.{ts,tsx,js,jsx}", "src/main.{ts,tsx,js,jsx}", "src/**/*.mdx", "scripts/*.ts"],
 	"ignorePatterns": [".storybook/**"],
 	"ignoreDependencies": ["eslint-plugin-storybook"],
-	"duplicates": {
+	"duplicates":
+	{
 		"minOccurrences": 3
 	},
-	"rules": {
+	"rules":
+	{
 		"unused-dependencies": "warn"
 	}
 }

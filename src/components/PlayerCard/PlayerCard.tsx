@@ -3,7 +3,8 @@ import {HPBar} from '../HPBar/HPBar';
 import {Icon} from '../Icon/Icon';
 import './PlayerCard.css';
 
-export interface PlayerCardProperties {
+export interface PlayerCardProperties
+{
 	player: Player;
 	isActive?: boolean;
 	isSelectable?: boolean;
@@ -19,15 +20,20 @@ export function PlayerCard({
 	teamColor,
 	onClick,
 	className = '',
-}: PlayerCardProperties) {
-	const handleClick = () => {
-		if (isSelectable && onClick) {
+}: PlayerCardProperties)
+{
+	const handleClick = () =>
+	{
+		if (isSelectable && onClick)
+		{
 			onClick(player.id);
 		}
 	};
 
-	const handleKeyDown = (event: React.KeyboardEvent) => {
-		if (isSelectable && (event.key === 'Enter' || event.key === ' ')) {
+	const handleKeyDown = (event: React.KeyboardEvent) =>
+	{
+		if (isSelectable && (event.key === 'Enter' || event.key === ' '))
+		{
 			event.preventDefault();
 			handleClick();
 		}
@@ -43,7 +49,12 @@ export function PlayerCard({
 		.join(' ');
 
 	const cardStyle: (React.CSSProperties & Record<`--${string}`, string>) | undefined =
-		teamColor !== undefined && teamColor !== '' ? {'--team-color': teamColor} : undefined;
+		teamColor !== undefined && teamColor !== ''
+			?
+				{
+					'--team-color': teamColor,
+				}
+			: undefined;
 
 	return (
 		<div

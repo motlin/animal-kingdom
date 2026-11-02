@@ -1,15 +1,18 @@
-.select-container {
+.select-container
+{
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
 }
 
-.select-container label {
+.select-container label
+{
 	font-weight: bold;
 	color: var(--color-text);
 }
 
-.select {
+.select
+{
 	font-family: var(--font-main);
 	padding: 10px 15px;
 	border-radius: 8px;
@@ -20,12 +23,14 @@
 	color: var(--color-text);
 }
 
-.select:disabled {
+.select:disabled
+{
 	cursor: not-allowed;
 	opacity: 0.6;
 }
 
-body.dark-mode .select {
+body.dark-mode .select
+{
 	background-color: var(--color-light);
 	color: var(--color-text);
 }

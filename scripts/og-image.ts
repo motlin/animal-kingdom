@@ -6,7 +6,8 @@ import {chromium} from 'playwright';
 // animal picker, with the toggles, abilities and start controls hidden. Run it with `just og-image` after changing that screen.
 const OUT = 'public/og.png';
 const ORIGIN = 'http://og.local';
-const TYPES: Record<string, string> = {
+const TYPES: Record<string, string> =
+{
 	'.html': 'text/html',
 	'.js': 'text/javascript',
 	'.css': 'text/css',
@@ -32,31 +33,60 @@ const CARD_CSS = `
 `;
 
 const browser = await chromium.launch();
-try {
-	const page = await browser.newPage({viewport: {width: 1200, height: 630}});
+try
+{
+	const page = await browser.newPage(
+		{
+			viewport:
+			{
+				width: 1200,
+				height: 630,
+			},
+		},
+	);
 	// Serves dist/ to the page without starting a server, since the build links its assets from the site root.
-	await page.route(`${ORIGIN}/**`, async (route) => {
+	await page.route(`${ORIGIN}/**`, async (route) =>
+	{
 		const path = new URL(route.request().url()).pathname;
 		const file = join('dist', path === '/' ? 'index.html' : path);
-		await route.fulfill({
-			body: await readFile(file),
-			contentType: TYPES[extname(file)] ?? 'application/octet-stream',
-		});
+		await route.fulfill(
+			{
+				body: await readFile(file),
+				contentType: TYPES[extname(file)] ?? 'application/octet-stream',
+			},
+		);
 	});
 	// A new visitor has only the Coyote unlocked; unlock the Tiger too for the second player's pick.
-	await page.addInitScript(() => {
+	await page.addInitScript(() =>
+	{
 		localStorage.setItem('animalKingdomUnlockedAnimals', JSON.stringify(['Coyote', 'Tiger']));
 	});
-	await page.goto(`${ORIGIN}/`, {waitUntil: 'networkidle'});
+	await page.goto(
+		`${ORIGIN}/`,
+		{
+			waitUntil: 'networkidle',
+		},
+	);
 	await page.locator('.header .logo').waitFor();
-	await page.addStyleTag({content: CARD_CSS});
+	await page.addStyleTag(
+		{
+			content: CARD_CSS,
+		},
+	);
 	// Pits the default Coyote against a Tiger, so the card shows a matchup.
 	await page.locator('.player-setup').nth(1).locator('select').first().selectOption('Tiger');
-	await page.evaluate(async () => {
+	await page.evaluate(async () =>
+	{
 		await Promise.all([...document.images].map(async (image) => image.decode()));
 	});
-	await page.screenshot({path: OUT});
+	await page.screenshot(
+		{
+			path: OUT,
+		},
+	);
 	console.log(`wrote ${OUT}`);
-} finally {
+}
+finally
+{
 	await browser.close();
 }
