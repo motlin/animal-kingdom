@@ -32,6 +32,14 @@
 		"newLine": "lf",
 		"types": ["node", "vite-plus/client", "vitest/globals"]
 	},
-	"include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts", ".storybook/**/*"],
+	"include": [
+		"src/**/*",
+		"tests/**/*",
+		"scripts/**/*",
+		"vite.config.ts",
+		"vitest.config.ts",
+		"vitest.setup.ts",
+		".storybook/**/*"
+	],
 	"exclude": ["node_modules", "dist", "build", "coverage"]
 }

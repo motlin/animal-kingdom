@@ -41,6 +41,10 @@ typecheck: install
 build: install
     vp run build
 
+# Render public/og.png, the link-preview image, from the built setup screen
+og-image: build
+    node scripts/og-image.ts
+
 # Run fallow codebase intelligence (dead code, duplication, drift)
 fallow: install
     vp run {{ if ci != "" { "fallow:ci" } else { "fallow" } }}
