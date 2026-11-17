@@ -44,8 +44,8 @@ importers:
         specifier: ^10.6.6
         version: 10.6.6(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
       '@storybook/addon-docs':
-        specifier: ^10.6.6
-        version: 10.6.6(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
+        specifier: ^10.6.7
+        version: 10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
       '@storybook/addon-vitest':
         specifier: ^10.6.7
         version: 10.6.7(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))(vitest@5.1.0)
@@ -1095,11 +1095,11 @@ packages:
     peerDependencies:
       storybook: ^10.6.6
 
-  '@storybook/addon-docs@10.6.6':
-    resolution: {integrity: sha512-yflMNPrxk+QNuH0dPFgUk+AhVOa+Cz48bKz3/72eFDB8viWS9R0mQVBvKUxTIHOSUyDbaRyQiIeaL/pCvwW2jg==}
+  '@storybook/addon-docs@10.6.7':
+    resolution: {integrity: sha512-R0SxB+sv99/V1H51JFh5CjiN5Ufpuh8Bho7iT8hhl1NMGLk76BBqq9l63XgCp4d+1k9mXz7BVu7zFLWdf+j/Rg==}
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      storybook: ^10.6.6
+      storybook: ^10.6.7
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -1132,20 +1132,6 @@ packages:
     resolution: {integrity: sha512-FpUB/xizIrV1ILhCIYFo+TtQNN9YEoLjfcnAW0JtOXL+BcM2aisSysI0B54JMWDnljriXySBHgN6ps4s9lb75A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  '@storybook/react-dom-shim@10.6.6':
-    resolution: {integrity: sha512-yZNOsGoBvn+ywgf7WR+nHddBpIh/k24IOfAeMte6JA1rMB9defuPyhuMMENEyLfofqNYFnj1D+CB4XppnO3nBA==}
-    peerDependencies:
-      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      '@types/react-dom': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      storybook: ^10.6.6
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
 
   '@storybook/react-dom-shim@10.6.7':
     resolution: {integrity: sha512-h5VsEhWyLI4BsqcFwK/nOwvy5t8Hu3Tt7msUn4smHM0NbqtMlyZmA3LH58Q2plRy41T6lg0BLVjz5S/9s8cTZA==}
@@ -3846,11 +3832,11 @@ snapshots:
       axe-core: 4.14.0
       storybook: 10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2))
 
-  '@storybook/addon-docs@10.6.6(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
+  '@storybook/addon-docs@10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.3.0)(react@19.3.1)
       '@storybook/icons': 2.2.0(react@19.3.1)
-      '@storybook/react-dom-shim': 10.6.6(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
+      '@storybook/react-dom-shim': 10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       storybook: 10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2))
@@ -3882,15 +3868,6 @@ snapshots:
   '@storybook/icons@2.2.0(react@19.3.1)':
     dependencies:
       react: 19.3.1
-
-  '@storybook/react-dom-shim@10.6.6(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
-    dependencies:
-      react: 19.3.1
-      react-dom: 19.3.1(react@19.3.1)
-      storybook: 10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2))
-    optionalDependencies:
-      '@types/react': 19.3.0
-      '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
   '@storybook/react-dom-shim@10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.0(vitest@5.1.0))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
     dependencies:
