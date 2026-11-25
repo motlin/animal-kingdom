@@ -41,8 +41,8 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
       '@storybook/addon-a11y':
-        specifier: ^10.6.7
-        version: 10.6.7(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
+        specifier: ^10.6.8
+        version: 10.6.8(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
       '@storybook/addon-docs':
         specifier: ^10.6.7
         version: 10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))
@@ -1080,10 +1080,10 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@storybook/addon-a11y@10.6.7':
-    resolution: {integrity: sha512-ARd+bjfOYoICe00+svRgFsCVqV7RbN+wgi8yfRhk31kESR7NnTMBGiZD8vWv/r3xqul/Ddr1uR6mUK4lpH7sqw==}
+  '@storybook/addon-a11y@10.6.8':
+    resolution: {integrity: sha512-+tzs6nyvy4A4/tCFcXZoYrt7d5K8nQN8p7H1nP1GFicTHY4mlQpebP2PZUBcitupXUpyvHfYvw8fJUhrQKJC4Q==}
     peerDependencies:
-      storybook: ^10.6.7
+      storybook: ^10.6.8
 
   '@storybook/addon-docs@10.6.7':
     resolution: {integrity: sha512-R0SxB+sv99/V1H51JFh5CjiN5Ufpuh8Bho7iT8hhl1NMGLk76BBqq9l63XgCp4d+1k9mXz7BVu7zFLWdf+j/Rg==}
@@ -1894,8 +1894,8 @@ packages:
   ast-v8-to-istanbul@1.0.7:
     resolution: {integrity: sha512-kFL68AG6ajd8fg248zwM9GQrUWEp79gsmjum34OEXjs4yHuUMZfYKwOLW9GMmB4oNvVrj+EAGxsP7ye2UR9UlA==}
 
-  axe-core@4.14.0:
-    resolution: {integrity: sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==}
+  axe-core@4.14.1:
+    resolution: {integrity: sha512-FHfa+lmNjQZfJz1q8wKqIDwC6DExcHt/pkjNQb09a3NPjCKg2rhu5qb2S4r76ASyFNNtuFooJpZe37OgudVGtQ==}
     engines: {node: '>=4'}
 
   balanced-match@4.0.4:
@@ -3819,10 +3819,10 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@storybook/addon-a11y@10.6.7(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
+  '@storybook/addon-a11y@10.6.8(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
     dependencies:
       '@storybook/global': 5.0.0
-      axe-core: 4.14.0
+      axe-core: 4.14.1
       storybook: 10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2))
 
   '@storybook/addon-docs@10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.8(@types/react@19.3.0)(react@19.3.1)(vite-plus@1.1.0(@types/node@26.6.6)(@typescript/native-preview@7.0.0-dev.20260702.3)(@vitest/coverage-v8@5.1.1(vitest@5.1.1))(esbuild@0.28.2)(jsdom@31.0.1)(playwright@1.65.1)(typescript@7.0.2)))':
@@ -4442,7 +4442,7 @@ snapshots:
       estree-walker: 3.0.3
       js-tokens: 10.0.0
 
-  axe-core@4.14.0: {}
+  axe-core@4.14.1: {}
 
   balanced-match@4.0.4: {}
 
